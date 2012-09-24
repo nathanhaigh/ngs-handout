@@ -39,8 +39,8 @@ the tutorials test scripts on it.
 
 The tutorial test scripts can be pulled from the NeCTAR Cloud Object Storage onto a VM using:
 
-# Connect to the VM using an NX Client as user: ```ngstrainee```
-# In a terminal, pull down the tutorial test scripts from cloud storage
+Connect to the VM using an NX Client as user: ```ngstrainee```
+In a terminal, pull down the tutorial test scripts from cloud storage
 
     cd ~/
     wget http://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSImage/qc_tutorial.sh
@@ -49,7 +49,7 @@ The tutorial test scripts can be pulled from the NeCTAR Cloud Object Storage ont
     wget http://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSImage/rna-seq_tutorial.sh
     wget http://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSImage/de_novo_tutorial.sh
 
-# Run, and time, the tutorials and redirect ```STDOUT``` and ```STDERR``` to files with something like:
+Run, and time, the tutorials and redirect ```STDOUT``` and ```STDERR``` to files with something like:
 
     time bash qc_tutorial.sh > qc_stdout.log 2> qc_stderr.log
     time bash alignment_tutorial.sh > alignment_stdout.log 2> alignment_stderr.log
@@ -57,7 +57,7 @@ The tutorial test scripts can be pulled from the NeCTAR Cloud Object Storage ont
     time bash rna-seq_tutorial.sh > rna-seq_stdout.log 2> rna-seq_stderr.log
     time bash de_novo_tutorial.sh > de_novo_stdout.log 2> de_novo_stderr.log
 
-# Once testing is complete, delete the test files and logs
+Once testing is complete, delete the test files and logs
 
     rm *_tutorial.sh
     rm *_std{out,err}.log
@@ -77,8 +77,6 @@ and execute the following commands:
     sudo rm /home/ngstrainee/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
     wget http://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSImage/setup_NGS_workshop.sh
     bash setup_NGS_workshop.sh
-
-
 
 Real Clean the VM
 =================
