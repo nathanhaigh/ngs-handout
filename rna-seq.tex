@@ -1,0 +1,531 @@
+% Define the top matter
+\newcommand{\moduleTitle}{RNA-Seq}
+\newcommand{\moduleAuthors}{
+  Myrto Kostadima, EMBL-EBI (kostadmi@ebi.ac.uk)\\
+  Remco Loos, EMBL-EBI (remco@ebi.ac.uk)\\
+}
+
+%
+% Start: Module Title Page
+%
+\noindent
+
+\begin{center}
+\vspace*{\fill}
+{\huge{Module:\ \moduleTitle}}\\[1cm]
+
+\vfill
+
+\rule{\textwidth}{1pt}
+\moduleAuthors
+\rule{\textwidth}{1pt}
+\end{center}
+
+\newpage
+% End: Module Title Page
+
+
+\section{Resources You'll be Using}
+Although we have provided you with an environment which contains all the tools and data you will
+be using in this module, you may like to know where we have sourced those tools and data from.
+ 
+\subsection{Tools}
+\begin{description}
+  \item[Tophat] \hfill\\
+  	\url{http://tophat.cbcb.umd.edu/}
+  \item[Cufflinks] \hfill\\
+  	\url{http://cufflinks.cbcb.umd.edu/}
+  \item[Samtools] \hfill\\
+  	\url{http://samtools.sourceforge.net/}
+  \item[BEDTools] \hfill\\
+  	\url{http://code.google.com/p/bedtools/}
+  \item[UCSC tools] \hfill\\
+  	\url{http://hgdownload.cse.ucsc.edu/admin/exe/}
+  \item[IGV] \hfill\\
+  	\url{http://www.broadinstitute.org/igv/}
+  \item[DAVID Functional Analysis] \hfill\\
+  	\url{http://david.abcc.ncifcrf.gov/}
+\end{description}
+
+\subsection{Data Sources}
+\url{http://www.ebi.ac.uk/ena/data/view/ERR022484}\\
+\url{http://www.ebi.ac.uk/ena/data/view/ERR022485}
+
+\newpage
+
+\section{Introduction}
+The goal of this hands-on session is to perform some basic tasks in the downstream analysis
+of RNA-seq data. We will start from RNA-seq data aligned to the zebrafish genome using Tophat.
+We will perform transcriptome reconstruction using Cufflinks and we will compare the gene
+expression between two different conditions in order to identify differentially expressed genes.
+
+
+\section{Prepare the Environment}
+We will use a dataset derived from sequencing of mRNA from Danio rerio embryos in two
+different developmental stages. Sequencing was performed on the Illumina platform and
+generated 76bp paired-end sequence data using polyA selected RNA. Due to the time
+constraints of the practical we will only use a subset of the reads.
+
+The data files are contained in the subdirectory called \texttt{data} and are the following:
+\begin{description}
+  \item[\texttt{2cells\_1.fastq} and \texttt{2cells\_2.fastq}] \hfill\\
+  	These files are based on RNA-seq data of a 2-cell zebrafish embryo
+  \item[\texttt{6h\_1.fastq} and \texttt{6h\_2.fastq}] \hfill\\
+  	These files are based on RNA-seq data of zebrafish embryos 6h post fertilization
+\end{description}
+
+\begin{steps}
+Open the Terminal and go to the directory where the data is stored:
+\begin{lstlisting}
+   cd ~/RNA-seq/
+\end{lstlisting}
+\end{steps}
+
+%\reversemarginpar\marginpar{\vskip+0em\hfill\includegraphics[height=1cm]{./graphics/warning.png}}
+%\textcolor{red}{
+\begin{warning}
+  All commands entered into the terminal for this tutorial should be from within the
+  \texttt{RNA-seq} directory above.
+\end{warning}
+
+Check that the \texttt{data} directory contains the above-mentioned files by typing:
+\begin{lstlisting}
+   ls -l data
+\end{lstlisting}
+
+\section{Alignment}
+There are numerous tools performing short read alignment and the choice of aligner
+should be carefully made according to the analysis goals/requirements. Here we will
+use Tophat, a widely used ultrafast aligner that performs spliced alignments.\\
+
+Tophat is based on Bowtie to perform alignments and uses an indexed genome for the
+alignment to keep its memory footprint small. We have already seen how to index the
+genome (see Alignment hands-on session), therefore for time purposes we have already
+generated the index for the zebrafish genome and placed it under the \texttt{genome}
+subdirectory.
+
+\begin{steps}
+Tophat has a number of parameters in order to perform the alignment. To view them all type:
+\begin{lstlisting}
+   tophat --help
+\end{lstlisting}
+\end{steps}
+
+\begin{information}
+The general format of the tophat command is:
+\begin{lstlisting}
+   tophat [options]* <index_base> <reads_1> <reads_2>
+\end{lstlisting}
+
+Where the last two arguments are the \texttt{.fastq} files of the paired end reads, and the argument
+before is the basename of the indexed genome.
+\end{information}
+
+%\reversemarginpar\marginpar{\vskip+0em\hfill\includegraphics[height=1cm]{./graphics/notes.png}}
+\begin{note}
+Like with Bowtie before you run Tophat, you have to know which quality encoding the fastq
+formatted reads are in.
+\end{note}
+
+\begin{questions}
+Can you tell which quality encoding our fastq formatted reads are in?
+\\
+\\
+\\
+HINT: Look at the first few reads in the file \texttt{data/2cells\_1.fastq} and
+then compare the quality strings with the table found at:
+\url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}. 
+\begin{lstlisting}
+  head -n 20 data/2cells_1.fastq
+\end{lstlisting}
+\end{questions}
+
+%\reversemarginpar\marginpar{\vskip+0em\hfill\includegraphics[height=1cm]{./graphics/notes.png}}
+\begin{note}
+Some other parameters that we are going to use to run Tophat are listed below:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=5cm,font=\ttfamily]
+ \item[-g] Maximum number of multihits allowed. Short reads are likely to map to
+ more than one locations in the genome even though these reads can have originated
+ from only one of these regions. In RNA-seq we allow for a restricted number of
+ multihits, and in this case we ask Tophat to report only reads that map at most
+ onto 2 different loci.
+ \item[--library-type] Before performing any type of RNA-seq analysis you need
+ to know a few things about the library preparation. Was it done using a
+ strand-specific protocol or not? If yes, which strand? In our data the protocol
+ was NOT strand specific.
+ \item[-J] Improve spliced alignment by providing Tophat with annotated splice
+ junctions. Pre-existing genome annotation is an advantage when analysing RNA-seq
+ data. This file contains the coordinates of annotated splice junctions from Ensembl.
+ These are stored under the sub-directory \texttt{annotation} in a file called
+ \texttt{ZV9.spliceSites}.
+ \item[-o] This specifies in which subdirectory Tophat should save the output
+ files. Given that for every run the name of the output files is the same, we
+ specify different directories for each run.
+\end{description}
+\end{note}
+
+Since it takes a long time to perform spliced alignments, even for this subset of
+reads, we have pre-aligned the \texttt{2cells} data for you using the command below.\\
+\begin{warning}
+  DO NOT run the following command as you may overwrite the output files of the
+  pre-aligned data.
+\end{warning}
+\begin{lstlisting}
+  tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_2cells genome/ZV9 data/2cells_1.fastq data/2cells_2.fastq
+\end{lstlisting}
+
+\begin{questions}
+Using the above command, which we used to pre-align the \texttt{2cells} data, can you
+devise and run a command for aligning the \texttt{6h} data?
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\begin{warning}
+The alignment will take approximately 17 minutes. In the meantime please move
+on with the practical and we will get back to the terminal once the alignment
+is done.
+\end{warning}
+\end{questions}
+
+
+\begin{steps}
+We will firstly look at some of the files produced by Tophat. For this please
+open the \texttt{RNA-seq} directory which can be found on your Desktop. Click on the \texttt{tophat}
+subdirectory and then on the directory called \texttt{ZV9\_2cells}.
+
+Tophat reports the alignments in a BAM file called \texttt{accepted\_hits.bam}.
+Among others it also creates a junctions.bed files that stores the coordinates
+of the splice junctions present in your dataset, as these have been extracted
+from the spliced alignments.
+
+Now we will load the BAM file and the splice junctions onto IGV to visualize
+the alignments reported by Tophat.
+
+In order to launch IGV type double click on the IGV 2.1 icon on your Desktop.
+Ignore any warnings and when it opens you have to load the genome of interest.
+
+On the top left of your screen choose from the drop down menu Zebrafish (Zv9).
+Then in order to load the desire files go to:
+
+\begin{lstlisting}
+  File >> Load from File
+\end{lstlisting}
+
+On the pop up window navigate to \texttt{Desktop} \textgreater\textgreater\ \texttt{RNA-seq}
+\textgreater\textgreater\ \texttt{tophat} \textgreater\textgreater\ \texttt{ZV9\_2cells} directory
+and select the file \texttt{accepted\_hits.sorted.bam}. Once the file is loaded
+right-click on the name of the track on the left and choose Rename Track.
+Give the track a meaningful name.
+
+Follow the same steps in order to load the \texttt{junctions.bed} file from the same
+directory.
+
+Finally following the same process load the Ensembl annotation
+\texttt{Danio\_rerio.Zv9.66.gtf} stored under directory \texttt{annotation} under the
+\texttt{RNA-seq} directory.
+
+On the top middle box you can specify the region you want your browser to
+zoom. Type:\\ \texttt{chr12:20,270,921-20,300,943}.
+\end{steps}
+
+\begin{questions}
+Can you identify the splice junctions from the BAM file?
+\\
+\\
+\\
+Are the junctions annotated for \texttt{CBY1} consistent with the annotation?
+\\
+\\
+\\
+Are all annotated genes, from both RefSeq and Ensembl, expressed?
+\\
+\\
+\\
+\end{questions}
+
+\begin{warning}
+We already know that in order to load a BAM file onto IGV we need to have
+this file sorted by genomic location and indexed. Here’s a reminder of the
+command syntax to perform these tasks
+\end{warning}
+
+\begin{lstlisting}
+  samtools sort [bam_file_to_be_sorted] [prefix_of_sorted_bam_output_file]
+  samtools index [sorted_bam_file]
+\end{lstlisting}
+
+\begin{steps}
+Once Tophat finishes running, sort the output BAM file and then index the
+sorted BAM file using the information above to guide you.
+
+Then load them onto IGV following the steps above.
+\end{steps}
+
+\newpage
+\section{Isoform Expression and Transcriptome Assembly}
+There are a number of tools that perform reconstruction of the transcriptome
+and for this workshop we are going to use Cufflinks. Cufflinks can do
+transcriptome assembly either ab initio or using a reference annotation. It
+also quantifies the isoform expression in FPKMs.
+
+A reminder from the presentation this morning that FPKM stands for `Fragments
+Per Kilobase of exon per Million fragments mapped'. 
+
+\begin{steps}
+Cufflinks has a number of parameters in order to perform transcriptome
+assembly and quantification. To view them all type:
+
+\begin{lstlisting}
+  cufflinks --help
+\end{lstlisting}
+\end{steps}
+
+We aim to reconstruct the transcriptome for both samples by using the Ensembl
+annotation both strictly and as a guide. In the first case Cufflinks will only
+report isoforms that are included in the annotation, while in the latter case
+it will report novel isoforms as well.
+
+The annotation from Ensembl of Danio rerio is stored under the directory
+\texttt{annotation} in a file called \texttt{Danio\_rerio.Zv9.66.gtf}.
+
+\begin{information}
+The general format of the cufflinks command is:
+\begin{lstlisting}
+ cufflinks [options]* <aligned_reads.(sam|bam)>
+\end{lstlisting}
+Where the input is the aligned reads (either in SAM or BAM format).
+\end{information}
+
+\begin{note}
+Some of available parameters of Cufflinks that we are going to use to run
+Cufflinks are listed below:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=5cm,font=\ttfamily]
+  \item[-o] Output directory
+  \item[-G] Tells Cufflinks to use the supplied annotation strictly in order
+  to estimate isoform annotation
+  \item[-b] Instructs Cufflinks to run a bias detection and correction algorithm
+  which can significantly improve accuracy of transcript abundance estimates.
+  To do this Cufflinks requires a multi-fasta file with the genomic sequences
+  against which we have aligned the reads
+  \item[-u] Tells Cufflinks to do an initial estimation procedure to more
+  accurately weight reads mapping to multiple locations in the genome
+  (multi-hits). 
+  \item[--library-type] See Tophat parameters
+\end{description}
+\end{note}
+
+
+\begin{steps}
+In the terminal type:
+\begin{lstlisting}
+  cufflinks -o cufflinks/ZV9_2cells_gff -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
+\end{lstlisting}
+\end{steps}
+
+
+\begin{questions}
+Using the above command, which we used to pre-align the \texttt{2cells} data, can you devise and run a
+command for the \texttt{6h} data?
+\\
+\\
+\\
+\\
+\\
+\begin{warning}
+  Don’t forget to change the output directory. Otherwise the second command will
+  overwrite the results of the previous run.
+\end{warning}
+
+Take a look at the output directories that have been created. The results from
+Cufflinks are stored in 4 different files named: \texttt{genes.fpkm\_tracking},
+\texttt{isoforms.fpkm\_tracking}, \texttt{skipped.gtf} and \texttt{transcripts.gtf}.
+\end{questions}
+
+\begin{information}
+Here’s a short description of these files:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=5cm,font=\ttfamily]
+  \item[genes.fpkm\_tracking] Contains the estimated gene-level expression values.
+  \item[isoforms.fpkm\_tracking] Contains the estimated isoform-level expression values.
+  \item[transcripts.gtf] This GTF file contains Cufflinks' assembled isoforms.
+\end{description}
+The complete documentation can be found at:
+\url{http://cufflinks.cbcb.umd.edu/manual.html#cufflinks_output}
+\end{information}
+
+Now in order to perform guided transcriptome assembly (transcriptome assembly
+that reports novel transcripts as well) we need to change the \texttt{–G}
+option of the previous command to \texttt{–g} instead.
+This tells Cufflinks to assemble the transcriptome using the supplied
+annotation as a guide, thus allowing for novel transcripts.
+
+\begin{information}
+Performing the guided transcriptome analysis for the \texttt{2cells} and
+\texttt{6h} data sets would take 15-20min each. Therefore, we have
+pre-computed these for you and have the results available under subdirectories:
+\texttt{cufflinks/ZV9\_2cells} and \texttt{cufflinks/ZV9\_6h}.
+\end{information}
+
+\begin{questions}
+Rather than running the commands for guided transcriptome assembly, which would
+take too much time, please have a think about the cufflinks command you would
+need to use to run in order to perform a guided transcriptome assembly
+for the \texttt{2cells} dataset. Write your answer below:
+\\
+\\
+\\
+\\
+\\
+\\
+\end{questions}
+
+\begin{steps}
+Go back to the IGV browser and load the file transcripts.gtf which is located
+in the subdirectory \texttt{cufflinks/ZV9\_2cells/}. Rename the track into
+something meaningful.
+
+This file contains the transcripts that Cufflinks assembled based on the
+alignment of our reads onto the genome.
+\end{steps}
+
+\begin{questions}
+In the search box type \texttt{ENSDART00000082297} in order for the browser to zoom in
+to the gene of interest. Compare between the already annotated transcripts and
+the ones assembled by Cufflinks. Do you observe any difference?
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\end{questions}
+
+\section{Differential Expression}
+One of the stand-alone tools that perform differential expression analysis is
+Cuffdiff. We use this tool to compare between two conditions; for example
+different conditions could be control and disease, or wild-type and mutant, or
+various developmental stages. In our case we want to identify genes that are
+differentially expressed between two developmental stages; a \texttt{2cell}
+embryo and \texttt{6h} post fertilization.
+
+\begin{information}
+The general format of the cuffdiff command is:
+\begin{lstlisting}
+  cuffdiff [options]* <transcripts.gtf> <sample1_replicate1.sam[,...,sample1_replicateM]> <sample2_replicate1.sam[,...,sample2_replicateM.sam]>
+\end{lstlisting}
+
+Where the input includes a \texttt{transcripts.gtf} file, which is an annotation
+file of the genome of interest, and the aligned reads (either in SAM or BAM
+format) for the conditions.
+Some of the Cufflinks options that we will use to run the program are:
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=5cm,font=\ttfamily]
+  \item[-o] output directory
+  \item[-L] labels for the different conditions
+  \item[-T] Tells Cuffdiff that the reads are from a time series experiment
+  \item[-b] Same as for Cufflinks
+  \item[-u] Same as for Cufflinks
+  \item[--library-type] Same as for Cufflinks
+\end{description}
+\end{information}
+
+\begin{steps}
+To run cufdiff type on the terminal type:
+\begin{lstlisting}
+  cuffdiff -o cuffdiff/ -L ZV9_2cells,ZV9_6h -T -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded annotation/Danio_rerio.Zv9.66.gtf tophat/ZV9_2cells/accepted_hits.bam tophat/ZV9_6h/accepted_hits.bam
+\end{lstlisting}
+\end{steps}
+
+\begin{warning}
+In the command above we have assumed that the directory where you stored the
+results of Tophat for dataset \texttt{6h} was named \texttt{ZV9\_6h}. If this
+is not the case please change the previous command accordingly otherwise you
+will get an error.
+\end{warning}
+
+\begin{steps}
+We are interested in the differential expression at the gene level. The results
+are reported by Cuffdiff in the file \texttt{cuffdiff/gene\_exp.diff}. 
+Look at the first few lines of the file using the following command:
+\begin{lstlisting}
+  head -n 20 cuffdiff/gene_exp.diff
+\end{lstlisting}
+
+We would like to see which are the most significantly differentially expressed
+genes. Therefore we will sort the above file according to the q value
+(corrected p value for multiple testing). The result will be stored in a
+different file called \texttt{gene\_exp\_qval.sorted.diff}.
+\begin{lstlisting}
+  sort -t$'\t' -g -k 13 cuffdiff/gene_exp.diff > cuffdiff/gene_exp_qval.sorted.diff
+\end{lstlisting}
+
+Look again at the first few lines of the sorted file by typing:
+\begin{lstlisting}
+  head -n 20 cuffdiff/gene_exp_qval.sorted.diff
+\end{lstlisting}
+
+Copy the Ensembl identifier of one of these genes. Now go back to the IGV
+browser and paste it in the search box. Look at the raw aligned data for the
+two datasets.
+\end{steps}
+
+\begin{questions}
+Do you see any difference in the gene coverage between the two conditions that
+would justify that this gene has been called as differentially expressed?
+\end{questions}
+
+\begin{warning}
+Note that the coverage on the Ensembl browser is based on raw reads and no
+normalisation has taken place contrary to the FPKM values.
+\end{warning}
+
+\begin{bonus}
+\section{Functional Annotation of Differentially Expressed genes}
+After you have performed the differential expression analysis you are interested
+in identifying if there is any functionality enrichment for your differentially
+expressed genes.
+On your Desktop click:
+\begin{lstlisting}
+  Applications >> Internet >> Firefox Web Browser
+\end{lstlisting}
+And go to the following URL: \url{http://david.abcc.ncifcrf.gov/}
+On the left side click on Functional Annotation. Then click on the Upload tab.
+Under the section Choose from File, click Choose File and navigate to the
+\texttt{cuffdiff} directory. Select the file called \texttt{globalDiffExprs\_Genes\_qval.01\_top100.tab}.
+Under Step 2 select ENSEMBL\_GENE\_ID from the drop-down menu. Finally select
+Gene list and then press Submit List.
+Click on Gene Ontology and then click on the CHART button of the GOTERM\_BP\_ALL item.
+
+\begin{questions}
+Do these categories make sense given the samples we’re studying?
+\\
+\\
+\\
+\\
+\\
+\\
+Browse around DAVID website and check what other information are available.
+\end{questions}
+\end{bonus}
+
+\newpage
+\section{References}
+\begin{enumerate}
+  \item Trapnell, C., Pachter, L. \& Salzberg, S. L. TopHat: discovering splice
+  junctions with RNA-Seq. Bioinformatics 25, 1105–1111 (2009).
+  \item Trapnell, C. et al. Transcript assembly and quantification by RNA-Seq
+  reveals unannotated transcripts and isoform switching during cell
+  differentiation. Nat. Biotechnol. 28, 511–515 (2010).
+  \item Langmead, B., Trapnell, C., Pop, M. \& Salzberg, S. L. Ultrafast and
+  memory-efficient alignment of short DNA sequences to the human genome.
+  Genome Biol. 10, R25 (2009).
+  \item Roberts, A., Pimentel, H., Trapnell, C. \& Pachter, L. Identification
+  of novel transcripts in annotated genomes using RNA-Seq. Bioinformatics 27,
+  2325–2329 (2011).
+  \item Roberts, A., Trapnell, C., Donaghey, J., Rinn, J. L. \& Pachter, L.
+  Improving RNA-Seq expression estimates by correcting for fragment bias.
+  Genome Biol. 12, R22 (2011).
+\end{enumerate}

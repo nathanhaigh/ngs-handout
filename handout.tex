@@ -1,0 +1,186 @@
+\documentclass[a4paper]{article}
+
+\usepackage{listings}	% Required for insertion of code
+\usepackage{courier}	% Required for the courier font
+%\usepackage{color}
+\usepackage[usenames,dvipsnames]{color} % Required for custom colors
+\usepackage{xcolor}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+\usepackage{fullpage}	% See http://en.wikibooks.org/wiki/LaTeX/Page_Layout#Manual_Page_Formatting for layout
+%\usepackage{DejaVuSansMono}
+%\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage[parfill]{parskip}	% Don't indent the first line of paragraphs
+%\usepackage{underscore}
+%\usepackage{framed}
+\usepackage[framemethod=TikZ]{mdframed}
+\mdfsetup{roundcorner=5pt}
+
+% packages for Creative Commons Licences
+\usepackage{xmpincl}
+\includexmp{licences/CC_Attribution_3.0_Unported}	% includes XML metadata into the PDF
+\usepackage[scale=3]{ccicons}
+
+\usepackage{scrextend}
+%\changefontsizes{13pt}
+
+\hypersetup{
+    colorlinks=true,		% false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=blue           % color of external links
+}
+
+\lstloadlanguages{sh}		% Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
+\lstset{language=sh,		% Use Perl in this example
+        frame=single,		% Single frame around code
+        frameround=tttt,
+        basicstyle=\small\ttfamily, % Use small true type font
+        %keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
+        %keywordstyle=[2]\color{Purple}, % Perl function arguments purple
+        %keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
+        %identifierstyle=, % Nothing special about identifiers                                         
+        %commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
+        %stringstyle=\color{Purple}, % Strings are purple
+        showstringspaces=false, % Don't put marks in string spaces
+        %tabsize=5, % 5 spaces per tab
+        %
+        % Put standard functions not included in the default language here
+        %morekeywords={rand},
+        %
+        % Put function parameters here
+        %morekeywords=[2]{on, off, interp},
+        %
+        % Put user defined functions here
+        %morekeywords=[3]{test},
+       	%
+        %morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
+        numbers=left, % Line numbers on left
+        firstnumber=1, % Line numbers start with line 1
+        numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
+        stepnumber=5, % Line numbers go in steps of 5
+        backgroundcolor=\color{black!5},
+        linewidth=\linewidth,
+        xleftmargin=1cm,
+        xrightmargin=1cm,
+        breaklines=true,
+        breakatwhitespace=true,
+}
+
+%\definecolor{light-gray}{gray}{0.96}
+\linespread{1.3} % Line spacing
+
+% disables chapter, section and subsection numbering
+\setcounter{secnumdepth}{-1} 
+
+
+% This allows stuff on the same line to be vertically centered with respect of each other
+\def\vcent#1{\mathsurround0pt$\vcenter{\hbox{#1}}$}
+\def\vtp#1{\mathsurround0pt$\vtop{\hbox{#1}}$}
+
+
+\newenvironment{steps}
+{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/steps.png}}}
+
+\newenvironment{bonus}
+{\newpage\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/bonus1.png}}}
+
+\newenvironment{advanced}
+{\newpage\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/bonus2.png}}}
+
+\newenvironment{information}
+{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/info.png}}}
+
+\newenvironment{note}
+{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/notes.png}}}
+
+\newenvironment{warning}
+{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/warning.png}}
+\definecolor{shadecolor}{rgb}{1,0.85,0.85}
+\begin{mdframed}[backgroundcolor=shadecolor]
+}
+{\end{mdframed}}
+
+\newenvironment{questions}
+{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/questions.png}}
+\definecolor{shadecolor}{rgb}{1,0.95,0.85}
+\begin{mdframed}[backgroundcolor=shadecolor]
+}
+{\end{mdframed}}
+
+%
+% Some User Defined Stuff
+%
+\newcommand{\workshopTitle}{Introduction to Next Generation Sequencing}
+\newcommand{\workshopVenue}{Brisbane and Adelaide, Australia}
+\newcommand{\workshopDate}{Nov. 2012}
+\newcommand{\workshopAuthor}{
+Bioplatforms Australia (BPA)\\
+The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
+The Australian Bioinformatics Network (ABN)\\
+The European BioinformaticsInstitute (EBI)
+}
+%
+% End User Defined Stuff
+%
+
+
+\title{\workshopTitle}
+\date{\workshopDate}
+\author{\workshopAuthor}
+
+
+%\includeonly{workshop_preamble.tex,rna-seq.tex}
+
+\begin{document}
+
+%
+% Start: Workshop Title Page
+%
+\noindent
+
+\begin{center}
+\vspace*{\fill}
+{\huge\workshopTitle}\\[1cm]
+\workshopAuthor
+
+\vfill
+\ccby
+\input{licences/by.pdf_tex}
+%\import{licences/by.pdf}
+\vfill
+
+\rule{\textwidth}{1pt}
+\begin{minipage}{0.45\textwidth}
+\begin{flushleft}
+\workshopVenue
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\begin{flushright}
+\workshopDate
+\end{flushright}
+\end{minipage}
+
+\rule{\textwidth}{1pt}
+\end{center}
+
+\clearpage
+% End: Workshop Title Page
+
+
+%
+% Workshop Preamble
+%
+\input{workshop_preamble.tex}
+\clearpage
+
+%
+% RNA-Seq Module
+%
+\input{rna-seq.tex}
+
+
+\end{document}
