@@ -6,7 +6,7 @@ data_sub_dir='data'
 working_dir='working_dir'
 trainee_user='ngstrainee'
 
-cloud_storage_url_prefix='http://swift.rc.nectar.org.au:8888/v1/AUTH_809/'
+cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809/'
 
 # Add $(hostname) to /etc/hosts
 #sudo sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
