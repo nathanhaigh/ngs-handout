@@ -8,7 +8,7 @@ First, ssh into the VM as user ```ubuntu```
 pull down the bash setup script from cloud storage
 
     cd ~/
-    wget http://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSImage/setup_NGS_workshop.sh
+    wget https://raw.github.com/nathanhaigh/ngs_workshop/master/shell_scripts/setup_NGS_workshop.sh
 
 Execute the bash script, ignore any warnings from sudo about being ```unable to resolve host```
 
