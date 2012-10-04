@@ -1,4 +1,5 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper,12pt]{article}
+\usepackage{fancyhdr}	% For headers and footers
 
 \usepackage{listings}	% Required for insertion of code
 \usepackage{courier}	% Required for the courier font
@@ -14,16 +15,24 @@
 \usepackage[parfill]{parskip}	% Don't indent the first line of paragraphs
 %\usepackage{underscore}
 %\usepackage{framed}
-\usepackage[framemethod=TikZ]{mdframed}
-\mdfsetup{roundcorner=5pt}
+%\usepackage[framemethod=TikZ]{mdframed}
+\usepackage[framemethod=PSTricks]{mdframed}
+\usepackage{etoolbox}
+
+
+%\usepackage{notes}
+
+%\usepackage[pdf]{pstricks}	% For creating the CC By Logo on-the-fly
 
 % packages for Creative Commons Licences
 \usepackage{xmpincl}
 \includexmp{licences/CC_Attribution_3.0_Unported}	% includes XML metadata into the PDF
-\usepackage[scale=3]{ccicons}
+%\usepackage[scale=3]{ccicons}
+%\usepackage{import}
 
 \usepackage{scrextend}
 %\changefontsizes{13pt}
+
 
 \hypersetup{
     colorlinks=true,		% false: boxed links; true: colored links
@@ -33,7 +42,7 @@
     urlcolor=blue           % color of external links
 }
 
-\lstloadlanguages{sh}		% Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
+\lstloadlanguages{sh}		% Load shell syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
 \lstset{language=sh,		% Use Perl in this example
         frame=single,		% Single frame around code
         frameround=tttt,
@@ -81,34 +90,135 @@
 \def\vtp#1{\mathsurround0pt$\vtop{\hbox{#1}}$}
 
 
-\newenvironment{steps}
-{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/steps.png}}}
-
-\newenvironment{bonus}
-{\newpage\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/bonus1.png}}}
-
-\newenvironment{advanced}
-{\newpage\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/bonus2.png}}}
-
-\newenvironment{information}
-{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/info.png}}}
-
-\newenvironment{note}
-{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/notes.png}}}
-
-\newenvironment{warning}
-{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/warning.png}}
-\definecolor{shadecolor}{rgb}{1,0.85,0.85}
-\begin{mdframed}[backgroundcolor=shadecolor]
+\setlength{\topskip}{0.75cm}
+\definecolor{warningshade}{rgb}{1,0.85,0.85}
+\definecolor{questionshade}{rgb}{1,0.95,0.85}
+\mdfsetup{
+  leftmargin=0pt,
+  skipabove=0pt,
+  rightmargin=0pt,
+  skipbelow=10pt,
+  %splittopskip=\topskip,
+  %splitbottomskip=0pt,
+  innermargin=0pt,
+  outermargin=0pt,
+  innerleftmargin=0pt,
+  innerrightmargin=0pt,
+  innertopmargin=0pt,
+  innerbottommargin=0pt,
+  leftline=false,
+  topline=false,
+  rightline=false,
+  bottomline=false,
+  linecolor=black,
+  linewidth=1pt,
+  roundcorner=5pt,
 }
-{\end{mdframed}}
+\newmdenv[
+  backgroundcolor=warningshade,
+  leftline=true,
+  topline=true,
+  rightline=true,
+  bottomline=true,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+   ]{warning*}
+\newmdenv[
+  backgroundcolor=questionshade,
+  leftline=true,
+  topline=true,
+  rightline=true,
+  bottomline=true,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+   ]{questions*}
 
-\newenvironment{questions}
-{\reversemarginpar\marginpar{\vskip+0.5em\hfill\includegraphics[height=1cm]{./graphics/questions.png}}
-\definecolor{shadecolor}{rgb}{1,0.95,0.85}
-\begin{mdframed}[backgroundcolor=shadecolor]
+\newenvironment{steps}{%
+\begin{steps*}%
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/steps.png}\hspace{0.75cm}}}}\ignorespaces%
+}%
+{%
+\end{steps*}%
 }
-{\end{mdframed}}
+  
+  
+\newenvironment{bonus}{%
+\begin{bonus*}%
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
+\includegraphics[height=0.5cm]{./graphics/bonus1.png}%
+\hspace{0.75cm}%						gap between graphic and the left edge of main text
+\iconspacing%
+\hspace{\mdflength{leftmargin}}%		gap between left marging of mdframe and the mdframe
+\hspace{\mdflength{innerleftmargin}}%	gap between left edge of mdframe and the text within it
+}}}\ignorespaces%
+}%
+{%
+\end{bonus*}%
+}
+  
+
+\newenvironment{advanced}{
+\begin{advanced*}
+\newpage
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/bonus2.png}\hspace{0.75cm}}}}\ignorespaces
+}
+{
+\end{advanced*}
+}
+  
+
+\newenvironment{information}{
+\begin{information*}
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/info.png}\hspace{0.75cm}}}}\ignorespaces
+}
+{
+\end{information*}
+}
+
+\newenvironment{note}{
+\begin{note*}
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/notes.png}\hspace{0.75cm}}}}\ignorespaces
+}
+{
+\end{note*}
+}
+
+\newcommand{\iconspacing}{\hspace{0pt}}
+% TODO: renewcommand \iconspacing by adding \hspace{10pt} each time \iconspacing is called
+\newenvironment{warning}{
+\begin{warning*}
+\makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
+\includegraphics[height=1cm]{./graphics/warning.png}%
+\hspace{0.75cm}%						gap between graphic and the left edge of main text
+\iconspacing%
+\hspace{\mdflength{leftmargin}}%		gap between left marging of mdframe and the mdframe
+\hspace{\mdflength{innerleftmargin}}%	gap between left edge of mdframe and the text within it
+}}}\ignorespaces
+}
+{
+\end{warning*}
+}
+
+
+
+
+\newenvironment{questions}{
+\begin{questions*}
+\makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
+\includegraphics[height=1cm]{./graphics/questions.png}%
+\hspace{0.75cm}%						gap between graphic and the left edge of main text
+\iconspacing%
+\hspace{\mdflength{leftmargin}}%		gap between left marging of mdframe and the mdframe
+\hspace{\mdflength{innerleftmargin}}%	gap between left edge of mdframe and the text within it
+}}}\ignorespaces
+}
+{
+\end{questions*}
+}
 
 %
 % Some User Defined Stuff
@@ -125,6 +235,8 @@ The European BioinformaticsInstitute (EBI)
 %
 % End User Defined Stuff
 %
+
+\pagestyle{fancy}
 
 
 \title{\workshopTitle}
@@ -147,9 +259,20 @@ The European BioinformaticsInstitute (EBI)
 \workshopAuthor
 
 \vfill
-\ccby
-\input{licences/by.pdf_tex}
-%\import{licences/by.pdf}
+%\ccby
+%\begin{figure}
+%\centering
+%\def\svgwidth{\columnwidth}
+%\includesvg{image}
+%\end{figure}
+
+\includegraphics[height=1cm]{./licences/cc_by.png}\\
+This work is licensed under a Creative Commons Attribution 3.0 Unported License.\\
+\url{http://creativecommons.org/licenses/by/3.0/deed.en_GB}\\
+\url{http://creativecommons.org/licenses/by/3.0/legalcode}\\
+
+
+%\import{licences}{by.pdf}
 \vfill
 
 \rule{\textwidth}{1pt}
