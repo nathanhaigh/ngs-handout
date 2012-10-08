@@ -1,49 +1,42 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt,twoside]{memoir}
 \usepackage{fancyhdr}	% For headers and footers
-
 \usepackage{listings}	% Required for insertion of code
 \usepackage{courier}	% Required for the courier font
-%\usepackage{color}
 \usepackage[usenames,dvipsnames]{color} % Required for custom colors
 \usepackage{xcolor}
 \usepackage[pdftex]{graphicx}
 \usepackage{hyperref}
 \usepackage{fullpage}	% See http://en.wikibooks.org/wiki/LaTeX/Page_Layout#Manual_Page_Formatting for layout
-%\usepackage{DejaVuSansMono}
-%\usepackage[T1]{fontenc}
 \usepackage{enumitem}
-\usepackage[parfill]{parskip}	% Don't indent the first line of paragraphs
-%\usepackage{underscore}
-%\usepackage{framed}
-%\usepackage[framemethod=TikZ]{mdframed}
+%\usepackage[parfill]{parskip}	% Don't indent the first line of paragraphs
+\linespread{1} % Line spacing
 \usepackage{mdframed}
+\usepackage{parskip}
+\setlength{\parskip}{0.5cm}
 \usepackage{etoolbox}
+\usepackage[nobottomtitles]{titlesec}
+\usepackage[section]{placeins}
+\setlength{\parindent}{0pt}
+\usepackage{ifthen}
 
-
-%\usepackage{notes}
-
-%\usepackage[pdf]{pstricks}	% For creating the CC By Logo on-the-fly
 
 % packages for Creative Commons Licences
 \usepackage{xmpincl}
 \includexmp{licences/CC_Attribution_3.0_Unported}	% includes XML metadata into the PDF
-%\usepackage[scale=3]{ccicons}
-%\usepackage{import}
-
 \usepackage{scrextend}
-%\changefontsizes{13pt}
 
-
+% config display of hyperlinks
 \hypersetup{
-    colorlinks=true,		% false: boxed links; true: colored links
+    colorlinks=true,		    % false: boxed links; true: colored links
     linkcolor=red,          % color of internal links
     citecolor=green,        % color of links to bibliography
     filecolor=magenta,      % color of file links
     urlcolor=blue           % color of external links
 }
 
+% config default listings
 \lstloadlanguages{sh}		% Load shell syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
-\lstset{language=sh,		% Use Perl in this example
+\lstset{language=sh,		% Use shell in this example
         frame=single,		% Single frame around code
         frameround=tttt,
         basicstyle=\small\ttfamily, % Use small true type font
@@ -78,9 +71,6 @@
         breakatwhitespace=true,
 }
 
-%\definecolor{light-gray}{gray}{0.96}
-\linespread{1.3} % Line spacing
-
 % disables chapter, section and subsection numbering
 \setcounter{secnumdepth}{-1} 
 
@@ -89,16 +79,16 @@
 \def\vcent#1{\mathsurround0pt$\vcenter{\hbox{#1}}$}
 \def\vtp#1{\mathsurround0pt$\vtop{\hbox{#1}}$}
 
-
+% config ...
 \setlength{\topskip}{0.75cm}
 \definecolor{warningshade}{rgb}{1,0.85,0.85}
 \definecolor{questionshade}{rgb}{1,0.95,0.85}
 \mdfsetup{
   leftmargin=0pt,
-  skipabove=0pt,
+  skipabove=5pt,
   rightmargin=0pt,
   skipbelow=10pt,
-  %splittopskip=\topskip,
+  %splittopskip=0pt,
   %splitbottomskip=0pt,
   innermargin=0pt,
   outermargin=0pt,
@@ -124,6 +114,7 @@
   innerrightmargin=10pt,
   innertopmargin=10pt,
   innerbottommargin=10pt,
+  nobreak=true,
    ]{warning*}
 \newmdenv[
   backgroundcolor=questionshade,
@@ -135,143 +126,120 @@
   innerrightmargin=10pt,
   innertopmargin=10pt,
   innerbottommargin=10pt,
+  skipabove=15pt,
+  skipbelow=20pt,
+  nobreak=true,
    ]{questions*}
+
+\newlength{\iconspacinglength}
+\setlength{\iconspacinglength}{0.5cm}
+\newcommand{\iconspacing}{\iconspacinglength}
 
 \newenvironment{steps}{%
 \begin{steps*}%
-\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/steps.png}\hspace{0.75cm}}}}\ignorespaces%
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
+\includegraphics[height=1cm]{./graphics/steps.png}%
+\hspace{\iconspacinglength}%
+}}}\ignorespaces%
 }%
 {%
 \end{steps*}%
 }
-  
+
 \newenvironment{bonus}{%
 \begin{bonus*}%
-\makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
+\newpage%
+\makebox[0pt][r]{%
+\smash{%
+\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/bonus1.png}%
-\hspace{0.75cm}%						gap between graphic and the left edge of main text
-\iconspacing%
-\hspace{\mdflength{leftmargin}}%		gap between left marging of mdframe and the mdframe
-\hspace{\mdflength{innerleftmargin}}%	gap between left edge of mdframe and the text within it
-}}}\ignorespaces%
+\hspace{\iconspacinglength}%
+}%
+}%
+}\ignorespaces\vspace{-3em}\vspace{-\parskip}%
 }%
 {%
 \end{bonus*}%
 }
   
-
-\newenvironment{advanced}{
-\begin{advanced*}
-\newpage
-\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/bonus2.png}\hspace{0.75cm}}}}\ignorespaces
-}
-{
-\end{advanced*}
-}
-  
-
-\newenvironment{information}{
-\begin{information*}
-\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/info.png}\hspace{0.75cm}}}}\ignorespaces
-}
-{
-\end{information*}
+\newenvironment{advanced}{%
+\begin{advanced*}%
+\newpage%
+\makebox[0pt][r]{%
+\smash{%
+\raisebox{-.6\height}{%
+\includegraphics[height=1cm]{./graphics/bonus2.png}%
+\hspace{\iconspacinglength}%
+}%
+}%
+}\ignorespaces\vspace{-3em}%
+}%
+{%
+\end{advanced*}%
 }
 
-\newenvironment{note}{
-\begin{note*}
-\makebox[0pt][r]{\smash{\raisebox{-.6\height}{\includegraphics[height=1cm]{./graphics/notes.png}\hspace{0.75cm}}}}\ignorespaces
-}
-{
-\end{note*}
+\newenvironment{information}{%
+\begin{information*}%
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
+\includegraphics[height=1cm]{./graphics/info.png}%
+\hspace{\iconspacinglength}%
+}}}\ignorespaces%
+}%
+{%
+\end{information*}%
 }
 
-\newcommand{\iconspacing}{\hspace{0pt}}
-% TODO: renewcommand \iconspacing by adding \hspace{10pt} each time \iconspacing is called
-\newenvironment{warning}{
-\begin{warning*}
+\newenvironment{note}{%
+\begin{note*}%
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
+\includegraphics[height=1cm]{./graphics/notes.png}%
+\hspace{\iconspacinglength}%
+}}}\ignorespaces%
+}%
+{%
+\end{note*}%
+}
+
+\newenvironment{warning}{%
+\begin{warning*}%
+\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
+\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
 \includegraphics[height=1cm]{./graphics/warning.png}%
-\hspace{0.75cm}%						gap between graphic and the left edge of main text
-\iconspacing%
-\hspace{\mdflength{leftmargin}}%		gap between left marging of mdframe and the mdframe
-\hspace{\mdflength{innerleftmargin}}%	gap between left edge of mdframe and the text within it
-}}}\ignorespaces
-}
-{
-\end{warning*}
+\hspace{\iconspacinglength}%
+}}}\ignorespaces%
+}%
+{%
+\end{warning*}%
 }
 
-
-
-
-\newenvironment{questions}{
-\begin{questions*}
+\newenvironment{questions}{%
+\begin{questions*}%
+\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
+\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
 \includegraphics[height=1cm]{./graphics/questions.png}%
-\hspace{0.75cm}%						gap between graphic and the left edge of main text
-\iconspacing%
-\hspace{\mdflength{leftmargin}}%		gap between left marging of mdframe and the mdframe
-\hspace{\mdflength{innerleftmargin}}%	gap between left edge of mdframe and the text within it
-}}}\ignorespaces
-}
-{
-\end{questions*}
+\hspace{\iconspacinglength}%
+}}}\ignorespaces%
+}%
+{%
+\end{questions*}%
 }
 
-%
-% Some User Defined Stuff
-%
-\newcommand{\workshopTitle}{Introduction to Next Generation Sequencing}
-\newcommand{\workshopVenue}{Brisbane and Adelaide, Australia}
-\newcommand{\workshopDate}{Nov. 2012}
-\newcommand{\workshopAuthor}{
-Bioplatforms Australia (BPA)\\
-The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
-The Australian Bioinformatics Network (ABN)\\
-The European BioinformaticsInstitute (EBI)
-}
-%
-% End User Defined Stuff
-%
 
-\pagestyle{fancy}
-
-
-\title{\workshopTitle}
-\date{\workshopDate}
-\author{\workshopAuthor}
-
-
-%\includeonly{workshop_preamble.tex,rna-seq.tex}
-
-\begin{document}
-
-%
-% Start: Workshop Title Page
-%
+\newcommand{\workshoptitlepage}{
+\thispagestyle{empty}
 \noindent
 
 \begin{center}
+\rule{\textwidth}{1pt}
+
 \vspace*{\fill}
-{\huge\workshopTitle}\\[1cm]
+{\Huge\workshopTitle}
+\vspace{2cm}
+
 \workshopAuthor
 
-\vfill
-%\ccby
-%\begin{figure}
-%\centering
-%\def\svgwidth{\columnwidth}
-%\includesvg{image}
-%\end{figure}
-
-\includegraphics[height=1cm]{./licences/cc_by.png}\\
-This work is licensed under a Creative Commons Attribution 3.0 Unported License.\\
-\url{http://creativecommons.org/licenses/by/3.0/deed.en_GB}\\
-\url{http://creativecommons.org/licenses/by/3.0/legalcode}\\
-
-
-%\import{licences}{by.pdf}
 \vfill
 
 \rule{\textwidth}{1pt}
@@ -285,19 +253,106 @@ This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 \workshopDate
 \end{flushright}
 \end{minipage}
-
 \rule{\textwidth}{1pt}
 \end{center}
+\clearpage
+}
+
+\makechapterstyle{workshop}{%
+  \chapterstyle{default}
+  \renewcommand*{\chapnumfont}{\normalfont\HUGE\sffamily}
+  \renewcommand*{\chaptitlefont}{\normalfont\huge\sffamily}
+  \settowidth{\chapindent}{\chapnumfont 111}
+  \renewcommand*{\chapterheadstart}{\begingroup
+    %\vspace*{\beforechapskip}%
+    \begin{adjustwidth}{}{-\chapindent}%
+    \hrulefill
+    \smash{\rule{0.4pt}{15mm}}
+    \end{adjustwidth}\endgroup}
+  \renewcommand*{\printchaptername}{}
+  \renewcommand*{\chapternamenum}{}
+  \renewcommand*{\printchapternum}{%
+    \begin{adjustwidth}{}{-\chapindent}
+    \hfill
+    \raisebox{10mm}[0pt][0pt]{\chapnumfont \thechapter}%
+                              \hspace*{1em}
+    \end{adjustwidth}\vspace*{-3.0\onelineskip}}
+  \renewcommand*{\printchaptertitle}[1]{%
+    \vskip\onelineskip
+    \raggedleft {\chaptitlefont ##1}\par\nobreak}
+}
+\chapterstyle{workshop}
+\makechapterstyle{module}{%
+  \chapterstyle{workshop}
+  \renewcommand*{\printchaptertitle}[1]{%
+    \vskip\onelineskip
+    \raggedleft {\chaptitlefont Module: ##1}\par\nobreak
+    \vspace{\vfill}
+    Primary Authors:\par
+    \moduleAuthors\par
+    \vspace{1cm}
+    Contributions:\par
+    \moduleContributions}\\
+}
+\aliaspagestyle{chapter}{empty}
+
+
+%
+% Some User Defined Stuff
+%
+\newcommand{\workshopTitle}{Introduction to Next Generation Sequencing Hands-on Workshop}
+\newcommand{\workshopVenue}{Brisbane and Adelaide, Australia}
+\newcommand{\workshopDate}{Nov. 2012}
+\newcommand{\workshopAuthor}{
+Bioplatforms Australia (BPA)\\
+The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
+%The European BioinformaticsInstitute (EBI)\\
+}
+%
+% End User Defined Stuff
+%
+
+\pagestyle{fancy}   % for headers and footers
+
+\fancyhead{} % clear all header fields
+\fancyfoot{} % clear all footer fields
+\fancyhead[LE,RO]{\slshape \leftmark}
+\fancyhead[LO,RE]{\slshape \nouppercase{\rightmark}}
+\fancyfoot[LE,RO]{\thepage}
+%\addtolength{\headheight}{\baselineskip}
+\addtolength{\headsep}{\baselineskip} 
+
+
+
+\title{\workshopTitle}
+\date{\workshopDate}
+\author{\workshopAuthor}
+
+
+%\includeonly{workshop_preamble.tex,rna-seq.tex}
+
+\begin{document}
+
+%
+% Workshop Title Page
+%
+\workshoptitlepage
+
+%
+% CC-BY
+%
+\input{licence.tex}
 
 \clearpage
-% End: Workshop Title Page
+\tableofcontents
+
+\chapter{Workshop Information}
 
 
 %
 % Workshop Preamble
 %
 \input{workshop_preamble.tex}
-\clearpage
 
 %
 % RNA-Seq Module

@@ -1,36 +1,44 @@
 % Define the top matter
 \newcommand{\moduleTitle}{RNA-Seq}
-\newcommand{\moduleAuthors}{
+\newcommand{\moduleAuthors}{%
   Myrto Kostadima, EMBL-EBI (kostadmi@ebi.ac.uk)\\
-  Remco Loos, EMBL-EBI (remco@ebi.ac.uk)\\
+  Remco Loos, EMBL-EBI (remco@ebi.ac.uk)
+}
+\newcommand{\moduleContributions}{%
+  Nathan S. Watson-Haigh (nathan.watson-haigh@awri.com.au)%
 }
 
 %
 % Start: Module Title Page
+% TODO: Define modules as PARTS and define a custom parts page
 %
-\noindent
 
-\begin{center}
-\vspace*{\fill}
-{\huge{Module:\ \moduleTitle}}\\[1cm]
 
-\vfill
+%
+% Format the part page as follows
+%
 
-\rule{\textwidth}{1pt}
-\moduleAuthors
-\rule{\textwidth}{1pt}
-\end{center}
+
+%\moduletitlepage{\moduleTitle}{\moduleAuthors}{\moduleContributions}
+\chapterstyle{module}
+\chapter{\moduleTitle}
+
+%\noindent
+
 
 \newpage
 % End: Module Title Page
 
+\section{Key Learning Outcomes}
+
+TODO
 
 \section{Resources You'll be Using}
 Although we have provided you with an environment which contains all the tools and data you will
 be using in this module, you may like to know where we have sourced those tools and data from.
  
-\subsection{Tools}
-\begin{description}
+\subsection{Tools Used}
+\begin{description}[style=multiline,labelindent=1.5cm,align=left,leftmargin=2.5cm]
   \item[Tophat] \hfill\\
   	\url{http://tophat.cbcb.umd.edu/}
   \item[Cufflinks] \hfill\\
@@ -47,7 +55,7 @@ be using in this module, you may like to know where we have sourced those tools 
   	\url{http://david.abcc.ncifcrf.gov/}
 \end{description}
 
-\subsection{Data Sources}
+\subsection{Sources of Data}
 \url{http://www.ebi.ac.uk/ena/data/view/ERR022484}\\
 \url{http://www.ebi.ac.uk/ena/data/view/ERR022485}
 
@@ -59,7 +67,6 @@ of RNA-seq data. We will start from RNA-seq data aligned to the zebrafish genome
 We will perform transcriptome reconstruction using Cufflinks and we will compare the gene
 expression between two different conditions in order to identify differentially expressed genes.
 
-
 \section{Prepare the Environment}
 We will use a dataset derived from sequencing of mRNA from Danio rerio embryos in two
 different developmental stages. Sequencing was performed on the Illumina platform and
@@ -67,7 +74,7 @@ generated 76bp paired-end sequence data using polyA selected RNA. Due to the tim
 constraints of the practical we will only use a subset of the reads.
 
 The data files are contained in the subdirectory called \texttt{data} and are the following:
-\begin{description}
+\begin{description}[style=multiline,labelindent=1.5cm,align=left,leftmargin=2.5cm]
   \item[\texttt{2cells\_1.fastq} and \texttt{2cells\_2.fastq}] \hfill\\
   	These files are based on RNA-seq data of a 2-cell zebrafish embryo
   \item[\texttt{6h\_1.fastq} and \texttt{6h\_2.fastq}] \hfill\\
@@ -344,22 +351,17 @@ Cufflinks are stored in 4 different files, see below.
 \begin{information}
 Here's a short description of these files:
 
-\begin{description}[font=\ttfamily]
+\begin{description}[style=multiline,labelindent=1.5cm,align=left,leftmargin=2.5cm,font=\ttfamily]
   \item[genes.fpkm\_tracking] \hfill\\
   	Contains the estimated gene-level expression values.
   \item[isoforms.fpkm\_tracking] \hfill\\
   	Contains the estimated isoform-level expression values.
   \item[skipped.gtf] \hfill\\
-    No description% TODO: fill in description
+    No description  % TODO: fill in description
   \item[transcripts.gtf] \hfill\\
   	This GTF file contains Cufflinks' assembled isoforms.
 \end{description}
 
-%\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=5cm,font=\ttfamily]
-%  \item[genes.fpkm\_tracking] Contains the estimated gene-level expression values.
-%  \item[isoforms.fpkm\_tracking] Contains the estimated isoform-level expression values.
-%  \item[transcripts.gtf] This GTF file contains Cufflinks' assembled isoforms.
-%\end{description}
 The complete documentation can be found at:
 \url{http://cufflinks.cbcb.umd.edu/manual.html#cufflinks_output}
 \end{information}
@@ -486,9 +488,8 @@ Note that the coverage on the Ensembl browser is based on raw reads and no
 normalisation has taken place contrary to the FPKM values.
 \end{warning}
 
-\newpage
-
-\begin{bonus}\section{Functional Annotation of Differentially Expressed genes}
+\begin{bonus}
+\section{Functional Annotation of Differentially Expressed Genes}
 After you have performed the differential expression analysis you are interested
 in identifying if there is any functionality enrichment for your differentially
 expressed genes.
@@ -506,6 +507,8 @@ Click on Gene Ontology and then click on the CHART button of the GOTERM\_BP\_ALL
 
 \begin{questions}
 Do these categories make sense given the samples we’re studying?
+
+\vspace{3cm}
 
 Browse around DAVID website and check what other information are available.
 \end{questions}
@@ -530,3 +533,5 @@ Browse around DAVID website and check what other information are available.
   Improving RNA-Seq expression estimates by correcting for fragment bias.
   Genome Biol. 12, R22 (2011).
 \end{enumerate}
+
+\chapterstyle{workshop}
