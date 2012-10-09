@@ -1,9 +1,9 @@
 \documentclass[a4paper,12pt,twoside]{memoir}
 \usepackage{fancyhdr}	% For headers and footers
-\usepackage{listings}	% Required for insertion of code
+\usepackage[literate]{listings}	% Required for insertion of code
 \usepackage{courier}	% Required for the courier font
 \usepackage[usenames,dvipsnames]{color} % Required for custom colors
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage[pdftex]{graphicx}
 \usepackage{hyperref}
 \usepackage{fullpage}	% See http://en.wikibooks.org/wiki/LaTeX/Page_Layout#Manual_Page_Formatting for layout
@@ -17,13 +17,15 @@
 \usepackage[nobottomtitles]{titlesec}
 \usepackage[section]{placeins}
 \setlength{\parindent}{0pt}
-\usepackage{ifthen}
-
-
+%\usepackage{ifthen}
+%\usepackage{array}
 % packages for Creative Commons Licences
 \usepackage{xmpincl}
 \includexmp{licences/CC_Attribution_3.0_Unported}	% includes XML metadata into the PDF
 \usepackage{scrextend}
+\usepackage{microtype}
+\usepackage{accsupp}
+\usepackage{textcomp}
 
 % config display of hyperlinks
 \hypersetup{
@@ -35,40 +37,77 @@
 }
 
 % config default listings
-\lstloadlanguages{sh}		% Load shell syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
-\lstset{language=sh,		% Use shell in this example
-        frame=single,		% Single frame around code
-        frameround=tttt,
-        basicstyle=\small\ttfamily, % Use small true type font
-        %keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
-        %keywordstyle=[2]\color{Purple}, % Perl function arguments purple
-        %keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
-        %identifierstyle=, % Nothing special about identifiers                                         
-        %commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
-        %stringstyle=\color{Purple}, % Strings are purple
-        showstringspaces=false, % Don't put marks in string spaces
-        %tabsize=5, % 5 spaces per tab
-        %
-        % Put standard functions not included in the default language here
-        %morekeywords={rand},
-        %
-        % Put function parameters here
-        %morekeywords=[2]{on, off, interp},
-        %
-        % Put user defined functions here
-        %morekeywords=[3]{test},
-       	%
-        %morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
-        numbers=left, % Line numbers on left
-        firstnumber=1, % Line numbers start with line 1
-        numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
-        stepnumber=5, % Line numbers go in steps of 5
-        backgroundcolor=\color{black!5},
-        linewidth=\linewidth,
-        xleftmargin=1cm,
-        xrightmargin=1cm,
-        breaklines=true,
-        breakatwhitespace=true,
+%\lstset{language=}
+%\lstloadlanguages{sh}		% Load shell syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
+% \lstset{language=sh,		% Use shell in this example
+%         frame=single,		% Single frame around code
+%         frameround=tttt,
+%         basicstyle=\small\ttfamily, % Use small true type font
+%         %keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
+%         %keywordstyle=[2]\color{Purple}, % Perl function arguments purple
+%         %keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
+%         %identifierstyle=, % Nothing special about identifiers                                         
+%         %commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
+%         %stringstyle=\color{Purple}, % Strings are purple
+%         showstringspaces=false, % Don't put marks in string spaces
+%         %tabsize=5, % 5 spaces per tab
+%         %
+%         % Put standard functions not included in the default language here
+%         %morekeywords={rand},
+%         %
+%         % Put function parameters here
+%         %morekeywords=[2]{on, off, interp},
+%         %
+%         % Put user defined functions here
+%         %morekeywords=[3]{test},
+%        	%
+%         %morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
+%         numbers=left, % Line numbers on left
+%         firstnumber=1, % Line numbers start with line 1
+%         numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
+%         stepnumber=5, % Line numbers go in steps of 5
+%         backgroundcolor=\color{black!5},
+%         linewidth=\linewidth,
+%         xleftmargin=1cm,
+%         xrightmargin=1cm,
+%         breaklines=true,
+%         breakatwhitespace=true,
+% }
+\definecolor{darkgreen}{rgb}{0,0.9,0}
+\newcommand{\noncopytext}[1]{%
+    \BeginAccSupp{method=escape,ActualText={}}%
+    #1%
+    \EndAccSupp{}%
+}
+\lstset{ %
+%    language=sh,                    % the language of the code
+    columns=fullflexible,
+    upquote=true,
+    aboveskip=5pt,
+    belowskip=10pt,
+    basicstyle=\small\ttfamily,      % the size of the fonts that are used for the code
+    numbers=left,                    % where to put the line-numbers
+    numberstyle=\tiny\color{black!85}\noncopytext,  % the style that is used for the line-numbers
+    stepnumber=1,                    % the step between two line-numbers. If it's 1, each line 
+%                                    % will be numbered
+    numbersep=10pt,                  % how far the line-numbers are from the code
+    backgroundcolor=\color{black!5}, % choose the background color. You must add \usepackage{color}
+    showspaces=false,                % show spaces adding particular underscores
+    showstringspaces=false,          % underline spaces within strings
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    xleftmargin=20pt,
+    xrightmargin=10pt,
+    framerule=3pt,
+    frame=leftline,                  % adds a frame around the code
+    rulecolor=\color{darkgreen},     % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+    tabsize=2,                       % sets default tabsize to 2 spaces
+    breaklines=true,                 % sets automatic line breaking
+    breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
+    breakindent=20pt,
+    breakautoindent=true,
+    literate={*}{{\char42}}{1}
+             {~}{{\texttildelow}}{1} % reformat the high tilde to a normal tile which looks good for printing and is copy-and-pastable
+             {-}{{\char45}}{1},
 }
 
 % disables chapter, section and subsection numbering
@@ -136,18 +175,18 @@
 \newcommand{\iconspacing}{\iconspacinglength}
 
 \newenvironment{steps}{%
-\begin{steps*}%
+%\begin{steps*}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/steps.png}%
 \hspace{\iconspacinglength}%
 }}}\ignorespaces%
 }%
 {%
-\end{steps*}%
+%\end{steps*}%
 }
 
 \newenvironment{bonus}{%
-\begin{bonus*}%
+%\begin{bonus*}%
 \newpage%
 \makebox[0pt][r]{%
 \smash{%
@@ -159,11 +198,11 @@
 }\ignorespaces\vspace{-3em}\vspace{-\parskip}%
 }%
 {%
-\end{bonus*}%
+%\end{bonus*}%
 }
   
 \newenvironment{advanced}{%
-\begin{advanced*}%
+%\begin{advanced*}%
 \newpage%
 \makebox[0pt][r]{%
 \smash{%
@@ -175,29 +214,29 @@
 }\ignorespaces\vspace{-3em}%
 }%
 {%
-\end{advanced*}%
+%\end{advanced*}%
 }
 
 \newenvironment{information}{%
-\begin{information*}%
+%\begin{information*}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/info.png}%
 \hspace{\iconspacinglength}%
 }}}\ignorespaces%
 }%
 {%
-\end{information*}%
+%\end{information*}%
 }
 
 \newenvironment{note}{%
-\begin{note*}%
+%\begin{note*}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/notes.png}%
 \hspace{\iconspacinglength}%
 }}}\ignorespaces%
 }%
 {%
-\end{note*}%
+%\end{note*}%
 }
 
 \newenvironment{warning}{%
@@ -288,14 +327,22 @@
     \vskip\onelineskip
     \raggedleft {\chaptitlefont Module: ##1}\par\nobreak
     \vspace{\vfill}
-    Primary Authors:\par
+    Primary Author(s):\par
     \moduleAuthors\par
     \vspace{1cm}
-    Contributions:\par
-    \moduleContributions}\\
+    Contributor(s):\par
+    \moduleContributions}\par
 }
 \aliaspagestyle{chapter}{empty}
+\newcommand{\mailto}[1]{
+\href{mailto:#1}{\nolinkurl{#1}}
+}
 
+\newcommand{\moduleTitle}{}
+\newcommand{\moduleAuthors}{}
+\newcommand{\moduleContributions}{}
+
+%\newcolumntype{V}{>{\centering\arraybackslash} m{3cm} }
 
 %
 % Some User Defined Stuff
@@ -348,11 +395,20 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 
 \chapter{Workshop Information}
 
+%
+% Trainers Page
+%
+\input{trainers.tex}
 
 %
 % Workshop Preamble
 %
 \input{workshop_preamble.tex}
+
+%
+% QC Module
+%
+\input{ngs-qc.tex}
 
 %
 % RNA-Seq Module

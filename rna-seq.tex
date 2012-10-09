@@ -1,31 +1,15 @@
 % Define the top matter
-\newcommand{\moduleTitle}{RNA-Seq}
-\newcommand{\moduleAuthors}{%
+\renewcommand{\moduleTitle}{RNA-Seq}
+\renewcommand{\moduleAuthors}{%
   Myrto Kostadima, EMBL-EBI (kostadmi@ebi.ac.uk)\\
   Remco Loos, EMBL-EBI (remco@ebi.ac.uk)
-}
-\newcommand{\moduleContributions}{%
+} \renewcommand{\moduleContributions}{%
   Nathan S. Watson-Haigh (nathan.watson-haigh@awri.com.au)%
 }
 
-%
-% Start: Module Title Page
-% TODO: Define modules as PARTS and define a custom parts page
-%
-
-
-%
-% Format the part page as follows
-%
-
-
-%\moduletitlepage{\moduleTitle}{\moduleAuthors}{\moduleContributions}
+%  Start: Module Title Page
 \chapterstyle{module}
 \chapter{\moduleTitle}
-
-%\noindent
-
-
 \newpage
 % End: Module Title Page
 
@@ -34,11 +18,12 @@
 TODO
 
 \section{Resources You'll be Using}
-Although we have provided you with an environment which contains all the tools and data you will
-be using in this module, you may like to know where we have sourced those tools and data from.
+Although we have provided you with an environment which contains all the tools
+and data you will be using in this module, you may like to know where we have
+sourced those tools and data from.
  
 \subsection{Tools Used}
-\begin{description}[style=multiline,labelindent=1.5cm,align=left,leftmargin=2.5cm]
+\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=1cm]
   \item[Tophat] \hfill\\
   	\url{http://tophat.cbcb.umd.edu/}
   \item[Cufflinks] \hfill\\
@@ -62,29 +47,34 @@ be using in this module, you may like to know where we have sourced those tools 
 \newpage
 
 \section{Introduction}
-The goal of this hands-on session is to perform some basic tasks in the downstream analysis
-of RNA-seq data. We will start from RNA-seq data aligned to the zebrafish genome using Tophat.
-We will perform transcriptome reconstruction using Cufflinks and we will compare the gene
-expression between two different conditions in order to identify differentially expressed genes.
+The goal of this hands-on session is to perform some basic tasks in the
+downstream analysis of RNA-seq data. We will start from RNA-seq data aligned to
+the zebrafish genome using Tophat.
+We will perform transcriptome reconstruction using Cufflinks and we will compare
+the gene expression between two different conditions in order to identify
+differentially expressed genes.
 
 \section{Prepare the Environment}
-We will use a dataset derived from sequencing of mRNA from Danio rerio embryos in two
-different developmental stages. Sequencing was performed on the Illumina platform and
-generated 76bp paired-end sequence data using polyA selected RNA. Due to the time
-constraints of the practical we will only use a subset of the reads.
+We will use a dataset derived from sequencing of mRNA from Danio rerio embryos
+in two different developmental stages. Sequencing was performed on the Illumina
+platform and generated 76bp paired-end sequence data using polyA selected RNA.
+Due to the time constraints of the practical we will only use a subset of the
+reads.
 
-The data files are contained in the subdirectory called \texttt{data} and are the following:
+The data files are contained in the subdirectory called \texttt{data} and are
+the following:
 \begin{description}[style=multiline,labelindent=1.5cm,align=left,leftmargin=2.5cm]
   \item[\texttt{2cells\_1.fastq} and \texttt{2cells\_2.fastq}] \hfill\\
-  	These files are based on RNA-seq data of a 2-cell zebrafish embryo
+ These files are based on RNA-seq data of a 2-cell zebrafish embryo
   \item[\texttt{6h\_1.fastq} and \texttt{6h\_2.fastq}] \hfill\\
-  	These files are based on RNA-seq data of zebrafish embryos 6h post fertilization
+ These files are based on RNA-seq data of zebrafish embryos 6h post
+ fertilization
 \end{description}
 
 \begin{steps}
 Open the Terminal and go to the directory where the data is stored:
 \begin{lstlisting}
-   cd ~/RNA-seq/
+cd ~/RNA-seq/
 \end{lstlisting}
 \end{steps}
 
@@ -98,7 +88,7 @@ Open the Terminal and go to the directory where the data is stored:
 \begin{steps}
 Check that the \texttt{data} directory contains the above-mentioned files by typing:
 \begin{lstlisting}
-   ls -l data
+ls -l data
 \end{lstlisting}
 \end{steps}
 
@@ -116,14 +106,14 @@ subdirectory.
 \begin{steps}
 Tophat has a number of parameters in order to perform the alignment. To view them all type:
 \begin{lstlisting}
-   tophat --help
+tophat --help
 \end{lstlisting}
 \end{steps}
 
 \begin{information}
 The general format of the tophat command is:
 \begin{lstlisting}
-   tophat [options]* <index_base> <reads_1> <reads_2>
+tophat [options]* <index_base> <reads_1> <reads_2>
 \end{lstlisting}
 
 Where the last two arguments are the \texttt{.fastq} files of the paired end reads, and the argument
@@ -145,7 +135,7 @@ HINT: Look at the first few reads in the file \texttt{data/2cells\_1.fastq} and
 then compare the quality strings with the table found at:
 \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}. 
 \begin{lstlisting}
-  head -n 20 data/2cells_1.fastq
+head -n 20 data/2cells_1.fastq
 \end{lstlisting}
 \end{questions}
 
@@ -181,7 +171,7 @@ reads, we have pre-aligned the \texttt{2cells} data for you using the following 
 \end{warning}
 
 \begin{lstlisting}
-  tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_2cells genome/ZV9 data/2cells_1.fastq data/2cells_2.fastq
+tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_2cells genome/ZV9 data/2cells_1.fastq data/2cells_2.fastq
 \end{lstlisting}
 
 \begin{questions}
@@ -218,24 +208,24 @@ On the top left of your screen choose from the drop down menu Zebrafish (Zv9).
 Then in order to load the desire files go to:
 
 \begin{lstlisting}
-  File >> Load from File
+File >> Load from File
 \end{lstlisting}
 
-On the pop up window navigate to \texttt{Desktop} \textgreater\textgreater\ \texttt{RNA-seq}
-\textgreater\textgreater\ \texttt{tophat} \textgreater\textgreater\ \texttt{ZV9\_2cells} directory
+In the pop-up window, navigate to the \texttt{Desktop/RNA-seq/tophat/ZV9\_2cells}
+directory
 and select the file \texttt{accepted\_hits.sorted.bam}. Once the file is loaded
-right-click on the name of the track on the left and choose Rename Track.
-Give the track a meaningful name.
+right-click on the name of the track on the left and choose Rename Track. Give
+the track a meaningful name.
 
 Follow the same steps in order to load the \texttt{junctions.bed} file from the same
 directory.
 
-Finally following the same process load the Ensembl annotation
-\texttt{Danio\_rerio.Zv9.66.gtf} stored under directory \texttt{annotation} under the
-\texttt{RNA-seq} directory.
+Using the same proceedure, load the Ensembl annotation
+\texttt{Danio\_rerio.Zv9.66.gtf} file stored under the \texttt{RNA-seq/annotation}
+directory.
 
 On the top middle box you can specify the region you want your browser to
-zoom. Type: \texttt{chr12:20,270,921-20,300,943}.
+zoom. Type: \texttt{chr12:20,270,921-20,300,943}
 \end{steps}
 
 \begin{questions}
@@ -259,8 +249,8 @@ this file sorted by genomic location and indexed. Here’s a reminder of the
 command syntax to perform these tasks
 
 \begin{lstlisting}
-  samtools sort [bam_file_to_be_sorted] [prefix_of_sorted_bam_output_file]
-  samtools index [sorted_bam_file]
+samtools sort [bam_file_to_be_sorted] [prefix_of_sorted_bam_output_file]
+samtools index [sorted_bam_file]
 \end{lstlisting}
 
 \end{information}
@@ -287,7 +277,7 @@ Cufflinks has a number of parameters in order to perform transcriptome
 assembly and quantification. To view them all type:
 
 \begin{lstlisting}
-  cufflinks --help
+cufflinks --help
 \end{lstlisting}
 \end{steps}
 
@@ -302,7 +292,7 @@ The annotation from Ensembl of Danio rerio is stored under the directory
 \begin{information}
 The general format of the cufflinks command is:
 \begin{lstlisting}
- cufflinks [options]* <aligned_reads.(sam|bam)>
+cufflinks [options]* <aligned_reads.(sam|bam)>
 \end{lstlisting}
 Where the input is the aligned reads (either in SAM or BAM format).
 \end{information}
@@ -329,7 +319,7 @@ Cufflinks are listed below:
 \begin{steps}
 In the terminal type:
 \begin{lstlisting}
-  cufflinks -o cufflinks/ZV9_2cells_gff -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
+cufflinks -o cufflinks/ZV9_2cells_gff -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
 \end{lstlisting}
 \end{steps}
 
@@ -418,7 +408,7 @@ embryo and \texttt{6h} post fertilization.
 \begin{information}
 The general format of the cuffdiff command is:
 \begin{lstlisting}
-  cuffdiff [options]* <transcripts.gtf> <sample1_replicate1.sam[,...,sample1_replicateM]> <sample2_replicate1.sam[,...,sample2_replicateM.sam]>
+cuffdiff [options]* <transcripts.gtf> <sample1_replicate1.sam[,...,sample1_replicateM]> <sample2_replicate1.sam[,...,sample2_replicateM.sam]>
 \end{lstlisting}
 
 Where the input includes a \texttt{transcripts.gtf} file, which is an annotation
@@ -438,7 +428,7 @@ Some of the Cufflinks options that we will use to run the program are:
 \begin{steps}
 To run cufdiff type on the terminal:
 \begin{lstlisting}
-  cuffdiff -o cuffdiff/ -L ZV9_2cells,ZV9_6h -T -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded annotation/Danio_rerio.Zv9.66.gtf tophat/ZV9_2cells/accepted_hits.bam tophat/ZV9_6h/accepted_hits.bam
+cuffdiff -o cuffdiff/ -L ZV9_2cells,ZV9_6h -T -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded annotation/Danio_rerio.Zv9.66.gtf tophat/ZV9_2cells/accepted_hits.bam tophat/ZV9_6h/accepted_hits.bam
 \end{lstlisting}
 \end{steps}
 
@@ -454,7 +444,7 @@ We are interested in the differential expression at the gene level. The results
 are reported by Cuffdiff in the file \texttt{cuffdiff/gene\_exp.diff}. 
 Look at the first few lines of the file using the following command:
 \begin{lstlisting}
-  head -n 20 cuffdiff/gene_exp.diff
+head -n 20 cuffdiff/gene_exp.diff
 \end{lstlisting}
 
 We would like to see which are the most significantly differentially expressed
@@ -462,12 +452,12 @@ genes. Therefore we will sort the above file according to the q value
 (corrected p value for multiple testing). The result will be stored in a
 different file called \texttt{gene\_exp\_qval.sorted.diff}.
 \begin{lstlisting}
-  sort -t$'\t' -g -k 13 cuffdiff/gene_exp.diff > cuffdiff/gene_exp_qval.sorted.diff
+sort -t$'\t' -g -k 13 cuffdiff/gene_exp.diff > cuffdiff/gene_exp_qval.sorted.diff
 \end{lstlisting}
 
 Look again at the first few lines of the sorted file by typing:
 \begin{lstlisting}
-  head -n 20 cuffdiff/gene_exp_qval.sorted.diff
+head -n 20 cuffdiff/gene_exp_qval.sorted.diff
 \end{lstlisting}
 
 Copy the Ensembl identifier of one of these genes. Now go back to the IGV
@@ -495,7 +485,7 @@ in identifying if there is any functionality enrichment for your differentially
 expressed genes.
 On your Desktop click:
 \begin{lstlisting}
-  Applications >> Internet >> Firefox Web Browser
+Applications >> Internet >> Firefox Web Browser
 \end{lstlisting}
 And go to the following URL: \url{http://david.abcc.ncifcrf.gov/}
 On the left side click on Functional Annotation. Then click on the Upload tab.
