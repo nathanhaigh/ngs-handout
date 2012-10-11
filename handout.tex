@@ -26,6 +26,10 @@
 \usepackage{microtype}
 \usepackage{accsupp}
 \usepackage{textcomp}
+\usepackage{float}
+\usepackage{lmodern}        % to ensure most charaters in listings and texttt are copy-paste safe and print nicely
+
+%\renewcommand{\thefootnote}{\arabic{footnote}}
 
 % config display of hyperlinks
 \hypersetup{
@@ -36,43 +40,6 @@
     urlcolor=blue           % color of external links
 }
 
-% config default listings
-%\lstset{language=}
-%\lstloadlanguages{sh}		% Load shell syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
-% \lstset{language=sh,		% Use shell in this example
-%         frame=single,		% Single frame around code
-%         frameround=tttt,
-%         basicstyle=\small\ttfamily, % Use small true type font
-%         %keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
-%         %keywordstyle=[2]\color{Purple}, % Perl function arguments purple
-%         %keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
-%         %identifierstyle=, % Nothing special about identifiers                                         
-%         %commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
-%         %stringstyle=\color{Purple}, % Strings are purple
-%         showstringspaces=false, % Don't put marks in string spaces
-%         %tabsize=5, % 5 spaces per tab
-%         %
-%         % Put standard functions not included in the default language here
-%         %morekeywords={rand},
-%         %
-%         % Put function parameters here
-%         %morekeywords=[2]{on, off, interp},
-%         %
-%         % Put user defined functions here
-%         %morekeywords=[3]{test},
-%        	%
-%         %morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
-%         numbers=left, % Line numbers on left
-%         firstnumber=1, % Line numbers start with line 1
-%         numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
-%         stepnumber=5, % Line numbers go in steps of 5
-%         backgroundcolor=\color{black!5},
-%         linewidth=\linewidth,
-%         xleftmargin=1cm,
-%         xrightmargin=1cm,
-%         breaklines=true,
-%         breakatwhitespace=true,
-% }
 \definecolor{darkgreen}{rgb}{0,0.9,0}
 \newcommand{\noncopytext}[1]{%
     \BeginAccSupp{method=escape,ActualText={}}%
@@ -90,13 +57,14 @@
     numberstyle=\tiny\color{black!85}\noncopytext,  % the style that is used for the line-numbers
     stepnumber=1,                    % the step between two line-numbers. If it's 1, each line 
 %                                    % will be numbered
-    numbersep=10pt,                  % how far the line-numbers are from the code
+    numbersep=13pt,                  % how far the line-numbers are from the code. Add framesep value to this
     backgroundcolor=\color{black!5}, % choose the background color. You must add \usepackage{color}
     showspaces=false,                % show spaces adding particular underscores
     showstringspaces=false,          % underline spaces within strings
     showtabs=false,                  % show tabs within strings adding particular underscores
     xleftmargin=20pt,
     xrightmargin=10pt,
+    framesep=5pt,
     framerule=3pt,
     frame=leftline,                  % adds a frame around the code
     rulecolor=\color{darkgreen},     % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
@@ -105,10 +73,28 @@
     breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
     breakindent=20pt,
     breakautoindent=true,
-    literate={*}{{\char42}}{1}
+    prebreak=\small\symbol{'134},
+    literate=%{*}{{\textasteriskcentered}}{1}
              {~}{{\texttildelow}}{1} % reformat the high tilde to a normal tile which looks good for printing and is copy-and-pastable
-             {-}{{\char45}}{1},
+             %{-}{{\textminus}}{1},
 }
+
+% configure an R listings
+%\lstloadlanguages{R}
+% \lstdefinelanguage{Renhanced}[]{R}{%
+%   morekeywords={acf,ar,arima,arima.sim,colMeans,colSums,is.na,is.null,%
+%     mapply,ms,na.rm,nlmin,replicate,row.names,rowMeans,rowSums,seasonal,%
+%     sys.time,system.time,ts.plot,which.max,which.min},
+%   deletekeywords={c},
+%   alsoletter={.\%},%
+%   alsoother={:_\$}}
+% \lstset{language=Renhanced,extendedchars=true,
+%   basicstyle=\small\ttfamily,
+%   commentstyle=\textsl,
+%   keywordstyle=\mdseries,
+%   showstringspaces=false,
+%   index=[1][keywords], 
+%   indexstyle=\indexfonction}
 
 % disables chapter, section and subsection numbering
 \setcounter{secnumdepth}{-1} 
@@ -122,6 +108,8 @@
 \setlength{\topskip}{0.75cm}
 \definecolor{warningshade}{rgb}{1,0.85,0.85}
 \definecolor{questionshade}{rgb}{1,0.95,0.85}
+\definecolor{bonusshade}{rgb}{0.92,1,0.92}
+\definecolor{advancedshade}{rgb}{0.92,0.92,1}
 \mdfsetup{
   leftmargin=0pt,
   skipabove=5pt,
@@ -169,44 +157,77 @@
   skipbelow=20pt,
   nobreak=true,
    ]{questions*}
+\newmdenv[
+  backgroundcolor=bonusshade,
+  leftline=true,
+  topline=true,
+  rightline=true,
+  bottomline=true,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  skipabove=15pt,
+  skipbelow=20pt,
+  nobreak=false,                % these could span multiple pages, so we should let them break across pages
+   ]{bonus*}
+\newmdenv[
+  backgroundcolor=advancedshade,
+  leftline=true,
+  topline=true,
+  rightline=true,
+  bottomline=true,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  skipabove=15pt,
+  skipbelow=20pt,
+  nobreak=false,                % these could span multiple pages, so we should let them break across pages
+   ]{advanced*}
 
 \newlength{\iconspacinglength}
 \setlength{\iconspacinglength}{0.5cm}
 \newcommand{\iconspacing}{\iconspacinglength}
+\newlength{\questionspacing}
+\setlength{\questionspacing}{2cm}
+
 
 \newenvironment{steps}{%
-%\begin{steps*}%
+\begin{steps*}%
+%\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
+%\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/steps.png}%
 \hspace{\iconspacinglength}%
 }}}\ignorespaces%
 }%
 {%
-%\end{steps*}%
+\end{steps*}%
 }
 
 \newenvironment{bonus}{%
-%\begin{bonus*}%
-\newpage%
-\makebox[0pt][r]{%
-\smash{%
-\raisebox{-.6\height}{%
+\begin{bonus*}%
+\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
+\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
+%\newpage%
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/bonus1.png}%
 \hspace{\iconspacinglength}%
 }%
 }%
-}\ignorespaces\vspace{-3em}\vspace{-\parskip}%
+}\ignorespaces%\vspace{-3em}\vspace{-\parskip}%
 }%
 {%
-%\end{bonus*}%
+\end{bonus*}%
 }
   
 \newenvironment{advanced}{%
-%\begin{advanced*}%
-\newpage%
-\makebox[0pt][r]{%
-\smash{%
-\raisebox{-.6\height}{%
+\begin{advanced*}%
+\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
+\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
+%\newpage%
+\makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/bonus2.png}%
 \hspace{\iconspacinglength}%
 }%
@@ -214,29 +235,33 @@
 }\ignorespaces\vspace{-3em}%
 }%
 {%
-%\end{advanced*}%
+\end{advanced*}%
 }
 
 \newenvironment{information}{%
-%\begin{information*}%
+\begin{information*}%
+%\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
+%\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/info.png}%
 \hspace{\iconspacinglength}%
 }}}\ignorespaces%
 }%
 {%
-%\end{information*}%
+\end{information*}%
 }
 
 \newenvironment{note}{%
-%\begin{note*}%
+\begin{note*}%
+%\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
+%\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
 \includegraphics[height=1cm]{./graphics/notes.png}%
 \hspace{\iconspacinglength}%
 }}}\ignorespaces%
 }%
 {%
-%\end{note*}%
+\end{note*}%
 }
 
 \newenvironment{warning}{%
@@ -254,6 +279,7 @@
 
 \newenvironment{questions}{%
 \begin{questions*}%
+\setlength{\parskip}{\questionspacing}%
 \addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 \addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
@@ -262,6 +288,7 @@
 }}}\ignorespaces%
 }%
 {%
+\vspace{\questionspacing}%
 \end{questions*}%
 }
 
@@ -363,7 +390,7 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 
 \fancyhead{} % clear all header fields
 \fancyfoot{} % clear all footer fields
-\fancyhead[LE,RO]{\slshape \leftmark}
+\fancyhead[LE,RO]{\slshape \nouppercase{\leftmark}}
 \fancyhead[LO,RE]{\slshape \nouppercase{\rightmark}}
 \fancyfoot[LE,RO]{\thepage}
 %\addtolength{\headheight}{\baselineskip}
@@ -414,6 +441,12 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 % RNA-Seq Module
 %
 \input{rna-seq/rna-seq.tex}
+
+%
+% Velvet de novo assembly
+%
+\input{de_novo/velvet.tex}
+
 
 
 \end{document}
