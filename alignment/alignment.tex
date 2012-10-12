@@ -1,0 +1,262 @@
+% Define the top matter
+\renewcommand{\moduleTitle}{Sequence Alignment}
+\renewcommand{\moduleAuthors}{%
+  Myrto Kostadima \mailto{kostadim@ebi.ac.uk}
+} \renewcommand{\moduleContributions}{%
+  Xi Li \mailto{sean.li@csiro.au}%
+}
+
+%  Start: Module Title Page
+\chapterstyle{module}
+\chapter{\moduleTitle}
+\newpage
+% End: Module Title Page
+
+\section{Resources You'll be Using}
+Although we have provided you with an environment which contains all the tools
+and data you will be using in this module, you may like to know where we have
+sourced those tools and data from.
+ 
+\subsection{Tools Used}
+\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
+  \item[Bowtie]\hfill\\
+  	\url{http://bowtie-bio.sourceforge.net/index.shtml}
+  \item[Bowtie 2]\hfill\\
+  	\url{http://bowtie-bio.sourceforge.net/bowtie2/index.shtml}
+  \item[Samtools]\hfill\\
+  	\url{http://picard.sourceforge.net/}
+  \item[BEDTools]\hfill\\
+  	\url{http://code.google.com/p/bedtools/}
+  \item[UCSC tools]\hfill\\
+  	\url{http://hgdownload.cse.ucsc.edu/admin/exe/}  
+  \item[IGV genome browser]\hfill\\
+  	\url{http://www.broadinstitute.org/igv/}
+\end{description}
+
+\subsection{Sources of Data}
+  \url{http://www.ebi.ac.uk/arrayexpress/experiments/E-GEOD-11431}
+% \url{http://www.ebi.ac.uk/ena/data/view/ERR022484}\\
+% \url{http://www.ebi.ac.uk/ena/data/view/ERR022485}
+
+\newpage
+
+\section{Introduction}
+
+\begin{information}
+The goal of this hands-on session is to perform an unspliced alignment for a small subset of raw reads. We will align raw sequencing data to the mouse genome using \textit{Bowtie} and then we will manipulate the SAM output in order to visualize the alignment on the \textit{IGV browser}.
+\end{information}
+
+\section{Prepare the Environment}
+
+\begin{information}
+We will use one data set in this practical, which can be found in the ChIP-seq directory on your desktop. This directory also contains an electronic version of this document, which can be useful to copy and paste commands.
+directory on your desktop.
+\end{information}
+
+\begin{steps}
+Open the Terminal.
+
+First, go to the right folder, where the data are stored.
+\begin{lstlisting}
+cd ChIP-seq
+\end{lstlisting}
+
+\begin{information}
+The .fastq file that we will align is called Oct4.fastq. This file is based on Oct4 ChIP-seq data published by Chen et al. (2008). We will align these reads to the mouse chromosome. 
+\end{information}
+\end{steps}
+
+\section{Alignment}
+
+\begin{information}
+You already know that there are a number of competing tools for short read alignment, each with its own set of strengths, weaknesses, and caveats. Here we will try \textit{Bowtie}, a widely used ultrafast, memory efficient short read aligner. 
+\end{information}
+
+\begin{steps}
+\textit{Bowtie} has a number of parameters in order to perform the alignment. To view them all type
+
+\begin{lstlisting}
+bowtie --help
+\end{lstlisting}
+
+\textit{Bowtie} uses indexed genome for the alignment in order to keep its memory footprint small. Because of time constraints we will build the index only for one chromosome of the mouse genome. For this we need the chromosome sequence in fasta format. This is stored in a file named mm9, under the subdirectory $bowtie\_index$.
+
+The indexed chromosome is generated using the command:
+
+\begin{lstlisting}
+bowtie-build bowtie_index/mm9.fa bowtie_index/mm9
+\end{lstlisting}
+
+This command will output 6 files that constitute the index. These files that have the prefix mm9 are stored in the $bowtie\_index$ subdirectory. To view if they files have been successfully created type:
+
+\begin{lstlisting}
+ls -l bowtie_index
+\end{lstlisting}
+\end{steps}
+
+\begin{information}
+Now that the genome is indexed we can move on to the actual alignment. The first argument for bowtie is the basename of the index for the genome to be searched; in our case is mm9. We also want to make sure that the output is in SAM format using the `-S' parameter. The last argument is the name of the fastq file. 
+\end{information}
+
+\begin{steps}
+Align the Oct4 reads using Bowtie: 
+
+\begin{lstlisting}
+bowtie bowtie_index/mm9 -S Oct4.fastq > Oct4.sam
+\end{lstlisting}
+
+The above command outputs the alignment in SAM format and stores them in the file Oct4.sam.
+\end{steps}
+
+\begin{note}
+In general before you run \textit{Bowtie}, you have to know which fastq format you have. The available fastq formats in bowtie are:
+
+\begin{tabular}{ll} 
+-{}-phred33-quals & input quals are Phred+33 (default) \\
+-{}-phred64-quals & input quals are Phred+64 (same as -{}-solexa1.3-quals) \\
+-{}-solexa-quals & input quals are from GA Pipeline ver. $<$ 1.3 \\
+-{}-solexa1.3-quals & input quals are from GA Pipeline ver. $\geq$ 1.3 \\
+-{}-integer-quals & qualities are given as space-separated integers (not ASCII)
+\end{tabular}
+
+The fastq files we are working on is of Sanger format (Phred+33), which is the default for \textit{Bowtie}. 
+
+\textit{Bowtie} will take 2-3 minutes to align the file. This is fast compared to other aligners which sacrifice some speed to obtain higher sensitivity.
+\end{note}
+
+\begin{steps}
+Look at SAM format by typing:
+
+\begin{lstlisting}
+head -n 10 Oct4.sam
+\end{lstlisting}
+\end{steps}
+
+\begin{questions}
+Can you distinguish between the header of the SAM format and the actual alignments?
+
+\vspace{2cm}
+
+What kind of information does the header provide you with?
+
+\vspace{2cm}
+
+To which chromosome are the reads mapped? 
+
+\vspace{2cm}
+\end{questions}
+
+\section{Manipulate SAM output}
+
+\begin{note}
+SAM files are rather big and when dealing with a high volume of NGS data, storage space can become an issue. As we have already seen, we can convert SAM to BAM files (their binary equivalent that are not human readable) that occupy much less space.
+\end{note}
+
+\begin{steps}
+Convert SAM to BAM using \textit{samtools} and store the output in the file Oct4.bam. You have to instruct \textit{samtools} that the input is in SAM format (-S), the output should be in BAM format (-b) and that you want the output to be stored in the file specified by the -o option:  
+
+\begin{lstlisting}
+samtools view -bSo Oct4.bam Oct4.sam
+\end{lstlisting}
+\end{steps}
+
+\begin{advanced}
+Compute simple stats of the alignment using \textit{samtools}:
+\end{advanced}
+
+\begin{lstlisting}
+samtools flagstat Oct4.bam
+\end{lstlisting}
+
+\section{Visualize alignments in IGV}
+
+\begin{information}
+\textit{IGV} is a stand-alone genome browser. Please check their website (\url{http://www.broadinstitute.org/igv/}) for all the formats that \textit{IGV} can display. For our visualization purposes we will use the BAM and bigWig formats.
+\end{information}
+
+\begin{note}
+When uploading a BAM file into the genome browser, the browser will look for the index of the BAM file in the same folder where the BAM files is. The index file should have the same name as the BAM file and the suffix $.bai$. Finally, to create the index of a BAM file you need to make sure that the file is sorted according to chromosomal coordinates.
+\end{note}
+
+\begin{steps}
+Sort alignments according to chromosome position and store the result in the file with the prefix $Oct4.sorted$:
+
+\begin{lstlisting}
+samtools sort Oct4.bam Oct4.sorted
+\end{lstlisting}
+
+Index the sorted file.
+
+\begin{lstlisting}
+samtools index Oct4.sorted.bam
+\end{lstlisting}
+
+The indexing will create a file called $Oct4.sorted.bam.bai$. Note that you don¡¯t have to specify the name of the index file when running samtools. 
+\end{steps}
+
+\begin{note}
+Another way to visualize the alignments is to convert the BAM file into a bigWig file. The bigWig format is for display of dense, continuous data and the data will be displayed as a graph. The resulting bigWig files are in an indexed binary format.
+\end{note}
+
+\begin{steps}
+The BAM to bigWig conversion takes place in two steps. Firstly, we convert the BAM file into a bedgraph, called $Oct4.bedgraph$, using the tool \textit{genomeCoverageBed} from \textit{BEDTools}:
+
+\begin{lstlisting}
+genomeCoverageBed -bg -ibam Oct4.sorted.bam \
+-g bowtie_index/mouse.mm9.genome > Oct4.bedgraph
+\end{lstlisting}
+
+Then we convert the bedgraph into a binary graph, called $Oct4.bw$, using the tool \textit{bedGraphToBigWig} from the \textit{UCSC} tools:
+
+\begin{lstlisting}
+bedGraphToBigWig Oct4.bedgraph \
+bowtie_index/mouse.mm9.genome Oct4.bw
+\end{lstlisting}
+\end{steps}
+
+\begin{note}
+Both of the commands above take as input a file called $mouse.mm9.genome$ that is stored under the subdirectory $bowtie\_index$. These genome files are tab-delimited and describe the size of the chromosomes for the organism of interest. When using the UCSC Genome Browser, Ensembl, or Galaxy, you typically indicate which species/genome build you are working. The way you do this for \textit{BEDTools} is to create a ``genome'' file, which simply lists the names of the chromosomes (or scaffolds, etc.) and their size (in basepairs).
+
+\textit{BEDTools} includes pre-defined genome files for human and mouse in the \textbf{/genomes} directory included in the \textit{BEDTools} distribution.
+\end{note}
+
+\begin{steps}
+Now we will load the data into the IGV browser for visualization. In order to launch IGV double click on the IGV 2.1 icon on your Desktop. Ignore any warnings and when it opens you have to load the genome of interest.
+
+On the top left of your screen choose from the drop down menu $Mus musculus$ (mm9). Then in order to load the desire files go to:
+
+\begin{lstlisting}
+File > Load from File
+\end{lstlisting}
+
+On the pop up window navigate to Desktop $>$ ChIP-seq folder and select the file $Oct4.sorted.bam$. 
+
+Repeat these steps in order to load $Oct4.bw$ as well.
+
+Select chr1 from the drop down menu on the top left. Right click on the name of $Oct4.bw$ and choose Maximum under the Windowing Function. Right click again and select Autoscale.
+
+In order to see the aligned reads of the BAM file, you need to zoom in to a specific region. For example, look for gene `Lemd1' in the search box.  
+\end{steps}
+
+\begin{questions}
+What is the main difference between the visualization of BAM and bigWig files?
+
+\vspace{2cm}
+\end{questions}
+
+Using the `+' button on the top right zoom in more to see the details of the alignment.
+
+\begin{questions}
+What do you think the different colors mean?
+
+\vspace{2cm}
+\end{questions}
+
+\section{Practice}
+In the ChIP-seq folder you will find another .fastq file called $gfp.fastq$. Follow the above described analysis for this dataset as well.
+
+
+\section{CONGRATULATIONS!}
+You have made it to the end of the practica. Hope you enjoyed it! Don't hesitate to ask any questions and feel free to contact us any time (email addresses on the front page).
+
+\chapterstyle{workshop}
