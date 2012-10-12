@@ -217,14 +217,29 @@ make MAXKMERLENGTH=41 CATEGORIES=3 color
 \begin{questions}
 What effect would the following compil-time parameters have on velvet:\\
 \texttt{OPENMP=Y}
+\begin{answer}
+Turn on multithreading
+\end{answer}
 
 \texttt{LONGSEQUENCES=Y}
+\begin{answer}
+Assembling reads / contigs longer than 32kb long
+\end{answer}
 
 \texttt{BIGASSEMBLY=Y}
+\begin{answer}
+Using more than 2.2 billion reads
+\end{answer}
 
 \texttt{VBIGASSEMBLY=Y}
+\begin{answer}
+Not documented yet
+\end{answer}
 
 \texttt{SINGLE\_COV\_CAT=Y}
+\begin{answer}
+Merge all coverage statistics into a single variable - save memory
+\end{answer}
 
 \end{questions}
 
@@ -251,8 +266,6 @@ browser to the URL:
 
 \begin{warning}
 We have already downloaded the data files for you.
-\end{lstlisting}
-
 \end{warning}
 \end{notes}
 
@@ -322,16 +335,20 @@ cat Log
 
 \begin{questions}
 What did you find in the folder \texttt{run\_25}?
-
-\vspace{2cm}
+\begin{answer}
+Sequences, Roadmaps, Log
+\end{answer}
 
 Describe the content of the two \texttt{velveth} output files?
-
-\vspace{2cm}
+\begin{answer}
+Sequences: fasta file version of provided reads\\
+Roadmaps: Internal file of velvet - basic information about # reads, k-mer size
+\end{answer}
 
 What does the \texttt{Log} file store for you?
-
-\vspace{2cm}
+\begin{answer}
+Time stamp, Executed commands; velvet version + compiler parameters, results
+\end{answer}
 \end{questions}
 
 \begin{steps}
@@ -350,16 +367,23 @@ ls -l
 
 \begin{questions}
 What extra files do you see in the folder \texttt{run\_25}?
-
-\vspace{2cm}
+\begin{answer}
+PreGraph, Graph, stats.txt, contigs.fa, LastGraph
+\end{answer}
 
 What do you suppose they might represent?
+\begin{answer}
+PreGraph, Graph, LastGraph: Velvet internal graph representation at different stages (see manual for more details about the file format)
 
-\vspace{2cm}
+stats.txt: tab-delimited description of the nodes of the graph incl. coverage information
+
+contigs.fa: assembly output file
+\end{answer}
   
 In the Log file in \texttt{run\_25}, what is the N50?
-
-\vspace{2cm}
+\begin{answer}
+4409 bp
+\end{answer}
 
 \end{questions}
 
@@ -386,12 +410,14 @@ gnx -min 100 -nx 25,50,75 contigs.fa
 
 \begin{questions}
 Does the value of N50 agree with the value stored in the Log file?
-
-\vspace{2cm}
+\begin{answer}
+No
+\end{answer}
 
 If not, why do you think this might be?
-
-\vspace{2cm}
+\begin{answer}
+K-mer N50 vs bp N50; contig length cut-off value, estimated genome length
+\end{answer}
 
 \end{questions}
 
@@ -466,15 +492,30 @@ cp run_25/contigs.fa run_25/contigs.fa.3
 
 \begin{questions}
 What is the N50 with no parameter:
+\begin{answer}
+4,447 bp
+\end{answer}
 
 What is the N50 with \texttt{-cov\_cutoff} 6:
+\begin{answer}
+5,168 bp
+\end{answer}
 
 What is the N50 with \texttt{-exp\_cov} 14:
+\begin{answer}
+4,903 bp
+\end{answer}
 
 What is the N50 with \texttt{-cov\_cutoff} 6 \texttt{-exp\_cov} 14:
+\begin{answer}
+5,417 bp
+\end{answer}
 
 Did you notice a variation in the time velvetg took to run? If so, can you
 explain why that might be?
+\begin{answer}
+Velvet reuses already calculated results (from PreGraph,Graph)
+\end{answer}
 
 \end{questions}
 
@@ -490,9 +531,18 @@ cut-offs, expected parameters and also explore other settings (e.g.
 Make some notes about the parameters you've played with and the results you
 obtained. Please also comment on the \texttt{-max\_coverage} and
 \texttt{-max\_branch\_length} parameters.
+\begin{answer}
+-max_coverage: cut-off value for the upper range (like cov_cutoff for the lower range)
 
+-max_branch_length: length of branch to look for bubble
+
+-unused_reads: write unused reads into file
+
+-amos_file: write amos file for further usage
+
+-read_trkg: tracking read (more memory usage) – automatically on for certain operations
+\end{answer}
 \vspace{4\questionspacing}
-
 \end{questions}
 
 
@@ -554,10 +604,15 @@ hawkeye run_25/velvet_asm.bnk
 \begin{questions}
 Why do you think there was read information only for the second use of Hawkeye
 and tablet?
-  
-You may have noticed velvetg took a little longer with \texttt{-exp\_cov} 14 on.
-Does this make sense?
+\begin{answer}
+Read tracking was needed to provide the position information
+\end{answer}
 
+You may have noticed \texttt{velvetg} took a little longer with \texttt{-exp\_cov 14} on.
+Does this make sense?
+\begin{answer}
+Reads are tracked automatically when using expected coverage parameter
+\end{answer}
 \end{questions}
 
 
@@ -573,7 +628,11 @@ sample SRS004748 \url{http://www.ebi.ac.uk/ena/data/view/SRS004748}.
 
 \begin{questions}
 How did the N50 change by a) reducing the coverage and b) increasing the coverage:
+\begin{answer}
+reducing the coverage: N50 reduced 
 
+increasing the coverage: N50 increased
+\end{answer}
 \vspace{4\questionspacing}
 
 \end{questions}
@@ -642,12 +701,24 @@ velvetg_long run_25
 
 \begin{questions}
 What is the N50?
+\begin{answer}
+24,142 bp
+\end{answer}
 
 How does the N50 compare to the previous single end run (SRS004748)?
+\begin{answer}
+Big difference
+\end{answer}
   
 Does the total length differ from the input sequence length?
+\begin{answer}
+2,817,181 (stats) vs 2,902,619 (input)
+\end{answer}
   
 What happens when you rerun velvet with a different k-mer length?
+\begin{answer}
+K-mer 31: N50: 30,669 bp, total 2,822,878
+\end{answer}
 
 \end{questions}
 
@@ -730,11 +801,21 @@ time velvetg run_25
 \end{steps}
 
 \begin{questions}
-Have you found what \texttt{-fmtAuto} and \texttt{-create\_binary} do? (see help menu)
+What does \texttt{-fmtAuto} and \texttt{-create\_binary} do? (see help menu)
+\begin{answer}
+TODO
+\end{answer}
 
 Comment on the use of memory and CPU for \texttt{velveth} and \texttt{velvetg}?
+\begin{answer}
+\texttt{velveth} uses only one CPU while \texttt{velvetg} uses all possible CPUs for some parts of the calculation.
+\end{answer}
  
 How long did \texttt{velvetg} take?
+\begin{answer}
+My own measurements on an EBI machine are:\\
+\texttt{real    1m8.877s; user    4m15.324s; sys     0m4.716s}
+\end{answer}
 
 \end{questions}
 
@@ -764,8 +845,14 @@ time velvetg run_25 -cov_cutoff 16 -exp_cov 26
 
 \begin{questions}
 Comment on the time required, use of memory and CPU for \texttt{velvetg}?
-  
+\begin{answer}
+Runtime is lower when velvet can reuse previously calculated data. By using \texttt{-exp\_cov}, the memory usage increases.
+\end{answer}
+
 Which insert length does Velvet estimate?
+\begin{answer}
+Paired-end library 1 has length: 228, sample standard deviation: 26
+\end{answer}
 
 \end{questions}
 
@@ -784,6 +871,10 @@ mv run_25/contigs.fa run_25/contigs.fa.3
 
 \begin{questions}
 How fast was this run?
+\begin{answer}
+Down to my own measurements on an EBI machine:\\
+\texttt{real    0m29.792s; user    1m4.372s; sys     0m3.880s}
+\end{answer}
 
 \end{questions}
 
@@ -793,11 +884,23 @@ Take a look into the Log file.
 
 \begin{questions}
 What is the N50 value for the \texttt{velvetg} runs using the switches:\\
+\begin{answer}
+Base run: 19,510 bp
+\end{answer}
 \texttt{-cov\_cutoff 16}
+\begin{answer}
+24,739 bp
+\end{answer}
 
 \texttt{-cov\_cutoff 16 -exp\_cov 26}
+\begin{answer}
+61,793 bp
+\end{answer}
 
 \texttt{-cov\_cutoff 16 -exp\_cov 26 -ins\_length 350}
+\begin{answer}
+n50 of 62,740 bp; max 194,649 bp; total 2,871,093 bp
+\end{answer}
 
 \end{questions}
 
@@ -811,8 +914,15 @@ used (coverage cut-off or insert length) when using the \texttt{auto} option.
 \begin{questions}
 Which coverage values does Velvet choose (hint: look at the output which velvet
 produces while running)?
+\begin{answer}
+Median coverage depth = 26.021837\\
+Removing contigs with coverage < 13.010918 \ldots
+\end{answer}
 
 How does the N50 value change?
+\begin{answer}
+n50 of 68,843 bp; max 194,645 bp; total 2,872,678 bp
+\end{answer}
 \end{questions}
 
 \begin{steps}
@@ -825,10 +935,30 @@ gnx -min 100 -nx 25,50,75 run_25/contigs.fa*
 
 \begin{questions}
 For which runs are there Ns in the \texttt{contigs.fa} file and why? 
-  
-Comment on the number of contigs and total length generated for each run.
-\end{questions}
+\begin{answer}
+contigs.fa.2, contigs.fa.3, contigs.fa\\
+Velvet tries to use the provided (or infers) the insert length and fills ambiguous regions with Ns.
+\end{answer}
 
+Comment on the number of contigs and total length generated for each run.
+\begin{answer}
+\begin{table}[H]
+  %\centering
+    \begin{tabular}{ll}
+    \toprule
+    Filename & \# contigs & Total length & \# Ns \\
+    \midrule
+    Contigs.fa.0 & 631 & 2,830,659 & 0 \\
+    Contigs.fa.1 & 580 & 2,832,670 & 0 \\
+    Contigs.fa.2 & 166 & 2,849,919 & 4,847 \\
+    Contigs.fa.3 & 166 & 2,856,795 & 11,713 \\
+    Contigs.fa & 163 & 2,857,439 & 11,526 \\
+    \bottomrule
+    \end{tabular}%
+  \label{tab:velvetrunresults}%
+\end{table}%
+\end{answer}
+\end{questions}
 
 \begin{bonus}
 Similar to the single-end assembly you created previously, we can output a
@@ -843,13 +973,22 @@ hawkeye run_25/velvet_asm.bnk
 \begin{questions}
 Looking at the scaffold view of a contig, comment on the proportion of happy
 mates to compressed mates.
+\begin{answer}
+TODO
+\end{answer}
 
 What is the mean and standard deviation of the insert size report in the
 Libraries tab of Hawkeye?
+\begin{answer}
+TODO
+\end{answer}
 
 Look at the actual distribution of insert sizes for this library. Can you
 explain where there is a difference between the mean and SD reported in those
 two places?
+\begin{answer}
+TODO
+\end{answer}
 \end{questions}
 
 \begin{steps}
@@ -865,12 +1004,21 @@ hawkeye run_25/velvet_asm.bnk
 \begin{questions}
 Looking at the scaffold view of a contig, comment on the proportion of happy
 mates to compressed mates.
+\begin{answer}
+TODO
+\end{answer}
 
 What is the mean and standard deviation of the insert size report in the
 Libraries tab of Hawkeye?
+\begin{answer}
+TODO
+\end{answer}
 
 Look at the actual distribution of insert sizes for this library. Does the mean
 and SD reported in each of those two places now match?
+\begin{answer}
+TODO
+\end{answer}
 \end{questions}
 \end{bonus}
 
@@ -945,16 +1093,34 @@ Look at tabs for both files:
 
 \begin{questions}
 Are the quality scores the same for both files?
+\begin{answer}
+Overall yes
+\end{answer}
 
 Which value varies?
+\begin{answer}
+Per sequence quality scores
+\end{answer}
 
 Take a look at the Per base sequence quality for both files. Did you note that it is not good for either file?
+\begin{answer}
+The quality score of both files drop very fast, the REV strand faster than the FWD strand
+\end{answer}
 
 At which positions would you cut the reads off?
+\begin{answer}
+Looking at the “Per base quality” and “Per base sequence content, both around position 27
+\end{answer}
 
 Why does the quality deteriorate towards the end of the read?
+\begin{answer}
+Errors more likely for later cycles
+\end{answer}
 
 Does it make sense to trim the start?
+\begin{answer}
+Looking at the “Per base sequence content”, yes - there is a clear signal at the beginning.
+\end{answer}
 \end{questions}
 
 \begin{steps}
@@ -966,6 +1132,9 @@ through the fastqc possibilities.
 
 \begin{questions}
 Which other statistics could you use to support your trimming strategy?
+\begin{answer}
+“Per base sequence content”, “Per base GC content”, “Kmer content”, “Per base sequence quality”
+\end{answer}
 \end{questions}
 
 \begin{figure}[H]
@@ -1008,10 +1177,20 @@ time velvetg run_21trim
 
 \begin{questions}
 What are the times for the two \texttt{velvetg} runs?
+\begin{answer}
+run_25:      \texttt{real    3m16.132s; user    8m18.261s; sys     0m7.317s}\\
+run_25trim:  \texttt{real    1m18.611s; user    3m53.140s; sys     0m4.962s}
+\end{answer}
 
 What N50 scores did you achieve?
+\begin{answer}
+11 (untrimmed), 115 (trimmed)
+\end{answer}
 
 What were the overall effects of trimming?
+\begin{answer}
+Time saving, increased N50, reduced coverage
+\end{answer}
 \end{questions}
 
 \begin{steps}
@@ -1051,16 +1230,35 @@ time velvetg run_21trim -cov_cutoff 5 -exp_cov 9 -ins_length 92
 \end{steps}
 
 \begin{questions}
-How good does it look now? Comment on:\\ 
+How good does it look now?\\
+\begin{answer}
+Still not great
+\end{answer}
+Comment on:\\ 
 Runtime
+\begin{answer}
+Reduced runtime
+\end{answer}
 
 Memory
+\begin{answer}
+Lower memory usage
+\end{answer}
 
 k-mer choice (Can you use kmer 31 for a read of length 30 bp?)
+\begin{answer}
+K-mer has to be lower than the read length and the Kmer coverage should be sufficient to produce results.
+\end{answer}
 
 Does less data mean 'worse' results?
+\begin{answer}
+Not necessarily. If you have lots of data you can savely remove poor data without affecting overall coverage.
+\end{answer}
   
 How would a smaller/larger Kmer size behave?
+\begin{answer}
+TODO
+\end{answer}
 \end{questions}
 
 \begin{steps}
@@ -1068,7 +1266,6 @@ Compare the results, produced during the last exercises, with each other:
 
 \begin{table}[H]
   \centering
-  %\caption{FastQC Basic Statistics table}
     \begin{tabular*}{0.9\textwidth}{l|l|l|l}
     \toprule
     Metric & SRR022852 & SRR023408 & SRR023408.trimmed \\
@@ -1081,16 +1278,41 @@ Compare the results, produced during the last exercises, with each other:
     \hline
     N50 (k-mer used) & & & \\[0.5\questionspacing]
     \bottomrule
-    \end{tabular}%
+    \end{tabular*}%
   \label{tab:comparison}%
 \end{table}%
+\begin{answer}
+\begin{table}[H]
+  \centering
+    \begin{tabular*}{0.9\textwidth}{l|l|l|l}
+    \toprule
+    Metric & SRR022852 & SRR023408 & SRR023408.trimmed \\
+    \midrule
+    Overall Quality (1-5) & 2 & 5 & 4\\[0.5\questionspacing]
+    \hline
+    bp Coverage & 136 x (36 bp;11,374,488) & 95x (37bp; 7761796) & 82x (32bp; 7761796)\\[0.5\questionspacing]
+    \hline
+    k-mer Coverage & 45x & 43x (21); 33x (25) & 30x (21); 20.5x (25)\\[0.5\questionspacing]
+    \hline
+    N50 (k-mer used) & 68,843 (25) & 2,803 (21) & 2,914 (21)\\[0.5\questionspacing]
+    \bottomrule
+    \end{tabular*}%
+  \label{tab:comparison_result}%
+\end{table}%
+\end{answer}
 
 \end{steps}
 
 \begin{questions}
 What would you consider as the 'best' assembly?
+\begin{answer}
+SRR022852
+\end{answer}
 
 If you found a candidate, why do you consider it as 'best' assembly?
+\begin{answer}
+Overall data quality and coverage
+\end{answer}
 \end{questions}
 
 
@@ -1133,10 +1355,19 @@ time velvetg run_25
 
 \begin{questions}
 Take a look at the stats.txt file. Which columns are used compared to short reads and why?
+\begin{answer}
+long\_cov instead of e.g. short1\_cov
+\end{answer}
 
 Which N50 do you get?
+\begin{answer}
+28 (k-mer N50)
+\end{answer}
 
 How long did the velvetg run take?
+\begin{answer}
+\texttt{real    0m36.333s; user    2m33.238s; sys     0m3.893s}
+\end{answer}
 \end{questions}
 
 \begin{steps}
@@ -1182,14 +1413,26 @@ gnx -min 100 -nx 25,50,75 run_25/contigs.fa.*
 \begin{questions}
 What is the N50 and runtime using:
 \texttt{-long\_cov\_cutoff 9}
-  
+\begin{answer}
+\texttt{5,747; real  0m11.457s; user  0m10.855s; sys  0m0.329s}
+\end{answer}
+
 \texttt{-long\_cov\_cutoff 9 -exp\_cov 19}
-  
+\begin{answer}
+\texttt{16,781; real 0m29.830s; user 2m32.530s; sys 0m3.523s}
+\end{answer}
+
 other runs?
-    
+
 Which other parameters could improve the assembly quality for long reads?
+\begin{answer}
+\texttt{-conserveLong}
+\end{answer}
 
 What do you think about assembling 454 reads with Velvet?
+\begin{answer}
+It's working!
+\end{answer}
 \end{questions}
 
 
@@ -1271,12 +1514,24 @@ gnx -min 100 -nx 25,50,75 run_25/contigs.fa.*
 
 \begin{questions}
 What N50 did you get?
+\begin{answer}
+61,644 bp
+\end{answer}
 
 How did the runtime/results compare to one paired-end library runs?
+\begin{answer}
+More memory, longer runtime, (in this case) similar results
+\end{answer}
 
 How many different libraries would you be able to run with this velvet version?
+\begin{answer}
+2 paired-end (or mate-pair) + one single end
+\end{answer}
 
 Would you be able to add a single-end library as well with this velvet version?
+\begin{answer}
+Yes
+\end{answer}
 \end{questions}
 
 \begin{bonus}
@@ -1294,10 +1549,19 @@ Use the fresh compiled Velvet version with the three (two provided and one
 downloaded library) to assemble the genome.
 \begin{questions}
 Does the extra library make any difference?
- 
+\begin{answer}
+TODO
+\end{answer}
+
 How does the overall coverage change?
- 
+\begin{answer}
+TODO
+\end{answer}
+
 Any other comments?
+\begin{answer}
+TODO
+\end{answer}
 \end{questions}
 \footnotetext[1]{Paired insert
 lengths can be found on the NCBI SRA page in the library section (Nominal
@@ -1354,23 +1618,13 @@ time velvetg run_25 -cov_cutoff 7 -long_cov_cutoff 9
 
 \begin{questions}
 What are your conclusions using velvet in an hybrid assembly?
+\begin{answer}
+17 min:  time velvetg run\_25
+\end{answer}
 \end{questions}
 
 \end{warning}
 
-
-
-
 \end{advanced}
-
-
-
-
-
-
-
-
-
-
 
 \chapterstyle{workshop}
