@@ -32,6 +32,8 @@ sourced those tools and data from.
     \url{https://github.com/mh11/gnx-tools}
   \item[FastQC] \hfill\\
     \url{http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/}
+  \item[R] \hfill\\
+    \url{http://www.r-project.org/}
 \end{description}
 
 \subsection{Sources of Data}
@@ -177,11 +179,27 @@ make velveth velvetg MAXKMERLENGTH=41 CATEGORIES=3;
 Discuss with the persons next to you the following questions:
 
 What are the consequences of the parameters you have given make for velvet?
+\begin{answer}
+MAXKMERLENGTH: increase the max kmer length from 31 to 41
+
+CATEGORIES: paired-end data require to be put into separate categories. By
+increasing this parameter from 2 to 3 allows you to process 3 paired / mate-pair
+libraries and unpaired data.
+\end{answer}
 
 Why does Velvet use k-mer 31 and 2 categories as default?
+\begin{answer}
+Possibly a number of reason:\\
+  - odd number to avoid palindromes\\
+  - The first reads were very short (20-40 bp) and there were hardly any paired-end data\\
+     around so there was no need to allow for longer kmer lengths / more categories.\\
+  - For programmers: 31 bp get stored in 64 bits (using 2bit encoding)
+\end{answer}
 
 Should you get better results by using a longer k-mer length?
-
+\begin{answer}
+If you can achieve a good kmer coverage - yes.
+\end{answer}
 \end{questions}
 
 \begin{steps}

@@ -12,7 +12,6 @@
 \linespread{1} % Line spacing
 \usepackage{mdframed}
 \usepackage{parskip}
-\setlength{\parskip}{0.5cm}
 \usepackage{etoolbox}
 \usepackage[nobottomtitles]{titlesec}
 \usepackage[section]{placeins}
@@ -28,6 +27,17 @@
 \usepackage{textcomp}
 \usepackage{float}
 \usepackage{lmodern}        % to ensure most charaters in listings and texttt are copy-paste safe and print nicely
+\usepackage{comment}
+\providetoggle{trainermanual}
+
+
+%\settoggle{trainermanual}{true} % set this to false for the trainee's manual and true for the trainer's manual
+
+
+\newlength{\defparskip}
+\setlength{\defparskip}{0.5cm}
+\specialcomment{answer}{\begingroup\setlength{\parskip}{\defparskip}\bf\color{red}}{\endgroup}
+
 
 %\renewcommand{\thefootnote}{\arabic{footnote}}
 
@@ -158,7 +168,7 @@
   nobreak=true,
    ]{questions*}
 \newmdenv[
-  backgroundcolor=bonusshade,
+%  backgroundcolor=bonusshade,
   leftline=true,
   topline=true,
   rightline=true,
@@ -172,7 +182,7 @@
   nobreak=false,                % these could span multiple pages, so we should let them break across pages
    ]{bonus*}
 \newmdenv[
-  backgroundcolor=advancedshade,
+%  backgroundcolor=advancedshade,
   leftline=true,
   topline=true,
   rightline=true,
@@ -292,9 +302,15 @@
 \end{questions*}%
 }
 
+\definecolor{trainerfrontpageshade}{rgb}{1,0.9,0.9}
+\newcommand{\trainermanualtext}{\huge\textbf{\textcolor{red}{TRAINER'S MANUAL}}}
+
 
 \newcommand{\workshoptitlepage}{
-\thispagestyle{empty}
+\thispagestyle{plain}
+\iftoggle{trainermanual}{
+\pagecolor{trainerfrontpageshade}
+}
 \noindent
 
 \begin{center}
@@ -322,6 +338,9 @@
 \rule{\textwidth}{1pt}
 \end{center}
 \clearpage
+\iftoggle{trainermanual}{
+\pagecolor{white}%
+}
 }
 
 \makechapterstyle{workshop}{%
@@ -346,6 +365,7 @@
   \renewcommand*{\printchaptertitle}[1]{%
     \vskip\onelineskip
     \raggedleft {\chaptitlefont ##1}\par\nobreak}
+  
 }
 \chapterstyle{workshop}
 \makechapterstyle{module}{%
@@ -386,22 +406,39 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 % End User Defined Stuff
 %
 
-\pagestyle{fancy}   % for headers and footers
-
-\fancyhead{} % clear all header fields
-\fancyfoot{} % clear all footer fields
+% set default headers footers
+\pagestyle{fancy}
 \fancyhead[LE,RO]{\slshape \nouppercase{\leftmark}}
 \fancyhead[LO,RE]{\slshape \nouppercase{\rightmark}}
 \fancyfoot[LE,RO]{\thepage}
-%\addtolength{\headheight}{\baselineskip}
 \addtolength{\headsep}{\baselineskip} 
+\iftoggle{trainermanual}{
+\fancyfoot[C]{\trainermanualtext}
+}
 
+% define the plain page style for both trainee and trainer's manual
+\fancypagestyle{plain}{%
+\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt}
+}
+\iftoggle{trainermanual}{
+\fancypagestyle{plain}{%
+\fancyhf{}
+\fancyhead[C]{\trainermanualtext}
+\fancyfoot[C]{\trainermanualtext}
+\renewcommand{\headrulewidth}{0pt}
+}
+}
 
 
 \title{\workshopTitle}
 \date{\workshopDate}
 \author{\workshopAuthor}
 
+
+\nottoggle{trainermanual}{
+\excludecomment{answer}
+}
 
 %\includeonly{workshop_preamble.tex,rna-seq.tex}
 
@@ -411,6 +448,9 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 % Workshop Title Page
 %
 \workshoptitlepage
+%\begin{answer}
+%\pagecolor{white}
+%\end{answer}
 
 %
 % CC-BY
