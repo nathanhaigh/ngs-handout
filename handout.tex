@@ -36,7 +36,7 @@
 
 \newlength{\defparskip}
 \setlength{\defparskip}{0.5cm}
-\specialcomment{answer}{\begingroup\setlength{\parskip}{\defparskip}\bf\color{red}}{\endgroup}
+\specialcomment{answer}{\begingroup\bf\color{red}}{\endgroup}
 
 
 %\renewcommand{\thefootnote}{\arabic{footnote}}
@@ -289,7 +289,7 @@
 
 \newenvironment{questions}{%
 \begin{questions*}%
-\setlength{\parskip}{\questionspacing}%
+\nottoggle{\trainermanual}{\setlength{\parskip}{\questionspacing}}%
 \addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 \addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
@@ -298,7 +298,7 @@
 }}}\ignorespaces%
 }%
 {%
-\vspace{\questionspacing}%
+\nottoggle{\trainermanual}{\vspace{\questionspacing}}%
 \end{questions*}%
 }
 
