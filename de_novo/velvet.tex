@@ -8,7 +8,6 @@
 }
 
 %  Start: Module Title Page
-\chapterstyle{module}
 \chapter{\moduleTitle}
 \newpage
 % End: Module Title Page
@@ -148,14 +147,14 @@ ls --color=always
 \end{lstlisting}
 \end{steps}
 
-\begin{notes}
+\begin{note}
 The switch \texttt{--color}, offensively misspelled in American!, instructs that
 files be coloured according to their type. This is often the default. Here we
 are just being cautious. The \texttt{=always} is included as colouring is
 usually suppressed in scripts. If you run this exercise using the script
 provided, just \texttt{--color} would not be enough. \texttt{--color=always}
 insists on file colouring even from a script.
-\end{notes}
+\end{note}
 
 \begin{steps}
 Have a look of the output the command produces and you will see that
@@ -243,15 +242,15 @@ Merge all coverage statistics into a single variable - save memory
 
 \end{questions}
 
-\begin{notes}
+\begin{note}
 For a further description of velvet compile and runtime parameters please see
 the velvet Manual: \url{https://github.com/dzerbino/velvet/wiki/Manual}
-\end{notes}
+\end{note}
 
 \newpage
 \section{Assembling Single-end Reads}
 
-\begin{notes}
+\begin{note}
 The data you will examine is from Staphylococcus aureus USA300 which has a
 genome of around 3MB . The reads are Illumina and are unpaired, also known as
 single-end library. Even though you have carefully installed velvet in your own
@@ -267,7 +266,7 @@ browser to the URL:
 \begin{warning}
 We have already downloaded the data files for you.
 \end{warning}
-\end{notes}
+\end{note}
 
 \begin{information}
 The following exercise focuses on velvet using single-end reads, how the
@@ -364,6 +363,7 @@ Move back into your results directory to examine the effects of velvetg:
 cd run_22
 ls -l
 \end{lstlisting}
+\end{steps}
 
 \begin{questions}
 What extra files do you see in the folder \texttt{run\_25}?
@@ -453,13 +453,16 @@ weighted.hist(data$short1_cov, data$lgth, breaks=0:50)
 A weighted histogram is a better way of visualizing the coverage information,
 because of noise (lots of very short contigs). You can see an example output
 below:
+\end{steps}
 
+% TODO Can't put figure environment within steps, note etc environment
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet_Rplot001.png}
 \label{fig:SRS004748_coverage_hist}
 \end{figure}
 
+\begin{steps}
 After choosing the expected coverage and the coverage cut-off, you can exit R by
 typing:
 \begin{lstlisting}
@@ -532,15 +535,15 @@ Make some notes about the parameters you've played with and the results you
 obtained. Please also comment on the \texttt{-max\_coverage} and
 \texttt{-max\_branch\_length} parameters.
 \begin{answer}
--max_coverage: cut-off value for the upper range (like cov_cutoff for the lower range)
+-max\_coverage: cut-off value for the upper range (like cov\_cutoff for the lower range)
 
--max_branch_length: length of branch to look for bubble
+-max\_branch\_length: length of branch to look for bubble
 
--unused_reads: write unused reads into file
+-unused\_reads: write unused reads into file
 
--amos_file: write amos file for further usage
+-amos\_file: write amos file for further usage
 
--read_trkg: tracking read (more memory usage) – automatically on for certain operations
+-read\_trkg: tracking read (more memory usage) - automatically on for certain operations
 \end{answer}
 \vspace{4\questionspacing}
 \end{questions}
@@ -641,12 +644,12 @@ increasing the coverage: N50 increased
 
 \subsection{Simple Assembly Simulation}
 
-\begin{notes}
+\begin{note}
 The data for this section is from Staphylococcus aureus MRSA252, a genome
 closely related to the genome that provided the short read data in the earlier
 sections of this exercise. The sequence data this time is the fully assembled
 genome. The genome size is therefore known exactly and is 2,902,619 bp.
-\end{notes}
+\end{note}
 
 \begin{information}
 In this exercise you will process the single whole genome sequence with velveth
@@ -679,7 +682,7 @@ ls -l
 
 \end{steps}
 
-\begin{notes}
+\begin{note}
 Usually Velvet expects relatively short sequence entries and for this reason has
 a read limit of 32,767 bp per sequence entry. As the genome size is 2,902,619 bp
 - longer as the allowed limit and does not fit with the standard settings into
@@ -687,7 +690,7 @@ velvet. But like the maximum k-mer size option, you can tell Velvet during
 compile time, using \texttt{LONGSEQUENCES=Y}, to expect longer input sequences
 than usual. I already prepared the executable which you can use by typing
 \texttt{velveth\_long} and \texttt{velvetg\_long}.
-\end{notes}
+\end{note}
 
 \begin{steps}
 Now, run \texttt{velveth\_long}, using the file you either just downloaded or created a
@@ -1075,7 +1078,7 @@ fastqc &
 \end{steps}
 
 \begin{note}
-The & sets FastQC running as a background job, thus freeing your terminal for
+The \& sets FastQC running as a background job, thus freeing your terminal for
 further commands if required. FastQC emerges as a big blank window.
 \end{note}
 
@@ -1178,8 +1181,8 @@ time velvetg run_21trim
 \begin{questions}
 What are the times for the two \texttt{velvetg} runs?
 \begin{answer}
-run_25:      \texttt{real    3m16.132s; user    8m18.261s; sys     0m7.317s}\\
-run_25trim:  \texttt{real    1m18.611s; user    3m53.140s; sys     0m4.962s}
+run\_25:      \texttt{real    3m16.132s; user    8m18.261s; sys     0m7.317s}\\
+run\_25trim:  \texttt{real    1m18.611s; user    3m53.140s; sys     0m4.962s}
 \end{answer}
 
 What N50 scores did you achieve?
@@ -1626,5 +1629,3 @@ What are your conclusions using velvet in an hybrid assembly?
 \end{warning}
 
 \end{advanced}
-
-\chapterstyle{workshop}

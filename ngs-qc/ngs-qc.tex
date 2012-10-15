@@ -7,19 +7,15 @@
 }
 
 %  Start: Module Title Page
-\chapterstyle{module}
 \chapter{\moduleTitle}
 \newpage
 % End: Module Title Page
 
-\section{Key Learning Outcomes}
-
-TODO
+% \section{Key Learning Outcomes}
+% 
+% TODO
 
 \section{Resources You'll be Using}
-Although we have provided you with an environment which contains all the tools
-and data you will be using in this module, you may like to know where we have
-sourced those tools and data from.
  
 \subsection{Tools Used}
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
@@ -29,12 +25,12 @@ sourced those tools and data from.
   	\url{http://hannonlab.cshl.edu/fastx_toolkit/}
   \item[picard]\hfill\\
   	\url{http://picard.sourceforge.net/}
-  \item[fastqmcf]\hfill\\
+  \item[fastq-mcf]\hfill\\
   	\url{http://code.google.com/p/ea-utils/wiki/FastqMcf}
 \end{description}
 
-\subsection{Sources of Data}
-N/A
+% \subsection{Sources of Data}
+% TODO
 % \url{http://www.ebi.ac.uk/ena/data/view/ERR022484}\\
 % \url{http://www.ebi.ac.uk/ena/data/view/ERR022485}
 
@@ -47,7 +43,7 @@ Going on a blind date with your read set? For a better understanding of the
 consequences please check the data quality!
 \end{note}
 
-For the purpose of this tutorial we are focusing only on the Illumina sequencing
+For the purpose of this tutorial we are focusing only on Illumina sequencing
 which uses 'sequence by synthesis' technology in a highly parallel fashion.
 Although Illumina high throughput  sequencing provides highly accurate sequence
 data, several sequence artefacts, including base calling errors and small
@@ -59,32 +55,32 @@ rising in frequency at the 3' ends of reads.
 One way to investigate sequence data quality is to visualize the quality scores
 and other metrics in a compact manner to get an idea about the quality of a read
 data set. Read data sets can be improved by post processing in different ways
-like trimming off low quality bases, cleaning up the sequencing adapters if any,
-removing PCR duplicates if required. We can also look at other statistics such
+like trimming off low quality bases, cleaning up any sequencing adapters and
+removing PCR duplicates. We can also look at other statistics such
 as, sequence length distribution, base composition, sequence complexity,
 presence of ambiguous bases etc. to assess the overall quality of the data set.
-Highly redundant coverage (>15X) of the genome can be used to correct sequencing
+Highly redundant coverage ($>$15X) of the genome can be used to correct sequencing
 errors in the reads before assembly and errors. Various k-mer based error
 correction methods exist but are beyond the scope of this tutorial.
 
 \section{Prepare the Environment}
 
-\being{information}
-To investigate sequence data quality we would demonstrate tools called FastQC
-and fastx-toolkit. FastQC will process and present the reports in visual manner.
-Based on the results the sequence data can be processed using the fastx-toolkit.
+\begin{information}
+To investigate sequence data quality we will demonstrate tools called FastQC
+and fastx-toolkit. FastQC will process and present the reports in a visual manner.
+Based on the results, the sequence data can be processed using the fastx-toolkit.
 We will use one data set in this practical, which can be found in the QC
 directory on your desktop.
 \end{information}
 
 \begin{steps}
-Open the Terminal and go to the right directory where the data are stored:
+Open the Terminal and go to the directory where the data are stored:
 \begin{lstlisting}
 cd ~/QC/
 pwd
 \end{lstlisting}
 
-At any time help can be displayed for 'fastqc' program with the following command:
+At any time, help can be displayed for 'fastqc' using the following command:
 \begin{lstlisting}
 fastqc -h
 \end{lstlisting}
@@ -95,9 +91,8 @@ fastqc -h
 \section{Quality Visualisation}
 
 \begin{information}
-We have file for a good quality and bad quality statistics. On executing the
-FastQC commands above, it will generate a zipped and unzipped folder for each
-input file.
+We have a file for a good quality and bad quality statistics. FastQC generates
+results in the form of a zipped and unzipped directory for each input file.
 \end{information}
 
 \begin{steps}
@@ -107,8 +102,8 @@ fastqc -f fastq bad_example.fastq
 fastqc -f fastq good_example.fastq
 \end{lstlisting}
 
-View the FastQC report files 'fastqc\_report.html', using a web browser such as
-firefox, to see examples of a bad quality data.
+View the FastQC report file of the dab data using a web browser such as
+firefox.
 
 \begin{lstlisting}
 firefox bad_example_fastqc/fastqc_report.html &
@@ -143,7 +138,7 @@ for different quality statistics. E.g.:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{ngs-qc/bad_example.png}
-\caption{per base sequence quality plot: visual output from FastQC. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
+\caption{Per base sequence quality plot for \texttt{bad\_example.fastq}. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
 \label{fig:bad_example_plot}
 \end{figure}
 
@@ -151,12 +146,12 @@ for different quality statistics. E.g.:
 A quality score (or Q-score) expresses an error probability.  In particular, it
 serves as a convenient and compact way to communicate very small error
 probabilities.
-Given an assertion, A, the probability that A is not true, P(~A), is expressed
-by a quality score,Q(A), according to the relationship:
-
-Q(A) =-10 log10(P($\sim$A))
-
-where P($\sim$A) is the estimated probability of an assertion A being wrong.
+Given an assertion, A, the probability that A is not true, $P(~ A)$, is expressed
+by a quality score, $Q(A)$, according to the relationship:
+\\\\
+$Q(A) =-10 log10(P(\sim A))$
+\\\\
+Where $P(~ A)$ is the estimated probability of an assertion A being wrong.
 The relationship between the quality score and error probability is demonstrated
 with the following table:
 
@@ -187,7 +182,7 @@ Does the quality score value vary throughout the read length?
 
 What is the quality score range you see?
 
-At around which position do the score start falling below Q20? 
+At around which position do the scores start falling below Q20? 
 
 Why does the quality deteriorate at the end of the read?
 
@@ -211,27 +206,25 @@ requires that reads be aligned to each other (for genome assembly) or to a
 reference genome (for detection of mutations). Sequence reads containing errors
 may lead to ambiguous paths in the assembly or improper gaps. In variant
 analysis projects sequence reads are aligned against the reference genome. The
-errors in the reads may lead to more number of mismatches than expected due to
-mutations alone. But if these errors can be removed or corrected, the reads
-alignment and hence the variant detection will improve. The assemblies will also
+errors in the reads may lead to more mismatches than expected from
+mutations alone. But if these errors can be removed or corrected, the read
+alignments and hence the variant detection will improve. The assemblies will also
 improve after pre-processing the reads with errors.
 \end{note}
 
 \section{Read Trimming}
-The read trimming can be done in a variety of different ways. Choose a method
-which best suits your data. Here we are giving examples of fixed-  base trimming
-and quality score-based trimming.
+Read trimming can be done in a variety of different ways. Choose a method
+which best suits your data. Here we are giving examples of fixed-length trimming
+and quality-based trimming.
 
 \subsection{Fixed Length Trimming}
-Low quality read ends can be trimmed using a fix length timmer. We will use the
-fastx\_trimmer from the fastx-toolkit. usage message to find out various options
-you can use with this tool. Type \fontt{fastx_trimmer -h} at anytime to display help.
+Low quality read ends can be trimmed using a fixed-length timmer. We will use the
+\texttt{fastx\_trimmer} from the fastx-toolkit. Usage message to find out various options
+you can use with this tool. Type \fonttt{fastx\_trimmer -h} at anytime to display help.
 
 \begin{steps}
-In order to do fixed trimming with the fastq file \texttt{bad\_example.fastq}
-use the following command. The output will be stored in
-\texttt{bad\_example\_trimmed01.fastq}.
-
+We will no do fixed-length trimming of the \texttt{bad\_example.fastq} file
+using the following command.
 \begin{lstlisting}
 cd ~/QC
 fastx_trimmer -h
@@ -264,14 +257,14 @@ The output should look like:
   \caption{FastQC Basic Statistics table}
     \begin{tabular}{ll}
     \toprule
-    Filename & bad\_example\_trimmed01.fastq \\
+    Filename & bad\_example\_trimmed01.fastq\\
     \midrule
-    File type & Conventional base calls \\
-    Encoding & Sanger / Illumina 1.9 \\
-    Total Sequences & 40000 \\
-    Filtered Sequences & 0 \\
-    Sequence length & 80 \\
-    \%GC  & 48 \\
+    File type & Conventional base calls\\
+    Encoding & Sanger / Illumina 1.9\\
+    Total Sequences & 40000\\
+    Filtered Sequences & 0\\
+    Sequence length & 80\\
+    \%GC & 48\\
     \bottomrule
     \end{tabular}%
   \label{tab:badexampletrimmed}%
@@ -280,15 +273,23 @@ The output should look like:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{ngs-qc/bad_example_trimmed_to_80bp.png}
-\caption{per base sequence quality plot: visual output from FastQC. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
+\caption{Per base sequence quality plot for the fixed-length trimmed \texttt{bad_example.fastq} reads. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
 \label{fig:bad_example_trimmed_plot}
 \end{figure}
 
 \end{steps}
 
+\begin{questions}
+What values would you use for \texttt{-f} if you wanted to trim off 10 bases at
+the 5' end of the reads?
+\begin{answer}
+\texttt{-f 11}
+\end{answer}
+\end{questions}
+
 \subsection{Quality Based Trimming}
-Base call quality scores can also be used for trimming sequence ends. A quality
-score threshold and minimum read length after trimming can be used to remove low
+Base call quality scores can also be used to dynamically determine the trim points for each read. A quality
+score threshold and minimum read length following trimming can be used to remove low
 quality data.
 
 \begin{steps}
@@ -301,8 +302,7 @@ fastq_quality_trimmer -Q 33 -t 20 -l 50 -i bad_example.fastq -o bad_example_qual
 \end{steps}
 
 \begin{steps}
-Run fastqc on the trimmed file and visualise the quality scores of the trimmed
-file.
+Run FastQC on the quality trimmed file and visualise the quality scores.
 
 \begin{lstlisting}
 fastqc -f fastq bad_example_quality_trimmed.fastq
@@ -316,14 +316,14 @@ The output should look like:
   \caption{FastQC Basic Statistics table}
     \begin{tabular}{ll}
     \toprule
-    Filename & bad\_example\_quality\_trimmed.fastq \\
+    Filename & bad\_example\_quality\_trimmed.fastq\\
     \midrule
-    File type & Conventional base calls \\
-    Encoding & Sanger / Illumina 1.9 \\
-    Total Sequences & 38976 \\
-    Filtered Sequences & 0 \\
-    Sequence length & 50-100 \\
-    \%GC  & 48 \\
+    File type & Conventional base calls\\
+    Encoding & Sanger / Illumina 1.9\\
+    Total Sequences & 38976\\
+    Filtered Sequences & 0\\
+    Sequence length & 50-100\\
+    \%GC & 48\\
     \bottomrule
     \end{tabular}%
   \label{tab:badexamplequalitytrimmed}%
@@ -332,7 +332,7 @@ The output should look like:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{ngs-qc/bad_example_quality_trimmed.png}
-\caption{per base sequence quality plot: visual output from FastQC. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
+\caption{Per base sequence quality plot for the quality-trimmed \texttt{bad_example.fastq} reads. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
 \label{fig:bad_example_quality_trimmed_plot}
 \end{figure}
 
@@ -340,23 +340,45 @@ The output should look like:
 
 \begin{questions}
 How did the quality score range change with two types of trimming?
+\begin{answer}
+Some poor quality bases (Q $<$20) are still present at the 3' end of the
+fixed-length trimmed reads. It also removes bases that are good quality.
+
+Quality-based trimming retains the 3' ends of reads which have good quality
+scores.
+\end{answer}
 
 Did the number of total reads change after two types of trimming?
+\begin{answer}
+Quality trimming discarded $>$1000 reads. However, We retain a lot of maximal
+length reads which have good quality all the way to the ends.
+\end{answer}
 
 What reads lengths were obtained after quality based trimming?
+\begin{answer}
+50-100
+
+Reads $<$50 bp, following quality trimming, were discarded.
+\end{answer}
 
 Did you observe adapter sequences in the data?
+\begin{answer}
+%TODO
+\end{answer}
 
 \end{questions}
 
 \begin{advanced}
 \subsection{Adapter Clipping}
 Sometime sequence reads may end up getting the leftover of adapters and primers
-used for the sequencing process. It's a good practice to screen your data for
+used in the sequencing process. It's good practice to screen your data for
 these possible contaminations for more sensitive alignment and assembly based
-analysis. This is usually a necessary steps in sequencing projects where read
-lengths are longer than the molecule sequenced, for example when sequencing
-miRNAs.
+analysis.
+
+\begin{note}
+This is particularly important when read lengths can be longer than the
+molecules being sequenced. For example when sequencing miRNAs.
+\end{note}
 
 Various QC tools are available to screen and/or clip these adapter/primer
 sequences from your data. (e.g. FastQC, fastx, cutadapt).
@@ -374,27 +396,25 @@ fastx_clipper -v -Q 33 -l 20 -M 15 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG -i bad_ex
 
 \begin{note}
 An alternative tool, not installed on this system, for adapter clipping is
-\texttt{fastq-mcf}. A list of adapters is provided as a list in a text file. For more
-information, see source URL on the front page of this tutorial.
+\texttt{fastq-mcf}. A list of adapters is provided in a text file. For more
+information, see \url{http://code.google.com/p/ea-utils/wiki/FastqMcf}.
 \end{note}
-\end{advanced}
 
-\begin{advanced}
 \subsection{Removing Duplicates}
 Duplicate reads are the ones having the same start and end coordinates. This
 may be the result of technical duplication (too many PCR cycles), or
 over-sequencing (very high fold coverage). It is very important to put the
 duplication level in context of your experiment. For example, duplication level
-in targeted or re-sequencing projects may mean different than in RNA-seq
+in targeted or re-sequencing projects may mean something different in RNA-seq
 experiments. In RNA-seq experiments oversequencing is usually necessary when
-detecting the low expressed transcripts.
+detecting low abundance transcripts.
 
 \begin{information}
 The duplication level computed by FastQC is based on sequence identity at the
 end of reads. Another tool, Picard, determines duplicates based on identical
-start and end positions.
+start and end positions in SAM/BAM alignment files.
 
-\textbf{Due to time limitation we are not going to cover Picard. However, we
+\textbf{We will not cover Picard but
 provide the following for your information.}
 
 Picard is a suite of tools for performing many common tasks with SAM/BAM format
@@ -407,18 +427,19 @@ various command-line tools available:
 \begin{information}
 Picard 1.69 is installed on this system in \texttt{/usr/share/java/picard-1.69/}
 
-One of the Picard tool (MarkDuplicates) can be used to analyse and remove
+One of the Picard tools (MarkDuplicates) can be used to analyse and remove
 duplicates from the raw sequence data. The input for Picard is a sorted
-alignment file in .bam format. Short read aligners such as, bowtie, BWA, tophat
-etc. can be used to align fastq files against a reference genome to generate
+alignment file in BAM format. Short read aligners such as, bowtie, BWA and tophat
+can be used to align FASTQ files against a reference genome to generate
 SAM/BAM alignment format.
 \end{information}
 
 \begin{steps}
-However interested users can use the following general command to run the
-MarkDuplicates tool at their leisure and only need to provide a BAM file for the
-INPUT argument:
+Interested users can use the following general command to run the
+MarkDuplicates tool at their leisure and only need to provide a BAM file for
+INPUT:
 
+%TODO format strings like <alignment_file.bam> inside listings so they stand out
 \begin{lstlisting}
 cd ~/QC
 java -jar /usr/share/java/picard/MarkDuplicates.jar INPUT=<alignment_file.bam> VALIDATION_STRINGENCY=LENIENT OUTPUT=alignment_file.dup METRICS_FILE=alignment_file.matric ASSUME_SORTED=true REMOVE_DUPLICATES=true
@@ -427,5 +448,3 @@ java -jar /usr/share/java/picard/MarkDuplicates.jar INPUT=<alignment_file.bam> V
 \end{steps}
 
 \end{advanced}
-
-\chapterstyle{workshop}
