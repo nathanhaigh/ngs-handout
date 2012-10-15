@@ -1,5 +1,5 @@
 % Define the top matter
-\renewcommand{\moduleTitle}{Sequence Alignment}
+\renewcommand{\moduleTitle}{Read Alignment}
 \renewcommand{\moduleAuthors}{%
   Myrto Kostadima \mailto{kostadim@ebi.ac.uk}
 } \renewcommand{\moduleContributions}{%
@@ -10,6 +10,15 @@
 \chapter{\moduleTitle}
 \newpage
 % End: Module Title Page
+
+\section{Key Learning Outcomes}
+
+After completing this practical the trainee should be able to:
+%TODO
+\begin{itemize}
+  \item TODO 1\\
+  \item TODO 2\\
+\end{itemize}
 
 \section{Resources You'll be Using}
  
@@ -128,17 +137,13 @@ file \texttt{Oct4.sam}.
 In general before you run \emph{Bowtie}, you have to know which encoding your FASTQ files
 have. The available FASTQ encodings for bowtie are:
 
-% TODO Standardise the way we style summeries of software parameters/options
-\begin{table}[H]
-\centering
-\begin{tabular}{>{\raggedleft}p{4cm} p{10.5cm}}
-\texttt{--phred33-quals} & Input quals are Phred+33 (default) \\
-\texttt{--phred64-quals} & Input quals are Phred+64 (same as \texttt{--solexa1.3-quals}) \\
-\texttt{--solexa-quals} & Input quals are from GA Pipeline ver. $<$ 1.3 \\
-\texttt{--solexa1.3-quals} & Input quals are from GA Pipeline ver. $\geq$ 1.3 \\
-\texttt{--integer-quals} & Qualities are given as space-separated integers (not ASCII)
-\end{tabular}
-\end{table}
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+ \item[--phred33-quals] Input quals are Phred+33 (default).
+ \item[--phred64-quals] Input quals are Phred+64 (same as \texttt{--solexa1.3-quals}).
+ \item[--solexa-quals] Input quals are from GA Pipeline ver. $<$ 1.3.
+ \item[--solexa1.3-quals] Input quals are from GA Pipeline ver. $\geq$ 1.3.
+ \item[--integer-quals] Qualities are given as space-separated integers (not ASCII).
+\end{description}
 
 The FASTQ files we are working with are Sanger encoded (Phred+33), which is the
 default for \emph{Bowtie}.

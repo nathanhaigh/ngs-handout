@@ -14,7 +14,12 @@
 
 \section{Key Learning Outcomes}
 
-TODO
+After completing this practical the trainee should be able to:
+%TODO
+\begin{itemize}
+  \item TODO 1\\
+  \item TODO 2\\
+\end{itemize}
 
 \section{Resources You'll be Using}
 Although we have provided you with an environment which contains all the tools
@@ -175,8 +180,7 @@ make velveth velvetg MAXKMERLENGTH=41 CATEGORIES=3;
 \end{steps}
 
 \begin{questions}
-Discuss with the persons next to you the following questions:
-
+Discuss with the persons next to you the following questions:\\
 What are the consequences of the parameters you have given make for velvet?
 \begin{answer}
 MAXKMERLENGTH: increase the max kmer length from 31 to 41
@@ -293,12 +297,10 @@ ls -l
 \begin{information}
 You are ready to process your data with velvet, which is a compressed fastq file.
 Velvet has two main components:
-\begin{description}[style=multiline,labelindent=1cm,align=left,leftmargin=2cm]
-  \item[velveth] \hfill\\
-    Used to construct, from raw read data, a dataset organised in the
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+  \item[velveth] Used to construct, from raw read data, a dataset organised in the
     fashion expected by the   second component, velvetg.
-  \item[velvetg] \hfill\\
-    The core of velvet where the de Bruijn graph assembly is built and
+  \item[velvetg] The core of velvet where the de Bruijn graph assembly is built and
     manipulated.
 \end{description}
 
@@ -384,7 +386,6 @@ In the Log file in \texttt{run\_25}, what is the N50?
 \begin{answer}
 4409 bp
 \end{answer}
-
 \end{questions}
 
 \begin{information}
@@ -632,12 +633,11 @@ sample SRS004748 \url{http://www.ebi.ac.uk/ena/data/view/SRS004748}.
 \begin{questions}
 How did the N50 change by a) reducing the coverage and b) increasing the coverage:
 \begin{answer}
-reducing the coverage: N50 reduced 
+Reducing the coverage: N50 reduced 
 
-increasing the coverage: N50 increased
+Increasing the coverage: N50 increased
 \end{answer}
 \vspace{4\questionspacing}
-
 \end{questions}
 
 \end{bonus}
@@ -1078,7 +1078,7 @@ fastqc &
 \end{steps}
 
 \begin{note}
-The \& sets FastQC running as a background job, thus freeing your terminal for
+The \texttt{\&} sets FastQC running as a background job, thus freeing your terminal for
 further commands if required. FastQC emerges as a big blank window.
 \end{note}
 
@@ -1414,7 +1414,7 @@ gnx -min 100 -nx 25,50,75 run_25/contigs.fa.*
 \end{steps}
 
 \begin{questions}
-What is the N50 and runtime using:
+What is the N50 and runtime using:\\
 \texttt{-long\_cov\_cutoff 9}
 \begin{answer}
 \texttt{5,747; real  0m11.457s; user  0m10.855s; sys  0m0.329s}
