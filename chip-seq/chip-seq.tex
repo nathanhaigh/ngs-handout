@@ -8,15 +8,11 @@
 }
 
 %  Start: Module Title Page
-\chapterstyle{module}
 \chapter{\moduleTitle}
 \newpage
 % End: Module Title Page
 
 \section{Resources You'll be Using}
-Although we have provided you with an environment which contains all the tools
-and data you will be using in this module, you may like to know where we have
-sourced those tools and data from.
  
 \subsection{Tools Used}
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
@@ -47,39 +43,61 @@ sourced those tools and data from.
 \section{Introduction}
 
 \begin{information}
-The goal of this hands-on session is to perform some basic tasks in the analysis of ChIP-seq data. In fact, you already performed the first step, alignment of the reads to the genome, in the previous session. We start from the aligned reads and we will find immuno-enriched areas using the peak caller MACS. We will visualize the identified regions in a genome browser and perform functional annotation and motif analysis on the predicted binding regions.
+The goal of this hands-on session is to perform some basic tasks in the analysis
+of ChIP-seq data. In fact, you already performed the first step, alignment of
+the reads to the genome, in the previous session. We start from the aligned
+reads and we will find immuno-enriched areas using the peak caller MACS. We will
+visualize the identified regions in a genome browser and perform functional
+annotation and motif analysis on the predicted binding regions.
 \end{information}
 
 \section{Prepare the Environment}
 
 \begin{information}
-The material for this practical can be found in the ChIP-seq directory on your desktop. This directory also contains an electronic version of this document, which can be useful to copy and paste commands. Please make sure that this directory also contains the SAM/BAM files you produced during the alignment practical. 
+The material for this practical can be found in the ChIP-seq directory on your
+desktop. This directory also contains an electronic version of this document,
+which can be useful to copy and paste commands. Please make sure that this
+directory also contains the SAM/BAM files you produced during the alignment
+practical.
 \end{information}
 
 \begin{steps}
-If you didn't have time to align the control file called `gfp.fastq' during the alignment practical, please do it now. 
+If you didn't have time to align the control file called \texttt{gfp.fastq} during the
+alignment practical, please do it now.
 
-Follow the same steps as for the Oct4.fastq file.
+Follow the same steps as for the \texttt{Oct4.fastq} file.
 
-Of course, the same bowtie index can be used, so the index building step can be skipped.
+\begin{information}
+Of course, the same bowtie index can be used, so the index building step can be
+skipped.
+\end{information}
 \end{steps}
 
 \begin{note}
-In ChIP-seq analysis (unlike in other applications such as RNA-seq) we often would like to exclude all reads that map to more than one location in the genome, to avoid false positives. When using Bowtie, this can be done using the `-m 1' flag, which tells it to report only unique matches (See \textbf{bowtie -{}-help} for more details). 
+In ChIP-seq analysis (unlike in other applications such as RNA-seq) we often
+would like to exclude all reads that map to more than one location in the
+genome, to avoid false positives. When using Bowtie, this can be done using the
+\texttt{-m 1} option, which tells it to report only unique matches (See
+\texttt{bowtie --help} for more details).
 \end{note}
 
 
 \begin{steps}
-Open the Terminal and go to the ChIP-seq directory:
+Open the Terminal and go to the \texttt{ChIP-seq} directory:
 \begin{lstlisting}
-cd ChIP-seq
+cd ~/ChIP-seq
 \end{lstlisting}
 \end{steps}
 
 \section{Finding enriched areas using MACS}
 
 \begin{information}
-MACS stands for Model based analysis of ChIP-seq. It was designed for identifying transcription factor binding sites. MACS captures the influence of genome complexity to evaluate the significance of enriched ChIP regions, and improves the spatial resolution of binding sites through combining the information of both sequencing tag position and orientation. MACS can be easily used for ChIP-Seq data alone, or with a control sample to increase specificity.
+MACS stands for Model based analysis of ChIP-seq. It was designed for
+identifying transcription factor binding sites. MACS captures the influence of
+genome complexity to evaluate the significance of enriched ChIP regions, and
+improves the spatial resolution of binding sites through combining the
+information of both sequencing tag position and orientation. MACS can be easily
+used for ChIP-Seq data alone, or with a control sample to increase specificity.
 \end{information}
 
 \begin{steps}
@@ -91,29 +109,25 @@ macs --help
 \end{steps}
 
 \begin{information}
-The input for MACS can be in ELAND, BED, SAM, BAM or BOWTIE formats (you just have to set the \textbf{-{}-format} flag). 
+The input for MACS can be in ELAND, BED, SAM, BAM or BOWTIE formats (you just
+have to set the \texttt{--format} option).
 
 Options that you will have to use include: 
 
-\begin{tabular}{|p{2cm}|p{12.5cm}|}
-\hline
--t & to indicate the input ChIP file \\
-\hline
--c & to indicate the name of the control file \\
-\hline
--{}-format & to change the file format. The default format is bed. \\
-\hline
--{}-name & to set the name of the output files \\
-\hline
--{}-gsize & This is the mappable genome size. With the read length we have, $70\%$ of the genome is a fair estimation. Since in this analysis we include only reads from chromosome 1, we will use as gsize $70\%$ of the length of chromosome 1 (197 Mb). \\ 
-\hline
--{}-tsize & to set the read length (look at the fastq files to check the length) \\
-\hline
--{}-wig & to generate signal wig files for viewing in a genome browser. Since this process is time consuming, it is recommended to run MACS first with this flag off, and once you decide on the values of the parameters, run MACS again with this flag on. \\
-\hline
--{}-diag & to generate a saturation table, which gives an indication whether the sequenced reads give a reliable representation of the possible peaks. \\
-\hline
+
+\begin{table}[H]
+\centering
+\begin{tabular}{>{\raggedleft}p{4cm} p{10.5cm}}
+\texttt{-t} & to indicate the input ChIP file \\
+\texttt{-c} & to indicate the name of the control file \\
+\texttt{--format} & to change the file format. The default format is bed. \\
+\texttt{--name} & to set the name of the output files \\
+\texttt{--gsize} & This is the mappable genome size. With the read length we have, $70\%$ of the genome is a fair estimation. Since in this analysis we include only reads from chromosome 1, we will use as gsize $70\%$ of the length of chromosome 1 (197 Mb). \\ 
+\texttt{--tsize} & to set the read length (look at the fastq files to check the length) \\
+\texttt{--wig} & to generate signal wig files for viewing in a genome browser. Since this process is time consuming, it is recommended to run MACS first with this flag off, and once you decide on the values of the parameters, run MACS again with this flag on. \\
+\texttt{--diag} & to generate a saturation table, which gives an indication whether the sequenced reads give a reliable representation of the possible peaks. \\
 \end{tabular}
+\end{table}
 \end{information}
 
 \begin{steps}
@@ -125,85 +139,127 @@ macs -t [Oct4 aligned bam file] -c [gfp aligned bam file]
 		--tsize=26 --diag --wig 
 \end{lstlisting}
 
-Look at the output saturation table (Oct4 diag.xls). To open Excel files, right-click on them, choose Open with and select OpenOffice. Do think that more sequencing is necessary? 
+Look at the output saturation table (\texttt{Oct4 diag.xls}). To open Excel
+files, right-click on them, choose Open with and select OpenOffice. Do you think
+that more sequencing is necessary?
 
-Open the Excel peak file and view the peak details. Note that the number of tags (column 6) refers to the number of reads in the whole peak region and not the summit height. 
+Open the Excel peak file and view the peak details. Note that the number of tags
+(column 6) refers to the number of reads in the whole peak region and not the
+summit height.
 
 \end{steps}
 
 \section{Viewing results with the Ensembl genome browser}
 
 \begin{information}
-It is often instructive to look at your data in a genome browser. Before, we used IGV, a stand-alone browser, which has the advantage of being installed locally and providing fast access. Web-based genome browsers, like Ensembl or the UCSC browser, are slower, but provide more functionality. They do not only allow for more polished and flexible visualisation, but also provide easy access to a wealth of annotations and external data sources. This makes it straightforward to relate your data with information about repeat regions, known genes, epigenetic features or areas of cross-species conservation, to name just a few. As such, they are useful tools for exploratory analysis. 
+It is often instructive to look at your data in a genome browser. Before, we
+used IGV, a stand-alone browser, which has the advantage of being installed
+locally and providing fast access. Web-based genome browsers, like Ensembl or
+the UCSC browser, are slower, but provide more functionality. They do not only
+allow for more polished and flexible visualisation, but also provide easy access
+to a wealth of annotations and external data sources. This makes it
+straightforward to relate your data with information about repeat regions, known
+genes, epigenetic features or areas of cross-species conservation, to name just
+a few. As such, they are useful tools for exploratory analysis.
 
-They will allow you to get a `feel' for the data, as well as detecting abnormalities and problems. Also, exploring the data in such a way may give you ideas for further analyses.
+They will allow you to get a `feel' for the data, as well as detecting
+abnormalities and problems. Also, exploring the data in such a way may give you
+ideas for further analyses.
 \end{information}
 
 \begin{steps}
-Launch a web bowser and go to the Ensembl website at \url{http://www.ensembl.org/index.html}
+Launch a web bowser and go to the Ensembl website at
+\url{http://www.ensembl.org/index.html}
 
-Choose the genome of interest (that is, mouse) on the left side of the page. 
+Choose the genome of interest (that is, mouse) on the left side of the page.
 
-Click on the \textbf{Manage your data} link on the left, then choose \textbf{Attach remote file}.
+Click on the \textbf{Manage your data} link on the left, then choose
+\textbf{Attach remote file}.
 
 \end{steps}
 
 \begin{note}
-One option is to browse to the wig file MACS generated (usually under MACS wiggle/treat) and to upload it to Ensembl (option \textbf{Upload data}). However, since wig files describing sequencing signal are very big, they would take a long time to upload, and the browsing process will be very slow.
+One option is to browse to the wig file MACS generated (usually under MACS
+wiggle/treat) and to upload it to Ensembl (option \textbf{Upload data}).
+However, since wig files describing sequencing signal are very big, they would
+take a long time to upload, and the browsing process will be very slow.
 
-As a better alternative, wig files can be converted to an indexed binary format and put into a web accessible server (http, https, or ftp) instead on the Ensembl server. This makes all the browsing process much faster. Detailed instructions for generating a bigWig from a wig type file can be found at:
+As a better alternative, wig files can be converted to an indexed binary format
+and put into a web accessible server (http, https, or ftp) instead on the
+Ensembl server. This makes all the browsing process much faster. Detailed
+instructions for generating a bigWig from a wig type file can be found at:
 
 \url{http://genome.ucsc.edu/goldenPath/help/bigWig.html}.
 
 \end{note}
 
 \begin{steps}
-We have generated bigWig files in advance for you to upload to the Ensembl browser. They are at the following URL: \url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/Oct4.bw}. To visualise the data:
+We have generated bigWig files in advance for you to upload to the Ensembl
+browser. They are at the following URL:
+\url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/Oct4.bw}. To visualise the
+data:
 \begin{itemize}
 	\item Paste the location above in the field File URL. 
 	\item Choose data format Bigwig. 
 	\item Choose some informative name and in the next window choose the colour of your preference. 
 	\item Click \textbf{Save} and close the window to return to the genome browser. 
 \end{itemize}
-Repeat the process for the control sample, located at \url{http/www.ebi.ac.uk/~remco/ChIP-Seq_course/gfp.bw}.
+Repeat the process for the control sample, located at
+\url{http/www.ebi.ac.uk/~remco/ChIP-Seq_course/gfp.bw}.
  
-After uploading, choose \textbf{Configure this page}, and under \textbf{Your data} tick both boxes. Closing the window will save these changes.
+After uploading, choose \textbf{Configure this page}, and under \textbf{Your
+data} tick both boxes. Closing the window will save these changes.
 
-Go to a region on chromosome 1 (e.g. 1:34823162-35323161), and zoom in and out to view the signal and peak regions. Be aware that the data scale automatically, so bigger-looking peaks need not actually be bigger. Always look at the values on the left hand side axis.
+Go to a region on chromosome 1 (e.g. \texttt{1:34823162-35323161}), and zoom in and out
+to view the signal and peak regions. Be aware that the data scale automatically,
+so bigger-looking peaks need not actually be bigger. Always look at the values
+on the left hand side axis.
 \end{steps}
 
 \begin{questions}
 What can you say about the profile of Oct4 peaks? 
-
-\vspace{2cm}
+\begin{answer}
+%TODO
+\end{answer}
 
 Compare it with H3K4me3 histone modification wig file we have generated at 
 \url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/H3K4me3.bw}. 
+\begin{answer}
+%TODO
+\end{answer}
 
-\vspace{2cm}
+Jump to \texttt{1:36066594-36079728} for a sample peak. Do you think H3K4me3
+peaks regions contain one or more modification sites? What about Oct4?
+\begin{answer}
+%TODO
+\end{answer}
 
-Jump to 1:36066594-36079728 for a sample peak. Do you think H3K4me3 peaks regions contain one or more modification sites? What about Oct4?
-
-\vspace{2cm}
 \end{questions}
 
 \begin{note}
-MACS generates its peak files in a file format called bed file. This is a simple text format containing genomic locations, specified by chromosome, begin and end positions, and some more optional information.
+MACS generates its peak files in a file format called bed file. This is a simple
+text format containing genomic locations, specified by chromosome, begin and end
+positions, and some more optional information.
 
-See \url{http://genome.ucsc.edu/FAQ/FAQformat.html#format1} for details. 
+See \url{http://genome.ucsc.edu/FAQ/FAQformat.html#format1} for details.
 
-Bed files can also be uploaded to the Ensembl browser. 
+Bed files can also be uploaded to the Ensembl browser.
 \end{note}
 
 \begin{advanced}
-Try uploading the peak file generated by MACS to Ensembl. Find the first peak in the file (use the head command to view the beginning of the bed file), and see if the peak looks convincing to you. 
+Try uploading the peak file generated by MACS to Ensembl. Find the first peak in
+the file (use the head command to view the beginning of the bed file), and see
+if the peak looks convincing to you.
 \end{advanced}
 
 
 \section{Annotation: From peaks to biological interpretation}
 
 \begin{information}
-In order to biologically interpret the results of ChIP-seq experiments, it is usu- ally recommended to look at the genes and other annotated elements that are located in proximity to the identified enriched regions. This can be easily done using PeakAnalyzer.
+In order to biologically interpret the results of ChIP-seq experiments, it is
+usually recommended to look at the genes and other annotated elements that are
+located in proximity to the identified enriched regions. This can be easily done
+using PeakAnalyzer.
 \end{information}
 
 \begin{steps}
@@ -212,53 +268,99 @@ Go to the PeakAnalyzer directory and launch the program by typing:
 java -jar PeakAnalyzer.jar &
 \end{lstlisting}
 
-The first window allows you to choose between the split application (which we will try next) and peak annotation.?Choose the peak annotation option and click \textbf{Next}. 
+The first window allows you to choose between the split application (which we
+will try next) and peak annotation. Choose the peak annotation option and click
+\textbf{Next}.
 
-We would like to find the closest downstream genes to each peak, and the genes that overlap with the peak region. For that purpose you should choose the \textbf{NDG} option and click \textbf{Next}. 
+We would like to find the closest downstream genes to each peak, and the genes
+that overlap with the peak region. For that purpose you should choose the
+\textbf{NDG} option and click \textbf{Next}.
 
-Fill in the location of the peak file Oct4 peaks.bed, and choose the mouse GTF as the annotation file. You don't have to define a symbol file since gene symbols are included in the GTF file. 
+Fill in the location of the peak file \texttt{Oct4 peaks.bed}, and choose the mouse GTF
+as the annotation file. You don't have to define a symbol file since gene
+symbols are included in the GTF file.
 
-Choose the output directory and run the program. 
+Choose the output directory and run the program.
 \end{steps}
 
 \begin{information}
-When the program has finished running, you will have the option of generating plots, by pressing \textbf{Generate plots} (You can only do this if R is installed on your computer, as is the case here. Otherwise, if you don't want to install R, you can generate similar plots with Excel using the output files that were generated by PeakAnalyzer.). A pdf file with the plots will be generated in the output folder. 
+When the program has finished running, you will have the option of generating
+plots, by pressing \textbf{Generate plots} (You can only do this if R is
+installed on your computer, as is the case here. Otherwise, if you don't want to
+install R, you can generate similar plots with Excel using the output files that
+were generated by PeakAnalyzer.). A pdf file with the plots will be generated in
+the output folder.
 \end{information}
 
 \begin{note}
-This list of closest downstream genes (contained in the file `$Oct4_peaks.ndg.bed$') can be the basis of further analysis. For instance, you could look at the Gene Ontology terms associated with these genes to get an idea of the biological processes that may be affected. Web-based tools like DAVID (\url{http://david.abcc.ncifcrf.gov}) or GOstat (\url{http://gostat.wehi.edu.au}) take a list of genes and return the enriched GO categories.
+This list of closest downstream genes (contained in the file
+\texttt{Oct4\_peaks.ndg.bed}) can be the basis of further analysis. For instance,
+you could look at the Gene Ontology terms associated with these genes to get an
+idea of the biological processes that may be affected. Web-based tools like
+DAVID (\url{http://david.abcc.ncifcrf.gov}) or GOstat
+(\url{http://gostat.wehi.edu.au}) take a list of genes and return the enriched
+GO categories.
 \end{note}
 
 
 \section{Motif analysis}
 
 \begin{information}
-It is often interesting to find out whether we can associate identified the binding sites with a sequence pattern or motif. We will use MEME for motif analysis. The input for MEME should be a file in fasta format containing the sequences of interest. In our case, these are the sequences of the identified peaks that probably contain Oct4 binding sites. 
+It is often interesting to find out whether we can associate identified the
+binding sites with a sequence pattern or motif. We will use MEME for motif
+analysis. The input for MEME should be a file in fasta format containing the
+sequences of interest. In our case, these are the sequences of the identified
+peaks that probably contain Oct4 binding sites.
 
-Since many peak-finding tools merge overlapping areas of enrichment, the resulting peaks tend to be much wider than the actual binding sites. Sub-dividing the enriched areas by accurately partitioning enriched loci into a finer-resolution set of individual binding sites, and fetching sequences from the summit region where binding motifs are most likely to appear enhances the quality of the motif analysis. Sub-peak summit sequences can be retrieved directly from the Ensembl database using PeakAnalyzer.
+Since many peak-finding tools merge overlapping areas of enrichment, the
+resulting peaks tend to be much wider than the actual binding sites.
+Sub-dividing the enriched areas by accurately partitioning enriched loci into a
+finer-resolution set of individual binding sites, and fetching sequences from
+the summit region where binding motifs are most likely to appear enhances the
+quality of the motif analysis. Sub-peak summit sequences can be retrieved
+directly from the Ensembl database using PeakAnalyzer.
 \end{information}
 
 \begin{steps}
-If you have closed the PeakAnalyzer running window, open it again. If it is still open, just go back to the first window. 
+If you have closed the PeakAnalyzer running window, open it again. If it is
+still open, just go back to the first window.
 
-Choose the split peaks utility and click \textbf{Next}. The input consists of files generated by most peak-finding tools: a file containing the chromosome, start and end locations of the enriched regions, and a .wig signal file describing the size and shape of each peak. Fill in the location of both files `Oct4 peaks.bed' and the wig file generated by MACS, which is under `$Oct4\_MACS\_wiggle/treat$', check the option to \textbf{Fetch subpeak sequences} and click \textbf{Next}.
+Choose the split peaks utility and click \textbf{Next}. The input consists of
+files generated by most peak-finding tools: a file containing the chromosome,
+start and end locations of the enriched regions, and a \texttt{.wig} signal file
+describing the size and shape of each peak. Fill in the location of both files
+\texttt{Oct4 peaks.bed} and the wig file generated by MACS, which is under
+\texttt{Oct4\_MACS\_wiggle/treat}, check the option to \textbf{Fetch subpeak
+sequences} and click \textbf{Next}.
 
-In the next window you have to set some parameters for splitting the peaks. 
+In the next window you have to set some parameters for splitting the peaks.
 
-Separation float - This value determines when a peak will be separated into sub-peaks. This is the ratio between a valley and its neighbouring summit (the lower summit of the two). For example, if you set this height to be 0.5, two sub-peaks will be separated only if the height of the lower summit is twice the height of the valley. Keep the default value. 
+Separation float - This value determines when a peak will be separated into
+sub-peaks. This is the ratio between a valley and its neighbouring summit (the
+lower summit of the two). For example, if you set this height to be 0.5, two
+sub-peaks will be separated only if the height of the lower summit is twice the
+height of the valley. Keep the default value.
 
-Minimum height - only sub-peaks with at least this number of tags in their summit region will be separated. Set this to be 5. Change the organism name from the default human to mouse and run the program. 
+Minimum height - only sub-peaks with at least this number of tags in their
+summit region will be separated. Set this to be 5. Change the organism name from
+the default human to mouse and run the program.
 \end{steps}
 
 \begin{information}
-Since the program has to read large wig files, it will take a few minutes to run. Once the run is finished, two output files will be produced. The first describes the location of the sub-peaks, and the second is a fasta file containing 300 sequences of length 61 bases, taken from the summit regions of the highest sub-peaks. 
+Since the program has to read large wig files, it will take a few minutes to
+run. Once the run is finished, two output files will be produced. The first
+describes the location of the sub-peaks, and the second is a fasta file
+containing 300 sequences of length 61 bases, taken from the summit regions of
+the highest sub-peaks.
 \end{information}
 
 \begin{steps}
-Open a web bowser and go to the MEME website at \url{http://meme.ebi.edu.au/meme/cgi-bin/meme.cgi}, and fill in the necessary details, such as: 
+Open a web bowser and go to the MEME website at
+\url{http://meme.ebi.edu.au/meme/cgi-bin/meme.cgi}, and fill in the necessary
+details, such as:
 \begin{itemize}
 	\item your e-mail address 
-	\item the sub-peaks fasta file `Oct4 peaks.bestSubPeaks.fa' (will need uploading), or just paste in the sequences. 
+	\item the sub-peaks fasta file \texttt{Oct4 peaks.bestSubPeaks.fa} (will need uploading), or just paste in the sequences. 
 	\item the number of motifs we expect to find (1 per sequence) 
 	\item the width of the desired motif (between 6 to 20) 
 	\item the maximum number of motifs to find (3 by default). For Oct4 one classical motif is known. 
@@ -272,20 +374,22 @@ You will receive the results by e-mail. This usually doesn't take more than a fe
 \begin{steps}
 Open the e-mail and click on the link that leads to the html results page.
 
-Scroll down until you see the first motif logo. We would like to know if this motif is similar to any other known motif. We will use TOMTOM for this. Scroll down until you see the option \textbf{Submit this motif to}. Click the TOMTOM button to compare to known motifs in motif databases, and on the new page choose to compare your motif to those in the JASPAR and UniPROBE database.
+Scroll down until you see the first motif logo. We would like to know if this
+motif is similar to any other known motif. We will use TOMTOM for this. Scroll
+down until you see the option \textbf{Submit this motif to}. Click the TOMTOM
+button to compare to known motifs in motif databases, and on the new page choose
+to compare your motif to those in the JASPAR and UniPROBE database.
 \end{steps}
 
 
 \begin{questions}
 Which motif was found to be the most similar to your motif?
+\begin{answer}
+%TODO
+\end{answer}
 \end{questions}
 
-
-\section{CONGRATULATIONS!}
-You have made it to the end of the practica. Hope you enjoyed it! Don't hesitate to ask any questions and feel free to contact us any time (email addresses on the front page).
-
 \newpage
-\section{reference}
+\section{Reference}
+%TODO Use BibTeX
 Chen, X et al.: Integration of external signaling pathways with the core tran-scriptional network in embryonic stem cells. Cell 133:6, 1106-17 (2008).
-
-\chapterstyle{workshop}

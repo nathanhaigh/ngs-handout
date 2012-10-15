@@ -1,6 +1,7 @@
 \documentclass[a4paper,12pt,twoside]{memoir}
+\let\footruleskip\undefined	% see http://tex.stackexchange.com/questions/37868/fancyhdr-and-memoir
 \usepackage{fancyhdr}	% For headers and footers
-\usepackage[literate]{listings}	% Required for insertion of code
+\usepackage{listings}	% Required for insertion of code
 \usepackage{courier}	% Required for the courier font
 \usepackage[usenames,dvipsnames]{color} % Required for custom colors
 \usepackage[table]{xcolor}
@@ -9,37 +10,36 @@
 \usepackage{fullpage}	% See http://en.wikibooks.org/wiki/LaTeX/Page_Layout#Manual_Page_Formatting for layout
 \usepackage{enumitem}
 %\usepackage[parfill]{parskip}	% Don't indent the first line of paragraphs
-\linespread{1} % Line spacing
+\linespread{1.0} % Line spacing
 \usepackage{mdframed}
-\usepackage{parskip}
+%\usepackage{parskip}
 \usepackage{etoolbox}
 \usepackage[nobottomtitles]{titlesec}
 \usepackage[section]{placeins}
 \setlength{\parindent}{0pt}
-%\usepackage{ifthen}
-%\usepackage{array}
+\usepackage{ifthen}
+\usepackage{array}
 % packages for Creative Commons Licences
 \usepackage{xmpincl}
 \includexmp{licences/CC_Attribution_3.0_Unported}	% includes XML metadata into the PDF
-\usepackage{scrextend}
+%\usepackage{scrextend}
 \usepackage{microtype}
 \usepackage{accsupp}
 \usepackage{textcomp}
 \usepackage{float}
 \usepackage{lmodern}        % to ensure most charaters in listings and texttt are copy-paste safe and print nicely
 \usepackage{comment}
-\providetoggle{trainermanual}
+\newtoggle{trainermanual}   % defaults to false
 
 
-%\settoggle{trainermanual}{true} % set this to false for the trainee's manual and true for the trainer's manual
+\settoggle{trainermanual}{false}  % Uncomment to generate the trainer's manual
 
 
 \newlength{\defparskip}
 \setlength{\defparskip}{0.5cm}
-\specialcomment{answer}{\begingroup\bf\color{red}}{\endgroup}
+\specialcomment{answer}{\begingroup\color{red}}{\endgroup}
 
 
-%\renewcommand{\thefootnote}{\arabic{footnote}}
 
 % config display of hyperlinks
 \hypersetup{
@@ -107,7 +107,10 @@
 %   indexstyle=\indexfonction}
 
 % disables chapter, section and subsection numbering
-\setcounter{secnumdepth}{-1} 
+% and number figures and tables consecutively throughout the document
+\setcounter{secnumdepth}{-1}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
 
 
 % This allows stuff on the same line to be vertically centered with respect of each other
@@ -120,7 +123,9 @@
 \definecolor{questionshade}{rgb}{1,0.95,0.85}
 \definecolor{bonusshade}{rgb}{0.92,1,0.92}
 \definecolor{advancedshade}{rgb}{0.92,0.92,1}
-\mdfsetup{
+
+% defaine a default style for the mdframed-based environments
+\global\mdfdefinestyle{default}{
   leftmargin=0pt,
   skipabove=5pt,
   rightmargin=0pt,
@@ -141,7 +146,8 @@
   linewidth=1pt,
   roundcorner=5pt,
 }
-\newmdenv[
+
+\global\mdfdefinestyle{warningbox}{
   backgroundcolor=warningshade,
   leftline=true,
   topline=true,
@@ -152,8 +158,8 @@
   innertopmargin=10pt,
   innerbottommargin=10pt,
   nobreak=true,
-   ]{warning*}
-\newmdenv[
+}
+\global\mdfdefinestyle{questionsbox}{
   backgroundcolor=questionshade,
   leftline=true,
   topline=true,
@@ -166,8 +172,8 @@
   skipabove=15pt,
   skipbelow=20pt,
   nobreak=true,
-   ]{questions*}
-\newmdenv[
+}
+\global\mdfdefinestyle{bonusbox}{
 %  backgroundcolor=bonusshade,
   leftline=true,
   topline=true,
@@ -180,8 +186,8 @@
   skipabove=15pt,
   skipbelow=20pt,
   nobreak=false,                % these could span multiple pages, so we should let them break across pages
-   ]{bonus*}
-\newmdenv[
+}
+\global\mdfdefinestyle{advancedbox}{
 %  backgroundcolor=advancedshade,
   leftline=true,
   topline=true,
@@ -194,7 +200,7 @@
   skipabove=15pt,
   skipbelow=20pt,
   nobreak=false,                % these could span multiple pages, so we should let them break across pages
-   ]{advanced*}
+}
 
 \newlength{\iconspacinglength}
 \setlength{\iconspacinglength}{0.5cm}
@@ -204,7 +210,7 @@
 
 
 \newenvironment{steps}{%
-\begin{steps*}%
+\begin{mdframed}[style=default]%
 %\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 %\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
@@ -213,11 +219,11 @@
 }}}\ignorespaces%
 }%
 {%
-\end{steps*}%
+\end{mdframed}%
 }
 
 \newenvironment{bonus}{%
-\begin{bonus*}%
+\begin{mdframed}[style=bonusbox]%
 \addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 \addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 %\newpage%
@@ -229,11 +235,11 @@
 }\ignorespaces%\vspace{-3em}\vspace{-\parskip}%
 }%
 {%
-\end{bonus*}%
+\end{mdframed}%
 }
   
 \newenvironment{advanced}{%
-\begin{advanced*}%
+\begin{mdframed}[style=advancedbox]%
 \addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 \addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 %\newpage%
@@ -245,11 +251,11 @@
 }\ignorespaces%\vspace{-3em}%
 }%
 {%
-\end{advanced*}%
+\end{mdframed}%
 }
 
 \newenvironment{information}{%
-\begin{information*}%
+\begin{mdframed}[style=default]%
 %\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 %\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
@@ -258,11 +264,11 @@
 }}}\ignorespaces%
 }%
 {%
-\end{information*}%
+\end{mdframed}%
 }
 
 \newenvironment{note}{%
-\begin{note*}%
+\begin{mdframed}[style=default]%
 %\addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 %\addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.6\height}{%
@@ -271,11 +277,11 @@
 }}}\ignorespaces%
 }%
 {%
-\end{note*}%
+\end{mdframed}%
 }
 
 \newenvironment{warning}{%
-\begin{warning*}%
+\begin{mdframed}[style=warningbox]%
 \addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 \addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
@@ -284,12 +290,12 @@
 }}}\ignorespaces%
 }%
 {%
-\end{warning*}%
+\end{mdframed}%
 }
 
 \newenvironment{questions}{%
-\begin{questions*}%
-\nottoggle{\trainermanual}{\setlength{\parskip}{\questionspacing}}%
+\begin{mdframed}[style=questionsbox]%
+\nottoggle{trainermanual}{\setlength{\parskip}{\questionspacing}}{}%
 \addtolength{\iconspacinglength}{\mdflength{leftmargin}}%
 \addtolength{\iconspacinglength}{\mdflength{innerleftmargin}}%
 \makebox[0pt][r]{\smash{\raisebox{-.25\height}{%
@@ -298,8 +304,8 @@
 }}}\ignorespaces%
 }%
 {%
-\nottoggle{\trainermanual}{\vspace{\questionspacing}}%
-\end{questions*}%
+\nottoggle{trainermanual}{\vspace{\questionspacing}}{}%
+\end{mdframed}%
 }
 
 \definecolor{trainerfrontpageshade}{rgb}{1,0.9,0.9}
@@ -310,7 +316,7 @@
 \thispagestyle{plain}
 \iftoggle{trainermanual}{
 \pagecolor{trainerfrontpageshade}
-}
+}{}
 \noindent
 
 \begin{center}
@@ -340,9 +346,10 @@
 \clearpage
 \iftoggle{trainermanual}{
 \pagecolor{white}%
-}
+}{}
 }
 
+%TODO Revise this chapter styling code, there appears to be a couple of things wrong with it.
 \makechapterstyle{workshop}{%
   \chapterstyle{default}
   \renewcommand*{\chapnumfont}{\normalfont\HUGE\sffamily}
@@ -367,7 +374,6 @@
     \raggedleft {\chaptitlefont ##1}\par\nobreak}
   
 }
-\chapterstyle{workshop}
 \makechapterstyle{module}{%
   \chapterstyle{workshop}
   \renewcommand*{\printchaptertitle}[1]{%
@@ -408,13 +414,14 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 
 % set default headers footers
 \pagestyle{fancy}
+\setlength{\headheight}{15pt}
 \fancyhead[LE,RO]{\slshape \nouppercase{\leftmark}}
 \fancyhead[LO,RE]{\slshape \nouppercase{\rightmark}}
 \fancyfoot[LE,RO]{\thepage}
 \addtolength{\headsep}{\baselineskip} 
 \iftoggle{trainermanual}{
 \fancyfoot[C]{\trainermanualtext}
-}
+}{}
 
 % define the plain page style for both trainee and trainer's manual
 \fancypagestyle{plain}{%
@@ -427,7 +434,7 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 \fancyhead[C]{\trainermanualtext}
 \fancyfoot[C]{\trainermanualtext}
 \renewcommand{\headrulewidth}{0pt}
-}
+}{}
 }
 
 
@@ -438,9 +445,11 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 
 \nottoggle{trainermanual}{
 \excludecomment{answer}
-}
+}{}
 
 %\includeonly{workshop_preamble.tex,rna-seq.tex}
+
+\chapterstyle{workshop}
 
 \begin{document}
 
@@ -448,9 +457,6 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 % Workshop Title Page
 %
 \workshoptitlepage
-%\begin{answer}
-%\pagecolor{white}
-%\end{answer}
 
 %
 % CC-BY
@@ -473,9 +479,25 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 \input{workshop_preamble.tex}
 
 %
+% Start of modules
+% Switch chapter styling to module
+%
+\chapterstyle{module}
+
+%
 % QC Module
 %
 \input{ngs-qc/ngs-qc.tex}
+
+%
+% Alignment Module
+%
+\input{alignment/alignment.tex}
+
+%
+% ChIP-Seq Module
+%
+\input{chip-seq/chip-seq.tex}
 
 %
 % RNA-Seq Module
@@ -487,6 +509,10 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 %
 \input{de_novo/velvet.tex}
 
-
+%
+% End of modules
+% Switch back to normal workshop chapter styling
+%
+\chapterstyle{workshop}
 
 \end{document}
