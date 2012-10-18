@@ -183,33 +183,29 @@ with the following table:
 \begin{questions}
 How many sequences were there in your file? What is the read length?
 \begin{answer}
-%TODO
+40,000. read length=100bp
 \end{answer}
 
-Does the quality score value vary throughout the read length?
+Does the quality score values vary throughout the read length?
 (hint: look at the 'per base sequence quality plot')
 \begin{answer}
-%TODO
+Yes. Quality scores are dropping towards the end of the reads.
 \end{answer}
 
 What is the quality score range you see?
 \begin{answer}
-%TODO
+2-40
 \end{answer}
 
 At around which position do the scores start falling below Q20? 
 \begin{answer}
-%TODO
+Around 80 bp position
 \end{answer}
 
-Why does the quality deteriorate at the end of the read?
-\begin{answer}
-%TODO
-\end{answer}
 
 How can we trim the reads to filter out the low quality data?
 \begin{answer}
-%TODO
+By trimming of the bases after a fixed position of the read. or by trimming off bases based on the quality score.
 \end{answer}
 \end{questions}
 
@@ -386,7 +382,7 @@ Reads $<$50 bp, following quality trimming, were discarded.
 
 Did you observe adapter sequences in the data?
 \begin{answer}
-%TODO
+No. (Hint: look at the overrepresented sequences.
 \end{answer}
 
 \end{questions}
@@ -420,7 +416,7 @@ fastx_clipper -v -Q 33 -l 20 -M 15 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG -i bad_ex
 \begin{note}
 An alternative tool, not installed on this system, for adapter clipping is
 \texttt{fastq-mcf}. A list of adapters is provided in a text file. For more
-information, see \url{http://code.google.com/p/ea-utils/wiki/FastqMcf}.
+information, see Fastqmcf from the URL given at the start of this tutorial.
 \end{note}
 
 \subsection{Removing Duplicates}
@@ -462,7 +458,7 @@ Interested users can use the following general command to run the
 MarkDuplicates tool at their leisure and only need to provide a BAM file for
 INPUT:
 
-%TODO format strings like <alignment_file.bam> inside listings so they stand out
+
 \begin{lstlisting}
 cd ~/QC
 java -jar /usr/share/java/picard/MarkDuplicates.jar INPUT=<alignment_file.bam> VALIDATION_STRINGENCY=LENIENT OUTPUT=alignment_file.dup METRICS_FILE=alignment_file.matric ASSUME_SORTED=true REMOVE_DUPLICATES=true
