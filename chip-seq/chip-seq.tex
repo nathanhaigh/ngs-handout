@@ -17,8 +17,9 @@
 After completing this practical the trainee should be able to:
 %TODO
 \begin{itemize}
-  \item TODO 1\\
-  \item TODO 2\\
+  \item Perform simple ChIP-Seq analysis, e.g. the detection of immuno-enriched areas using the chosen peak caller program MACS \\
+  \item Visualize the peak regions through a genome browser, e.g. Ensembl, and identify the real peak regions \\  
+  \item Perform functional annotation and detect potential binding sites (motif) in the predicted binding regions using motif discovery tool, e.g. MEME.
 \end{itemize}
 
 \section{Resources You'll be Using}
@@ -75,12 +76,12 @@ If you didn't have time to align the control file called \texttt{gfp.fastq} duri
 alignment practical, please do it now.
 
 Follow the same steps as for the \texttt{Oct4.fastq} file.
+\end{steps}
 
 \begin{information}
 Of course, the same bowtie index can be used, so the index building step can be
 skipped.
 \end{information}
-\end{steps}
 
 \begin{note}
 In ChIP-seq analysis (unlike in other applications such as RNA-seq) we often
@@ -216,7 +217,7 @@ data:
 	\item Click \textbf{Save} and close the window to return to the genome browser. 
 \end{itemize}
 Repeat the process for the control sample, located at
-\url{http/www.ebi.ac.uk/~remco/ChIP-Seq_course/gfp.bw}.
+\url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/gfp.bw}.
  
 After uploading, choose \textbf{Configure this page}, and under \textbf{Your
 data} tick both boxes. Closing the window will save these changes.
@@ -231,18 +232,23 @@ on the left hand side axis.
 What can you say about the profile of Oct4 peaks? 
 \begin{answer}
 %TODO
+There is no significant peaks of Oct4 over the selected region.
 \end{answer}
 
 Compare it with H3K4me3 histone modification wig file we have generated at 
 \url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/H3K4me3.bw}. 
 \begin{answer}
 %TODO
+H3K4me3 has a region that contains relatively high peaks than Oct4. 
 \end{answer}
 
 Jump to \texttt{1:36066594-36079728} for a sample peak. Do you think H3K4me3
 peaks regions contain one or more modification sites? What about Oct4?
 \begin{answer}
 %TODO
+Yes. There are roughly three peaks, which indicate the possibility of having more than one modification sites in this region. 
+
+For Oct4, no peak can be observed.
 \end{answer}
 
 \end{questions}
@@ -397,6 +403,7 @@ to compare your motif to those in the JASPAR and UniPROBE database.
 Which motif was found to be the most similar to your motif?
 \begin{answer}
 %TODO
+Sox2
 \end{answer}
 \end{questions}
 
