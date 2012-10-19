@@ -16,10 +16,10 @@
 After completing this practical the trainee should be able to:
 %TODO
 \begin{itemize}
-  \item TODO 1\\
-  \item TODO 2\\
+  \item Perform the simple NGS data alignment task against one interested reference data \\
+  \item Interpret and manipulate the mapping output using samtools \\
+  \item Visualise the alignment via a standard genome browser, e.g. IGV browser \\
 \end{itemize}
-
 \section{Resources You'll be Using}
  
 \subsection{Tools Used}
@@ -164,16 +164,34 @@ head -n 10 Oct4.sam
 Can you distinguish between the header of the SAM format and the actual alignments?
 \begin{answer}
 %TODO
+The header line starts with the letter `@', i.e.: 
+
+\begin{tabular}{llll}
+@HD & VN:1.0 & SO:unsorted & \\
+@SQ & SN:chr1 & LN:197195432 & \\
+@PG & ID:Bowtie &      VN:0.12.8  & CL:``bowtie bowtie\_index/mm9 -S Oct4.fastq'' \\
+\end{tabular}
+
+While, the actual alignments start with read id, i.e.:
+
+\begin{tabular}{llll}
+SRR002012.45 & 0 & chr1 & etc \\
+SRR002012.48 & 16 & chr1 & etc \\
+\end{tabular}
 \end{answer}
 
 What kind of information does the header provide?
 \begin{answer}
 %TODO
+1. @HD: Header line; VN: Format version; SO: the sorting order of alignment.
+2. @SQ: Reference sequence information; SN: reference sequence name; LN: reference sequence length.
+3. @PG: Read group information; ID: Read group identifier; VN: Program version; CL: the command line that produces the alignment.
 \end{answer}
 
 To which chromosome are the reads mapped? 
 \begin{answer}
 %TODO
+Chromosome 1.
 \end{answer}
 \end{questions}
 
@@ -307,6 +325,8 @@ specific region. For example, look for gene \texttt{Lemd1} in the search box.
 What is the main difference between the visualization of BAM and bigWig files?
 \begin{answer}
 %TODO
+The actual alignment of reads that stack to a particular region can be displayed using the information stored in a BAM format.
+The bigWig format is for display of dense, continuous data that will be displayed in the Genome Browser as a graph.
 \end{answer}
 \end{questions}
 
@@ -316,6 +336,7 @@ Using the \texttt{+} button on the top right zoom in more to see the details of 
 What do you think the different colors mean?
 \begin{answer}
 %TODO
+The different color represents four nucleotides, e.g. blue is Cytidine (C), red is Thymidine (T).
 \end{answer}
 \end{questions}
 
