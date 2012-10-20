@@ -12,6 +12,13 @@ facilitate this we are:
   a framework through which people can shared and access workshop content as
   well as configure the BTP quickly and easily for such a workshop. This is
   still in development as a proof-of-concept.
+  
+Creative Commons License
+========================
+The documentation associated with this workshop are released under the Creative
+Commons Attribution 3.0 Unported License. For a summary of what this means,
+please see:
+http://creativecommons.org/licenses/by/3.0/deed.en_GB
 
 Course Overview
 ===============
