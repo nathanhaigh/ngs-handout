@@ -14,7 +14,6 @@
 \section{Key Learning Outcomes}
 
 After completing this practical the trainee should be able to:
-%TODO
 \begin{itemize}
   \item Perform the simple NGS data alignment task against one interested reference data \\
   \item Interpret and manipulate the mapping output using samtools \\
@@ -163,7 +162,6 @@ head -n 10 Oct4.sam
 \begin{questions}
 Can you distinguish between the header of the SAM format and the actual alignments?
 \begin{answer}
-%TODO
 The header line starts with the letter `@', i.e.: 
 
 \begin{tabular}{llll}
@@ -182,7 +180,6 @@ SRR002012.48 & 16 & chr1 & etc \\
 
 What kind of information does the header provide?
 \begin{answer}
-%TODO
 1. @HD: Header line; VN: Format version; SO: the sorting order of alignment.
 2. @SQ: Reference sequence information; SN: reference sequence name; LN: reference sequence length.
 3. @PG: Read group information; ID: Read group identifier; VN: Program version; CL: the command line that produces the alignment.
@@ -190,7 +187,6 @@ What kind of information does the header provide?
 
 To which chromosome are the reads mapped? 
 \begin{answer}
-%TODO
 Chromosome 1.
 \end{answer}
 \end{questions}
@@ -324,9 +320,10 @@ specific region. For example, look for gene \texttt{Lemd1} in the search box.
 \begin{questions}
 What is the main difference between the visualization of BAM and bigWig files?
 \begin{answer}
-%TODO
-The actual alignment of reads that stack to a particular region can be displayed using the information stored in a BAM format.
-The bigWig format is for display of dense, continuous data that will be displayed in the Genome Browser as a graph.
+The actual alignment of reads that stack to a particular region can be displayed
+using the information stored in a BAM format.
+The bigWig format is for display of dense, continuous data that will be
+displayed in the Genome Browser as a graph.
 \end{answer}
 \end{questions}
 
@@ -335,8 +332,8 @@ Using the \texttt{+} button on the top right zoom in more to see the details of 
 \begin{questions}
 What do you think the different colors mean?
 \begin{answer}
-%TODO
-The different color represents four nucleotides, e.g. blue is Cytidine (C), red is Thymidine (T).
+The different color represents four nucleotides, e.g. blue is Cytidine (C), red
+is Thymidine (T).
 \end{answer}
 \end{questions}
 
