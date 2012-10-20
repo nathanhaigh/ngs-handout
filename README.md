@@ -12,6 +12,12 @@ facilitate this we are:
   a framework through which people can shared and access workshop content as
   well as configure the BTP quickly and easily for such a workshop. This is
   still in development as a proof-of-concept.
+
+Handouts
+========
+For information on writing the handouts in LaTeX see the ```DEV_README.md```
+file and see the ```example_handouts``` directory for PDF versions of the
+current handouts for this workshop
   
 Creative Commons License
 ========================
