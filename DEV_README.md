@@ -7,6 +7,7 @@ By changing the boolean value of the ```trainermanual``` toggle you can output
 either the trainer's manual or the trainee's handout.
 
 By setting the toggle to false (the default), you output the traines's handout:
+
 \settoggle{trainermanual}{false}
 
 This document has the following styling:
@@ -15,6 +16,7 @@ This document has the following styling:
 * Text within the ```answer``` environment is not output. 
 
 By setting the toggle to true, you output the trainer's manual:
+
 \settoggle{trainermanual}{true}
 
 This document has the following content and styling differences to the
