@@ -1,89 +1,61 @@
-The setup_NGS_workshop script is for setting up a Cloud Biolinux VM (running on the NeCTAR research cloud or locally)
-ready for running the NGS workshop.
+This github repo has been setup to help foster a more sustainable collaborative
+environment in which the workshop content can be developed and refined. To
+facilitate this we are:
 
-The script is run on the VM using the ```ubuntu``` user. A copy of this script is available in Cloud storage
-so the following commands can be executed on a Cloud BioLinux VM to prepare it for the NGS workshop:
+* Porting all the documentation over to LaTeX - easy to version control and
+  easier to collaborate on content. Easy to get consistent styling and can
+  (will) be able to parse out code (listings) from within the LaTeX docs
+  for easy automated testing of the code.
+* Developing the Bioinformatics Training Platform (BTP), an Ubuntu based OS
+  containing features to help develop and deliver hands-on bioinformatics
+  training in a more collaborative fashion. In addition, we hope to provide
+  a framework through which people can shared and access workshop content as
+  well as configure the BTP quickly and easily for such a workshop. This is
+  still in development as a proof-of-concept.
 
-First, ssh into the VM as user ```ubuntu```
-pull down the bash setup script from cloud storage
+Course Overview
+===============
+A 2-day hands-on Next Generation Sequencing (NGS) Workshop developed by
+Bioplatforms Australia (BPA), the Commonwealth Scientific and Industrial
+Research Organisation (CSIRO), EMBL-Australia and the European Bioinformatics
+Institute.
 
-    cd ~/
-    wget https://raw.github.com/nathanhaigh/ngs_workshop/master/shell_scripts/setup_NGS_workshop.sh
+This course was designed to familiarise participants with NGS data analysis and
+provide hands-on computational experience in analysing NGS data using common
+analytical workflows for, ChIP-seq, RNASeq data and de novo genome assembly.
 
-Execute the bash script, ignore any warnings from sudo about being ```unable to resolve host```
-
-    bash setup_NGS_workshop.sh
-
-You may wish to see what's been setup and the total size of the NGS workshop data
-
-    ls -lhR /mnt/NGS_workshop/
-    du -h --max-depth=2 /mnt/NGS_workshop/
-
-Script Details
+Course content
 ==============
-The ```setup_NGS_workshop.sh``` script will:
-* Create a directory structure under ```/mnt/NGS_workshop```
-* Create a data directory ```/mnt/NGS_workshop/data``` for storing the data required for the NGS tutorials
-* Pull approx. 3.3GBytes of data from the NeCTAR Cloud storage into ```/mnt/NGS_workshop/data```
-* Create a working directory structure under ```/mnt/NGS_workshop/working_dir```
-* Create symlinks, to the appropriate data, under ```/mnt/NGS_workshop/working_dir```
-* Create symlinks to subdirectories of ```/mnt/NGS_workshop/working_dir``` in ngstrainee's home and desktop
+The course covers data analysis of RNA-Seq and ChIP-Seq experiments and de novo
+genome assembly of small genomes. Topics will include: data quality, alignment,
+data handling and visualisation, region identification, transcriptome analysis
+and statistical analysis.
 
-    /home/ngstrainee/
-    /home/ngstrainee/Desktop/
+Target Audience
+===============
+This practical 2 day hands-on course is designed for bench biologists, PhD
+students or early career postdoctoral researchers with no or basic bioinformatics
+experience who are planning or currently using NGS approaches in their research
+area.
 
-Testing the VM
-==============
-Once the VM has been setup for the NGS workshop. You may also wish to test the VM by running 1 or more of
-the tutorials test scripts on it.
+Registration/Application
+========================
+Because places are limited (approx. 30 places), registration is via a selection
+process. Therefore applicants should be aware that, in order to be considered
+for a place on this course, they MUST complete an application form.
 
-The tutorial test scripts can be pulled from the NeCTAR Cloud Object Storage onto a VM using:
+Computer Lab Setup
+==================
+This workshop has been designed to be run on VM's on Australia's NeCTAR
+Research Cloud. Trainees, then use the NoMachine NX Client to provide a remote
+dekstop like connection to their own dedicated VM for the duration of the
+workshop.
 
-Connect to the VM using an NX Client as user: ```ngstrainee```
-In a terminal, pull down the tutorial test scripts from cloud storage
+This approach means that the workshop can be delievered in a road-show style
+form around Australia, without being limited by local computational resources.
+The level of IT support, required of the local hosting institution, is minimal
+and only requires the installation of the NoMachine NX Client and SSH firewall
+access over port 22 TCP.
 
-    cd ~/
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/qc_tutorial.sh
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/alignment_tutorial.sh 
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/chip-seq_tutorial.sh
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/rna-seq_tutorial.sh
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/de_novo_tutorial.sh
-
-Run, and time, the tutorials and redirect ```STDOUT``` and ```STDERR``` to files with something like:
-
-    time bash qc_tutorial.sh > qc_stdout.log 2> qc_stderr.log
-    time bash alignment_tutorial.sh > alignment_stdout.log 2> alignment_stderr.log
-    time bash chip-seq_tutorial.sh > chip-seq_stdout.log 2> chip-seq_stderr.log
-    time bash rna-seq_tutorial.sh > rna-seq_stdout.log 2> rna-seq_stderr.log
-    time bash de_novo_tutorial.sh > de_novo_stdout.log 2> de_novo_stderr.log
-
-Once testing is complete, delete the test files and logs
-
-    rm *_tutorial.sh
-    rm *_std{out,err}.log
-
-
-
-Clean the VM For Another Workshop
-=================================
-If another workshop is to be run, then the NGS workshop working directory on the VM can be cleaned and
-reinitialised without pulling down all the workshop data again. To do this, login to the VM as the ```ubuntu``` user
-and execute the following commands:
-
-    cd
-    rm setup_NGS_workshop.sh
-    sudo rm -rf /mnt/NGS_workshop/working_dir/
-    sudo rm /home/ngstrainee/{ChIP-seq,NGS,QC,RNA-seq}
-    sudo rm /home/ngstrainee/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
-    wget https://raw.github.com/nathanhaigh/ngs_workshop/master/shell_scripts/setup_NGS_workshop.sh
-    bash setup_NGS_workshop.sh
-
-Real Clean the VM
-=================
-ALL the NGS workshop data can be scrubbed from the VM by running the following commands as the ```ubuntu``` user:
-
-    sudo rm /home/ngstrainee/{ChIP-seq,NGS,QC,RNA-seq}
-    sudo rm /home/ngstrainee/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
-    sudo rm -rf /mnt/NGS_workshop
-    rm ~/setup_NGS_workshop.sh
-    
+We has also developed an Ubuntu 12.04 Image, based on Cloud BioLinux, for the
+purpose of running this workshop.
