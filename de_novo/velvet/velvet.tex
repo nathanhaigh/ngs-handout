@@ -1,0 +1,265 @@
+% Define the top matter
+\renewcommand{\moduleTitle}{\textit{de novo} Assembly}
+\renewcommand{\moduleAuthors}{%
+  Matthias Haimel \mailto{mhaimel@ebi.ac.uk}\\
+  Nathan S. Watson-Haigh \mailto{nathan.watson-haigh@awri.com.au}
+} \renewcommand{\moduleContributions}{%
+  
+}
+
+%  Start: Module Title Page
+\chapter{\moduleTitle}
+\newpage
+% End: Module Title Page
+
+\section{Key Learning Outcomes}
+
+After completing this practical the trainee should be able to:
+%TODO
+\begin{itemize}
+  \item TODO 1\\
+  \item TODO 2\\
+\end{itemize}
+
+\section{Resources You'll be Using}
+Although we have provided you with an environment which contains all the tools
+and data you will be using in this module, you may like to know where we have
+sourced those tools and data from.
+ 
+\subsection{Tools Used}
+\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=1cm]
+  \item[Velvet] \hfill\\
+  	\url{http://www.ebi.ac.uk/~zerbino/velvet/}
+  \item[AMOS Hawkeye] \hfill\\
+    \url{http://apps.sourceforge.net/mediawiki/amos/index.php?title=Hawkeye}
+  \item[gnx-tools] \hfill\\
+    \url{https://github.com/mh11/gnx-tools}
+  \item[FastQC] \hfill\\
+    \url{http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/}
+  \item[R] \hfill\\
+    \url{http://www.r-project.org/}
+\end{description}
+
+\subsection{Sources of Data}
+\begin{itemize}
+\item \url{http://www.ebi.ac.uk/ena/data/view/SRS004748}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022825/SRR022825.fastq.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022823/SRR022823.fastq.gz}
+\item \url{http://www.ebi.ac.uk/ena/data/view/SRS004748}
+\item \url{ftp://ftp.ensemblgenomes.org/pub/release-8/bacteria/fasta/Staphylococcus/s_aureus_mrsa252/dna/s_aureus_mrsa252.EB1_s_aureus_mrsa252.dna.chromosome.Chromosome.fa.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022852/SRR022852_1.fastq.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022852/SRR022852_2.fastq.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR023/SRR023408/SRR023408_1.fastq.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR023/SRR023408/SRR023408_2.fastq.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR000/SRR000892/SRR000892.fastq.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR000/SRR000893/SRR000893.fastq.gz}
+\item \url{http://www.ebi.ac.uk/ena/data/view/SRX007709}
+\item \url{http://www.ebi.ac.uk/ena/data/view/SRX000181}
+\end{itemize}
+
+\newpage
+
+\section{Introduction}
+Some general introduction
+
+\section{Prepare the Environment}
+\begin{information}
+The first exercise should get you comfortable with the computer environment. I
+am going to assume that either you have some minimal experience with command
+line UNIX, or that the very short introduction I should have given you by now
+was sufficient. Please ask if neither of the above is true. It is not as tricky
+as it looks \ldots honest!
+\end{information}
+
+\begin{steps}
+First make sure that you are in your home directory by typing:
+\begin{lstlisting}
+cd
+\end{lstlisting}
+
+and making absolutely sure you're there by typing:
+\begin{lstlisting}
+pwd
+\end{lstlisting}
+
+Now create sub-directories for this and the two other velvet practicals. All
+these directories will be made as sub-directories of a directory for the whole
+course called NGS. For this you can use the following commands:
+\begin{lstlisting}
+mkdir -p NGS/velvet/{part1,part2,part3}
+\end{lstlisting}
+\end{steps}
+
+\begin{information}
+The \texttt{-p} tells \texttt{mkdir} (make directory) to make any parent
+directories if they don't exist. You could create the directories one-at-a-time
+by doing:
+\begin{lstlisting}
+mkdir NGS
+mkdir NGS/velvet
+mkdir NGS/velvet/part1
+mkdir NGS/velvet/part2
+mkdir NGS/velvet/part3
+\end{lstlisting}
+\end{information}
+
+\begin{steps}
+After creating the directories, examine the structure and move into the
+directory ready for the first velvet exercise by typing:
+\begin{lstlisting}
+ls -R NGS
+cd NGS/velvet/part1
+pwd
+\end{lstlisting}
+
+\end{steps}
+
+\section{Downloading and Compiling Velvet}
+\begin{note}
+For the duration of this workshop, all the software you require has been set up
+for you already. This might not be the case when you return to “real life”. Many
+of the programs you will need, including velvet, are quite easy to set up, it
+might be instructive to try a couple.
+\end{note}
+
+\begin{information}
+Although you will be using the preinstalled version of velvet, it is useful to
+know how to compile velvet as some of the parameters you might like to control
+can only be set at compile time. You can find the latest version of velvet at:
+
+\center{\url{http://www.ebi.ac.uk/~zerbino/velvet/}}
+
+You could go to this URL and download the latest velvet version, or
+equivalently, you could type the following, which will download, unpack,
+inspect, compile and execute your locally compiled version of velvet:
+\begin{lstlisting}
+cd ~/NGS/velvet/part1
+pwd
+cp ~/NGS/Data/velvet_1.2.07.tgz ./
+tar xzf ~/NGS/Data/velvet_1.2.07.tgz
+ls -R
+cd velvet_1.2.07
+make velveth velvetg
+./velveth
+\end{lstlisting}
+\end{information}
+
+\begin{steps}
+Take a look at the executables you have created. They will be displayed as green
+by the command:
+\begin{lstlisting}
+ls --color=always
+\end{lstlisting}
+\end{steps}
+
+\begin{note}
+The switch \texttt{--color}, offensively misspelled in American!, instructs that
+files be coloured according to their type. This is often the default. Here we
+are just being cautious. The \texttt{=always} is included as colouring is
+usually suppressed in scripts. If you run this exercise using the script
+provided, just \texttt{--color} would not be enough. \texttt{--color=always}
+insists on file colouring even from a script.
+\end{note}
+
+\begin{steps}
+Have a look of the output the command produces and you will see that
+\texttt{MAXKMERLENGTH=31} and \texttt{CATEGORIES=2} parameters were passed into
+the compiler.
+
+This indicates that the default compilation was set for De Bruijn graph k-mers of
+maximum size 31 and to allow a maximum of just 2 read categories. You can
+override these, and other, default configuration choices using command line
+parameters. Assume, you want to run velvet with a k-mer length of 41 using 3
+categories, velvet needs to be recompiled to enable this functionality by
+typing:
+\begin{lstlisting}
+make clean
+make velveth velvetg MAXKMERLENGTH=41 CATEGORIES=3;
+./velveth
+\end{lstlisting}
+\end{steps}
+
+\begin{questions}
+Discuss with the persons next to you the following questions:\\
+What are the consequences of the parameters you have given make for velvet?
+\begin{answer}
+MAXKMERLENGTH: increase the max kmer length from 31 to 41
+
+CATEGORIES: paired-end data require to be put into separate categories. By
+increasing this parameter from 2 to 3 allows you to process 3 paired / mate-pair
+libraries and unpaired data.
+\end{answer}
+
+Why does Velvet use k-mer 31 and 2 categories as default?
+\begin{answer}
+Possibly a number of reason:\\
+  - odd number to avoid palindromes\\
+  - The first reads were very short (20-40 bp) and there were hardly any paired-end data\\
+     around so there was no need to allow for longer kmer lengths / more categories.\\
+  - For programmers: 31 bp get stored in 64 bits (using 2bit encoding)
+\end{answer}
+
+Should you get better results by using a longer k-mer length?
+\begin{answer}
+If you can achieve a good kmer coverage - yes.
+\end{answer}
+\end{questions}
+
+\begin{steps}
+velvet can also be used to process SOLID colour space data. To do this you need
+a further make parameter. With the following command clean away your last
+compilation and try the following parameters:
+\begin{lstlisting}
+make clean
+make MAXKMERLENGTH=41 CATEGORIES=3 color
+./velveth_de
+\end{lstlisting}
+
+\end{steps}
+
+\begin{questions}
+What effect would the following compil-time parameters have on velvet:\\
+\texttt{OPENMP=Y}
+\begin{answer}
+Turn on multithreading
+\end{answer}
+
+\texttt{LONGSEQUENCES=Y}
+\begin{answer}
+Assembling reads / contigs longer than 32kb long
+\end{answer}
+
+\texttt{BIGASSEMBLY=Y}
+\begin{answer}
+Using more than 2.2 billion reads
+\end{answer}
+
+\texttt{VBIGASSEMBLY=Y}
+\begin{answer}
+Not documented yet
+\end{answer}
+
+\texttt{SINGLE\_COV\_CAT=Y}
+\begin{answer}
+Merge all coverage statistics into a single variable - save memory
+\end{answer}
+
+\end{questions}
+
+\begin{note}
+For a further description of velvet compile and runtime parameters please see
+the velvet Manual: \url{https://github.com/dzerbino/velvet/wiki/Manual}
+\end{note}
+
+\newpage
+\input{de_novo/velvet/single_end.tex}
+
+\input{de_novo/velvet/paired_end.tex}
+
+\input{de_novo/velvet/454_reads.tex}
+
+\input{de_novo/velvet/multiple_insert_sizes.tex}
+
+\begin{advanced}
+\input{de_novo/velvet/hybrid.tex}
+\end{advanced}
