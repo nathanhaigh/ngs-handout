@@ -8,7 +8,7 @@ First, ssh into the VM as user ```ubuntu```
 pull down the bash setup script from cloud storage
 
     cd ~/
-    wget https://raw.github.com/nathanhaigh/ngs_workshop/master/shell_scripts/setup_NGS_workshop.sh
+    wget https://github.com/nathanhaigh/ngs_workshop/blob/master/workshop_setup/setup_NGS_workshop.sh
 
 Execute the bash script, ignore any warnings from sudo about being ```unable to resolve host```
 
@@ -43,11 +43,11 @@ Connect to the VM using an NX Client as user: ```ngstrainee```
 In a terminal, pull down the tutorial test scripts from cloud storage
 
     cd ~/
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/qc_tutorial.sh
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/alignment_tutorial.sh 
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/chip-seq_tutorial.sh
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/rna-seq_tutorial.sh
-    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/shell_scripts/de_novo_tutorial.sh
+    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/ngs-qc/qc_tutorial.sh
+    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/alignment/alignment_tutorial.sh 
+    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/chip-seq/chip-seq_tutorial.sh
+    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/rna-seq/rna-seq_tutorial.sh
+    wget https://github.com/nathanhaigh/ngs_workshop/edit/master/de_novo/velvet/de_novo_tutorial.sh
 
 Run, and time, the tutorials and redirect ```STDOUT``` and ```STDERR``` to files with something like:
 
@@ -75,7 +75,7 @@ and execute the following commands:
     sudo rm -rf /mnt/NGS_workshop/working_dir/
     sudo rm /home/ngstrainee/{ChIP-seq,NGS,QC,RNA-seq}
     sudo rm /home/ngstrainee/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
-    wget https://raw.github.com/nathanhaigh/ngs_workshop/master/shell_scripts/setup_NGS_workshop.sh
+    wget https://github.com/nathanhaigh/ngs_workshop/blob/master/workshop_setup/setup_NGS_workshop.sh
     bash setup_NGS_workshop.sh
 
 Real Clean the VM
