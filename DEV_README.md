@@ -33,11 +33,11 @@ Code
 Currently only bash/shell code is supported.
 
 Bash code that you expect trainees to execute at a terminal should be placed
-inside the ```listing``` environment:
+inside the ```lstlisting``` environment:
 
-    begin{listing}
+    begin{lstlisting}
     code to be executed in here
-    end{listing}
+    end{lstlisting}
 
 This block is styled with line numbers, easy to copy-and-paste text and
 automatic line wrapping with the bash line continuation character ```\```. Thus
