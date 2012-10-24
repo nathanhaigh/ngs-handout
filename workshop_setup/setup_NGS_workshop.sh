@@ -129,7 +129,7 @@ function dl_file_from_cloud_storage() {
   local url="$1"
   echo -n "    $url ... "
   
-  http_status_code=$(curl $url --silent --remote-time -z $top_dir/$data_sub_dir/${url##*/} -o $top_dir/$data_sub_dir/${url##*/} --write-out %{http_code})
+  http_status_code=$(curl $url --location --silent --remote-time -z $top_dir/$data_sub_dir/${url##*/} -o $top_dir/$data_sub_dir/${url##*/} --write-out %{http_code})
   if [[ "$http_status_code" == "304" ]]; then
     echo "SKIPPED - Local file is up-to-date"
   elif [[ "$http_status_code" == "200" ]]; then
