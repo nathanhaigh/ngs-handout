@@ -131,13 +131,13 @@ function dl_file_from_cloud_storage() {
   
   http_status_code=$(curl $url --silent --remote-time -z $top_dir/$data_sub_dir/${url##*/} -o $top_dir/$data_sub_dir/${url##*/} --write-out %{http_code})
   if [[ "$http_status_code" == "304" ]]; then
-    echo "      SKIPPED - Local file is up-to-date"
+    echo "SKIPPED - Local file is up-to-date"
   elif [[ "$http_status_code" == "200" ]]; then
-    echo "      DOWNLOADED"
+    echo "DOWNLOADED"
   elif [[ "$http_status_code" == "404" ]]; then
-    echo "      FILE NOT FOUND"
+    echo "FILE NOT FOUND"
   else
-    echo "      NOT SURE WHAT HTTP STATUS CODE $http_status_code MEANS"
+    echo "NOT SURE WHAT HTTP STATUS CODE $http_status_code MEANS"
   fi
 }
 
