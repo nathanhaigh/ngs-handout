@@ -11,7 +11,7 @@ data_sub_dir='data'
 working_dir='working_dir'
 trainee_user='ngstrainee'
 
-usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-u <username>]
+usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-u <username>] [-c]
   Downloads documents and data for the BPA NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
 
   where:
@@ -19,7 +19,8 @@ usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w 
     -p Parent directory. Top level directory for all the workshop related content (default: /mnt/NGS_workshop)
     -d Data directory. Relative to the parent directory specified by -p (default: data)
     -w Working directory. Relative to the parent directory specified by -p  (default: working_dir)
-    -u Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)"
+    -u Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)
+    -c Cleanup the working directory. Removes the working directory and rerun this script with the same arguments this script was called with"
 
 # parse any command line options to change default values
 while getopts ":hp:d:w:u:c" opt; do
@@ -52,19 +53,20 @@ done
 
 cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809/'
 
+# TODO create a realclean function that removes all trace of this workshop
 cleanup() {
   echo "Cleaning up the VM"
   # remove this script if it already exists
-  rm $0
+  #rm $0
   # remove the working directory, this will be recreated shortly
   sudo rm -rf "$top_dir/$working_dir"
   # remove the module dirs from the user's home directory
-  sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
+  #sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
   # remove the module dirs from the user's Desktop
-  sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
+  #sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
   # download an up-to-date copy of this script and run it with the options specified on the command line used to invoke this script
-  wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
-  bash setup_NGS_workshop.sh -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -u "$trainee_user"
+  #wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
+  bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -u "$trainee_user"
 }
 
 
