@@ -16,8 +16,8 @@ cleanup() {
 }
 realclean() {
   echo "Removing all trace of this workshop from the VM"
-  # remove the working directory, this will be recreated shortly
-  sudo rm -rf "$top_dir/$working_dir"
+  # remove the workshop directory
+  sudo rm -rf "$top_dir"
   # remove the module dirs from the user's home directory
   sudo rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
   # remove the module dirs from the user's Desktop
@@ -127,7 +127,7 @@ fi
 # dl_file_from_cloud_storage $file
 function dl_file_from_cloud_storage() {
   local url="$1"
-  echo "    $url ... "
+  echo -n "    $url ... "
   
   http_status_code=$(curl $url --silent --remote-time -z $top_dir/$data_sub_dir/${url##*/} -o $top_dir/$data_sub_dir/${url##*/} --write-out %{http_code})
   if [[ "$http_status_code" == "304" ]]; then
