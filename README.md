@@ -16,8 +16,8 @@ facilitate this we are:
 Handouts
 ========
 For information on writing the handouts in LaTeX see the [DEV_README.md](https://github.com/nathanhaigh/ngs_workshop/blob/master/DEV_README.md)
-file and see the [example_handouts](https://github.com/nathanhaigh/ngs_workshop/tree/master/example_handouts) directory for PDF versions of the
-current handouts for this workshop
+file and see the [downloads page](https://github.com/nathanhaigh/ngs_workshop/downloads) for up-to-date PDF versions of the
+workshop handouts.
   
 Creative Commons License
 ========================
