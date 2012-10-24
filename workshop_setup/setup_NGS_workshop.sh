@@ -19,7 +19,7 @@ realclean() {
   # remove the working directory, this will be recreated shortly
   sudo rm -rf "$top_dir/$working_dir"
   # remove the module dirs from the user's home directory
-  sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
+  sudo rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
   # remove the module dirs from the user's Desktop
   sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
   rm $0
@@ -34,7 +34,7 @@ data_sub_dir='data'
 working_dir='working_dir'
 trainee_user='ngstrainee'
 
-usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-u <username>] [-c | -r] 
+usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-t <trainee username>] [-c | -r] 
   Downloads documents and data for the BPA NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
 
   where:
@@ -42,12 +42,12 @@ usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w 
     -p Parent directory. Top level directory for all the workshop related content (default: /mnt/NGS_workshop)
     -d Data directory. Relative to the parent directory specified by -p (default: data)
     -w Working directory. Relative to the parent directory specified by -p  (default: working_dir)
-    -u Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)
+    -t Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)
     -r Removes all trace of the workshop from the VM
     -c Cleanup the working directory. Removes the working directory and rerun this script with the same arguments this script was called with"
 
 # parse any command line options to change default values
-while getopts ":hp:d:w:u:rc" opt; do
+while getopts ":hp:d:w:t:rc" opt; do
   case $opt in
     h) echo "$usage"
        exit
@@ -58,7 +58,7 @@ while getopts ":hp:d:w:u:rc" opt; do
        ;;
     w) working_dir=$OPTARG
        ;;
-    u) trainee_user=$OPTARG
+    t) trainee_user=$OPTARG
        ;;
     r) realclean
        exit
