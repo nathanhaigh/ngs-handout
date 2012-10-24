@@ -141,6 +141,19 @@ function dl_file_from_cloud_storage() {
   fi
 }
 
+# download the trainee's handout
+cd "$top_dir/$data_sub_dir"
+dl_file_from_cloud_storage https://github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout.pdf
+ln -s $top_dir/$data_sub_dir/trainee_handout.pdf  $top_dir/$working_dir/handout.pdf
+ln -s $top_dir/$data_sub_dir/trainee_handout.pdf  $top_dir/$working_dir/handout.pdf
+# make tutorial paths sync with shorter paths used used in tutorials
+if [[ ! -e ~/handout.pdf ]]; then
+  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/handout.pdf"
+fi
+if [[ ! -e ~/Desktop/handout.pdf ]]; then
+  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/Desktop/handout.pdf"
+fi
+
 ###############
 ## QC module ##
 ###############
