@@ -158,10 +158,10 @@ do
   dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
-echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
+echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
 if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p "$top_dir/$working_dir/$module_dir"
-  echo "    DONE"
+  echo "DONE"
   cd "$top_dir/$working_dir/$module_dir"
   ln -s $top_dir/$data_sub_dir/bad_example.fastq 
   ln -s $top_dir/$data_sub_dir/good_example.fastq
@@ -174,7 +174,7 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
     sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/QC"
   fi
 else
-  echo "    Already exists"
+  echo "Already exists"
 fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
@@ -206,10 +206,10 @@ do
   dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
-echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
+echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
 if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p "$top_dir/$working_dir/$module_dir"
-  echo "    DONE"
+  echo "DONE"
   cd "$top_dir/$working_dir/$module_dir"
   ln -s $top_dir/$data_sub_dir/Oct4.fastq
   ln -s $top_dir/$data_sub_dir/gfp.fastq
@@ -239,7 +239,7 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   fi
   #ln -s $top_dir/$data_sub_dir/bad_example.fastq $top_dir/$working_dir/$module_dir/
 else
-  echo "    Already exists"
+  echo "Already exists"
 fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
@@ -291,11 +291,11 @@ do
   dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
-echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
+echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
 if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   echo "  Creating working directory for the RNA-seq module: $top_dir/$working_dir/$module_dir"
   mkdir -p "$top_dir/$working_dir/$module_dir"
-  echo "    DONE"
+  echo "DONE"
   cd $top_dir/$working_dir/$module_dir
   mkdir -p $top_dir/$working_dir/$module_dir/{data,annotation,genome}
   cd $top_dir/$working_dir/$module_dir/data
@@ -343,7 +343,7 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
     sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/RNA-seq"
   fi
 else
-  echo "    Already exists"
+  echo "Already exists"
 fi
 
 # last thing to run for this module
@@ -386,10 +386,10 @@ do
   dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
-echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
+echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
 if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p "$top_dir/$working_dir/$module_dir"
-  echo "    DONE"
+  echo "DONE"
   cd "$top_dir/$working_dir/$module_dir"
   ln -s $top_dir/$data_sub_dir Data
   # make tutorial paths sync with shorter paths used by the EBI folks
@@ -400,7 +400,7 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
     sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/NGS"
   fi
 else
-  echo "    Already exists"
+  echo "Already exists"
 fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
