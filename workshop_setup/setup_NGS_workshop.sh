@@ -2,16 +2,8 @@
 
 cleanup() {
   echo "Cleaning up the VM"
-  # remove this script if it already exists
-  #rm $0
   # remove the working directory, this will be recreated shortly
   sudo rm -rf "$top_dir/$working_dir"
-  # remove the module dirs from the user's home directory
-  #sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
-  # remove the module dirs from the user's Desktop
-  #sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
-  # download an up-to-date copy of this script and run it with the options specified on the command line used to invoke this script
-  #wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
   bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -t "$trainee_user"
 }
 realclean() {
@@ -19,9 +11,9 @@ realclean() {
   # remove the workshop directory
   sudo rm -rf "$top_dir"
   # remove the module dirs from the user's home directory
-  sudo rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
+  sudo rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
   # remove the module dirs from the user's Desktop
-  sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
+  sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
   rm $0
 }
 
