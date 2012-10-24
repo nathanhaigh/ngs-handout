@@ -1,6 +1,33 @@
 Here you will find information on how to write a workshop handout in LaTeX to
 get consistent styling for a professional look and feel.
 
+Setting up Your Development Environment
+=======================================
+I develop this code in MS Windows using the Eclipse IDE and an install of MiKTeX,
+a Windows implementation of TeX/LaTeX. To set this environment up, you need to
+install a few things. I won't go into details since each tool is pretty straight
+forward to install and they have good install documentation already.
+
+Here are the main software installs you need:
+
+* The latest version of Eclipse Classic (as of 25th Oct 2012 this is v4.2.1, codename Juno):
+  http://eclipse.org/downloads/packages/eclipse-classic-421/junosr1
+* The latest version of MiKTeX (as of 25th Oct 2012 this is v2.9.4521):
+  http://miktex.org/download
+
+In addition, you also need to install the following software from inside Eclipse.
+* EGit and GitHub Mylyn Connector for Eclipse: http://eclipse.github.com/
+* TeXlipse: http://texlipse.sourceforge.net/manual/installation.html
+
+Generally speaking, Eclipse needs to know the location of the software repository
+(aka software site) hosting the tool(s) you want to install. Then you just ask Eclipse to install the tool(s)
+from the list of software it has generated from the repositories it knows about. Here
+are some links to Eclipse help pages that describe this general process:
+* Adding a new software site:
+  http://help.eclipse.org/juno/topic/org.eclipse.platform.doc.user/tasks/tasks-127.htm
+* Installing new software:
+  http://help.eclipse.org/juno/topic//org.eclipse.platform.doc.user/tasks/tasks-124.htm
+
 Trainer/Trainee Manual
 ======================
 By changing the boolean value of the ```trainermanual``` toggle you can output
