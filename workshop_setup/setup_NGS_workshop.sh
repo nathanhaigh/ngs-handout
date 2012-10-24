@@ -12,7 +12,7 @@ cleanup() {
   #sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
   # download an up-to-date copy of this script and run it with the options specified on the command line used to invoke this script
   #wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
-  bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -u "$trainee_user"
+  bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -t "$trainee_user"
 }
 realclean() {
   echo "Removing all trace of this workshop from the VM"
@@ -66,7 +66,7 @@ while getopts ":hp:d:w:t:rc" opt; do
     c) cleanup
        exit
        ;;
-    ?) printf "Illegal option: '%s'\n" "$OPTARG" >&2
+    ?) printf "Illegal option: '-%s'\n" "$OPTARG" >&2
        echo "$usage" >&2
        exit 1
        ;;
@@ -128,16 +128,17 @@ fi
 function dl_file_from_cloud_storage() {
   local url="${1%/}"
   echo "    $url ... "
-  
-  status=$(curl $url --silent --remote-time -z ${url##*/} -o ${url##*/} --write-out %{http_code})
-  if [[ "$status" == "304" ]]; then
+  cmd="curl $url --silent --remote-time -z ${url##*/} -o ${url##*/} --write-out %{http_code}"
+  echo "      Running: $cmd"
+  http_status_code=$(curl $url --silent --remote-time -z ${url##*/} -o ${url##*/} --write-out %{http_code})
+  if [[ "$http_status_code" == "304" ]]; then
     echo "      SKIPPED - Local file is up-to-date"
-  elif [[ "$status" == "200" ]]; then
+  elif [[ "$http_status_code" == "200" ]]; then
     echo "      DOWNLOADED"
-  elif [[ "$status" == "404" ]]; then
+  elif [[ "$http_status_code" == "404" ]]; then
     echo "      FILE NOT FOUND"
   else
-    echo "      NOT SURE WHAT HTTP STATUS CODE $status MEANS"
+    echo "      NOT SURE WHAT HTTP STATUS CODE $http_status_code MEANS"
   fi
 }
 
