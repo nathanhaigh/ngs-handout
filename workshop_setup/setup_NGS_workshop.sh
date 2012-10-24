@@ -124,13 +124,12 @@ fi
 
 # function for downloading files from cloud storage
 # call it like this:
-# dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
+# dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
 function dl_file_from_cloud_storage() {
-  local url="${1%/}"
+  local url="$1"
   echo "    $url ... "
-  cmd="curl $url --silent --remote-time -z ${url##*/} -o ${url##*/} --write-out %{http_code}"
-  echo "      Running: $cmd"
-  http_status_code=$(curl $url --silent --remote-time -z ${url##*/} -o ${url##*/} --write-out %{http_code})
+  
+  http_status_code=$(curl $url --silent --remote-time -z $top_dir/$data_sub_dir/${url##*/} -o $top_dir/$data_sub_dir/${url##*/} --write-out %{http_code})
   if [[ "$http_status_code" == "304" ]]; then
     echo "      SKIPPED - Local file is up-to-date"
   elif [[ "$http_status_code" == "200" ]]; then
@@ -157,7 +156,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
+  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -206,7 +205,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
+  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -292,7 +291,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
+  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -388,7 +387,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
+  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
