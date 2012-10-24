@@ -1,8 +1,5 @@
 #!/bin/bash
 
-cd /tmp
-
-# TODO create a realclean function that removes all trace of this workshop
 cleanup() {
   echo "Cleaning up the VM"
   # remove this script if it already exists
@@ -17,6 +14,16 @@ cleanup() {
   #wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
   bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -u "$trainee_user"
 }
+realclean() {
+  echo "Removing all trace of this workshop from the VM"
+  # remove the working directory, this will be recreated shortly
+  sudo rm -rf "$top_dir/$working_dir"
+  # remove the module dirs from the user's home directory
+  sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
+  # remove the module dirs from the user's Desktop
+  sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
+  rm $0
+}
 
 # default command line argument values
 #####
@@ -27,7 +34,7 @@ data_sub_dir='data'
 working_dir='working_dir'
 trainee_user='ngstrainee'
 
-usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-u <username>] [-c]
+usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-u <username>] [-c | -r] 
   Downloads documents and data for the BPA NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
 
   where:
@@ -36,10 +43,11 @@ usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w 
     -d Data directory. Relative to the parent directory specified by -p (default: data)
     -w Working directory. Relative to the parent directory specified by -p  (default: working_dir)
     -u Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)
+    -r Removes all trace of the workshop from the VM
     -c Cleanup the working directory. Removes the working directory and rerun this script with the same arguments this script was called with"
 
 # parse any command line options to change default values
-while getopts ":hp:d:w:u:c" opt; do
+while getopts ":hp:d:w:u:rc" opt; do
   case $opt in
     h) echo "$usage"
        exit
@@ -51,6 +59,9 @@ while getopts ":hp:d:w:u:c" opt; do
     w) working_dir=$OPTARG
        ;;
     u) trainee_user=$OPTARG
+       ;;
+    r) realclean
+       exit
        ;;
     c) cleanup
        exit
@@ -67,7 +78,7 @@ while getopts ":hp:d:w:u:c" opt; do
   esac
 done
 
-cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809/'
+cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809'
 
 # Add $(hostname) to /etc/hosts
 #sudo sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
