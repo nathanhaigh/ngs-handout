@@ -2,7 +2,23 @@
 
 cd /tmp
 
-# default values
+# TODO create a realclean function that removes all trace of this workshop
+cleanup() {
+  echo "Cleaning up the VM"
+  # remove this script if it already exists
+  #rm $0
+  # remove the working directory, this will be recreated shortly
+  sudo rm -rf "$top_dir/$working_dir"
+  # remove the module dirs from the user's home directory
+  #sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
+  # remove the module dirs from the user's Desktop
+  #sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
+  # download an up-to-date copy of this script and run it with the options specified on the command line used to invoke this script
+  #wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
+  bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -u "$trainee_user"
+}
+
+# default command line argument values
 #####
 #set -x
 top_dir='/mnt/NGS_workshop'
@@ -52,23 +68,6 @@ while getopts ":hp:d:w:u:c" opt; do
 done
 
 cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809/'
-
-# TODO create a realclean function that removes all trace of this workshop
-cleanup() {
-  echo "Cleaning up the VM"
-  # remove this script if it already exists
-  #rm $0
-  # remove the working directory, this will be recreated shortly
-  sudo rm -rf "$top_dir/$working_dir"
-  # remove the module dirs from the user's home directory
-  #sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
-  # remove the module dirs from the user's Desktop
-  #sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
-  # download an up-to-date copy of this script and run it with the options specified on the command line used to invoke this script
-  #wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
-  bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -u "$trainee_user"
-}
-
 
 # Add $(hostname) to /etc/hosts
 #sudo sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
