@@ -1,4 +1,9 @@
 #!/bin/bash
+
+cd /tmp
+
+# default values
+#####
 #set -x
 top_dir='/mnt/NGS_workshop'
 data_sub_dir='data'
@@ -6,7 +11,62 @@ data_sub_dir='data'
 working_dir='working_dir'
 trainee_user='ngstrainee'
 
+usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-u <username>]
+  Downloads documents and data for the BPA NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
+
+  where:
+    -h Show this help text
+    -p Parent directory. Top level directory for all the workshop related content (default: /mnt/NGS_workshop)
+    -d Data directory. Relative to the parent directory specified by -p (default: data)
+    -w Working directory. Relative to the parent directory specified by -p  (default: working_dir)
+    -u Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)"
+
+# parse any command line options to change default values
+while getopts ":hp:d:w:u:c" opt; do
+  case $opt in
+    h) echo "$usage"
+       exit
+       ;;
+    p) top_dir=$OPTARG
+       ;;
+    d) data_sub_dir=$OPTARG
+       ;;
+    w) working_dir=$OPTARG
+       ;;
+    u) trainee_user=$OPTARG
+       ;;
+    c) cleanup
+       exit
+       ;;
+    ?) printf "Illegal option: '%s'\n" "$OPTARG" >&2
+       echo "$usage" >&2
+       exit 1
+       ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      echo "$usage" >&2
+      exit 1
+      ;;
+  esac
+done
+
 cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809/'
+
+cleanup() {
+  echo "Cleaning up the VM"
+  # remove this script if it already exists
+  rm $0
+  # remove the working directory, this will be recreated shortly
+  sudo rm -rf "$top_dir/$working_dir"
+  # remove the module dirs from the user's home directory
+  sudo rm "/home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
+  # remove the module dirs from the user's Desktop
+  sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
+  # download an up-to-date copy of this script and run it with the options specified on the command line used to invoke this script
+  wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
+  bash setup_NGS_workshop.sh -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -u "$trainee_user"
+}
+
 
 # Add $(hostname) to /etc/hosts
 #sudo sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
@@ -52,19 +112,11 @@ fi
 
 # function for downloading files from cloud storage
 # call it like this:
-# dl_file_from_cloud_storage $cloud_storage_url_prefix $cloud_storage_container $file
+# dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
 function dl_file_from_cloud_storage() {
-  local url="${1%/}/${2%/}/${3%/}"
+  local url="${1%/}"
   echo "    $url ... "
-  # ensure trailing slashes are removed from $1, $2 and $3 before concatenating them
-  #if [[ -e $3 ]]; then
-  #  echo "      SKIPPED: Already exists"
-  #  return
-  #fi
   
-  #echo -n "$url ... "
-  #cmd="curl $url --silent --remote-time -z ${url##*/} -o ${url##*/} --write-out %{http_code}"
-  #echo $cmd
   status=$(curl $url --silent --remote-time -z ${url##*/} -o ${url##*/} --write-out %{http_code})
   if [[ "$status" == "304" ]]; then
     echo "      SKIPPED - Local file is up-to-date"
@@ -85,7 +137,6 @@ cloud_storage_container='NGSDataQC'
 files=(
   'bad_example.fastq'
   'good_example.fastq'
-  'FASTQC-tutorial.docx'
 )
 echo "Setting up module: $module_dir"
 # Download the QC files from cloud object storage
@@ -93,7 +144,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix $cloud_storage_container $file
+  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -103,7 +154,6 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   cd "$top_dir/$working_dir/$module_dir"
   ln -s $top_dir/$data_sub_dir/bad_example.fastq 
   ln -s $top_dir/$data_sub_dir/good_example.fastq
-  ln -s $top_dir/$data_sub_dir/FASTQC-tutorial.docx
 
   # make tutorial paths sync with shorter paths used used in tutorials
   if [[ ! -e ~/QC ]]; then
@@ -136,8 +186,6 @@ files=(
   'mouse.mm9.genome'
   'mm9.fa'
   'PeakAnalyzer_1.4.tar.gz'
-  'ChIP-seq_Practical.docx'
-  '20120711_Alignment_Practical.docx'
 )
 echo "Setting up module: $module_dir"
 # Download the ChIP-seq files from cloud object storage
@@ -145,7 +193,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix $cloud_storage_container $file
+  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -155,8 +203,6 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   cd "$top_dir/$working_dir/$module_dir"
   ln -s $top_dir/$data_sub_dir/Oct4.fastq
   ln -s $top_dir/$data_sub_dir/gfp.fastq
-  ln -s $top_dir/$data_sub_dir/ChIP-seq_Practical.docx
-  ln -s $top_dir/$data_sub_dir/20120711_Alignment_Practical.docx
   tar -xzf $top_dir/$data_sub_dir/PeakAnalyzer_1.4.tar.gz
   mkdir -p "$top_dir/$working_dir/$module_dir/bowtie_index"
   cd "$top_dir/$working_dir/$module_dir/bowtie_index"
@@ -226,7 +272,6 @@ files=(
   'junctions.bed'
   'deletions.bed'
   'insertions.bed'
-  '20120711_RNA-seq_Practical.docx'
 )
 echo "Setting up module: $module_dir"
 # Download the RNA-seq files from cloud object storage
@@ -234,7 +279,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix $cloud_storage_container $file
+  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -243,7 +288,6 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p "$top_dir/$working_dir/$module_dir"
   echo "    DONE"
   cd $top_dir/$working_dir/$module_dir
-  ln -s $top_dir/$data_sub_dir/20120711_RNA-seq_Practical.docx
   mkdir -p $top_dir/$working_dir/$module_dir/{data,annotation,genome}
   cd $top_dir/$working_dir/$module_dir/data
   ln -s $top_dir/$data_sub_dir/2cells_1.fastq
@@ -324,9 +368,6 @@ files=(
   'SRR022863_2.fastq.gz'
   'SRR023408_trim1.fastq'
   'SRR023408_trim2.fastq'
-  'Velvet-practical_part-1.odt'
-  'Velvet-practical_part-2.odt'
-  'Velvet-practical_part-3.odt'
 )
 echo "Setting up module: $module_dir"
 # Download the de novo assembly files from cloud object storage
@@ -334,7 +375,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix $cloud_storage_container $file
+  dl_file_from_cloud_storage "$cloud_storage_url_prefix/$cloud_storage_container/$file"
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -343,9 +384,6 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   echo "    DONE"
   cd "$top_dir/$working_dir/$module_dir"
   ln -s $top_dir/$data_sub_dir Data
-  ln -s $top_dir/$data_sub_dir/Velvet-practical_part-1.odt
-  ln -s $top_dir/$data_sub_dir/Velvet-practical_part-2.odt
-  ln -s $top_dir/$data_sub_dir/Velvet-practical_part-3.odt
   # make tutorial paths sync with shorter paths used by the EBI folks
   if [[ ! -e ~/NGS ]]; then
     sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/NGS"
@@ -362,18 +400,4 @@ if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; the
   sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 ##################################
-
-
-exit
-
-
-####################
-## Cleanup script ##
-####################
-top_dir='/mnt/NGS_workshop'
-trainee_user='ngstrainee'
-sudo rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq}
-sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq}
-sudo rm -rf $top_dir
-####################
 
