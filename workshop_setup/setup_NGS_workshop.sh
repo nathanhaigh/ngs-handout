@@ -124,7 +124,7 @@ fi
 
 # function for downloading files from cloud storage
 # call it like this:
-# dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
+# dl_file_from_cloud_storage $file
 function dl_file_from_cloud_storage() {
   local url="$1"
   echo "    $url ... "
@@ -145,10 +145,9 @@ function dl_file_from_cloud_storage() {
 ## QC module ##
 ###############
 module_dir='QC'
-cloud_storage_container='NGSDataQC'
 files=(
-  'bad_example.fastq'
-  'good_example.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataQC/bad_example.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataQC/good_example.fastq'
 )
 echo "Setting up module: $module_dir"
 # Download the QC files from cloud object storage
@@ -156,7 +155,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
+  dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -189,15 +188,14 @@ fi
 ## Alignment/ChIP-seq module ##
 ###############################
 module_dir='ChIP-seq'
-cloud_storage_container='NGSDataChIPSeq'
 files=(
-  'Oct4.fastq'
-  'gfp.fastq'
-  'Oct4.bam'
-  'gfp.bam'
-  'mouse.mm9.genome'
-  'mm9.fa'
-  'PeakAnalyzer_1.4.tar.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/Oct4.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/gfp.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/Oct4.bam'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/gfp.bam'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mouse.mm9.genome'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mm9.fa'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/PeakAnalyzer_1.4.tar.gz'
 )
 echo "Setting up module: $module_dir"
 # Download the ChIP-seq files from cloud object storage
@@ -205,7 +203,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
+  dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -255,35 +253,34 @@ fi
 ## RNA-seq module ##
 ####################
 module_dir='RNA-seq'
-cloud_storage_container='NGSDataRNASeq'
 files=(
-  '2cells_1.fastq'
-  '2cells_2.fastq'
-  '6h_1.fastq'
-  '6h_2.fastq'
-  'Danio_rerio.Zv9.66.spliceSites'
-  'Danio_rerio.Zv9.66.gtf'
-  'ZV9.1.ebwt'
-  'ZV9.2.ebwt'
-  'ZV9.3.ebwt'
-  'ZV9.4.ebwt'
-  'ZV9.rev.1.ebwt'
-  'ZV9.rev.2.ebwt'
-  'Danio_rerio.Zv9.66.dna.fa'
-  'Danio_rerio.Zv9.66.dna.fa.fai'
-  'globalDiffExprs_Genes_qval.01_top100.tab'
-  '6h_genes.fpkm_tracking'
-  '2cells_genes.fpkm_tracking'
-  '6h_isoforms.fpkm_tracking'
-  '2cells_isoforms.fpkm_tracking'
-  '6h_transcripts.gtf'
-  '2cells_transcripts.gtf'
-  'accepted_hits.bam'
-  'accepted_hits.sorted.bam'
-  'accepted_hits.sorted.bam.bai'
-  'junctions.bed'
-  'deletions.bed'
-  'insertions.bed'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/2cells_1.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/2cells_2.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/6h_1.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/6h_2.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/Danio_rerio.Zv9.66.spliceSites'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/Danio_rerio.Zv9.66.gtf'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/ZV9.1.ebwt'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/ZV9.2.ebwt'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/ZV9.3.ebwt'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/ZV9.4.ebwt'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/ZV9.rev.1.ebwt'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/ZV9.rev.2.ebwt'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/Danio_rerio.Zv9.66.dna.fa'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/Danio_rerio.Zv9.66.dna.fa.fai'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/globalDiffExprs_Genes_qval.01_top100.tab'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/6h_genes.fpkm_tracking'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/2cells_genes.fpkm_tracking'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/6h_isoforms.fpkm_tracking'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/2cells_isoforms.fpkm_tracking'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/6h_transcripts.gtf'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/2cells_transcripts.gtf'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/accepted_hits.bam'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/accepted_hits.sorted.bam'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/accepted_hits.sorted.bam.bai'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/junctions.bed'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/deletions.bed'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataRNASeq/insertions.bed'
 )
 echo "Setting up module: $module_dir"
 # Download the RNA-seq files from cloud object storage
@@ -291,7 +288,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
+  dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -364,22 +361,21 @@ fi
 ## de novo assembly module ##
 #############################
 module_dir='de_novo'
-cloud_storage_container='NGSDataDeNovo'
 files=(
-  'velvet_1.2.07.tgz'
-  'SRR022825.fastq.gz'
-  'SRR022823.fastq.gz'
-  's_aureus_mrsa252.EB1_s_aureus_mrsa252.dna.chromosome.Chromosome.fa.gz'
-  'SRR022852_1.fastq.gz'
-  'SRR022852_2.fastq.gz'
-  'SRR023408_1.fastq.gz'
-  'SRR023408_2.fastq.gz'
-  'SRR000892.fastq.gz'
-  'SRR000893.fastq.gz'
-  'SRR022863_1.fastq.gz'
-  'SRR022863_2.fastq.gz'
-  'SRR023408_trim1.fastq'
-  'SRR023408_trim2.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/velvet_1.2.07.tgz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022825.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022823.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/s_aureus_mrsa252.EB1_s_aureus_mrsa252.dna.chromosome.Chromosome.fa.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022852_1.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022852_2.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_1.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_2.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR000892.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR000893.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022863_1.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022863_2.fastq.gz'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_trim1.fastq'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_trim2.fastq'
 )
 echo "Setting up module: $module_dir"
 # Download the de novo assembly files from cloud object storage
@@ -387,7 +383,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $cloud_storage_url_prefix/$cloud_storage_container/$file
+  dl_file_from_cloud_storage $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo "  Creating working directory $top_dir/$working_dir/$module_dir ... "
