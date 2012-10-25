@@ -15,10 +15,10 @@
 \section{Key Learning Outcomes}
 
 After completing this practical the trainee should be able to:
-%TODO
+% TODO Add KLOs
 \begin{itemize}
-  \item TODO 1\\
-  \item TODO 2\\
+  \item TODO 1
+  \item TODO 2
 \end{itemize}
 
 \section{Resources You'll be Using}
@@ -131,7 +131,8 @@ formatted reads are in.
 \begin{questions}
 Can you tell which quality encoding our fastq formatted reads are in?
 \begin{answer}
-%TODO
+The presence of numbers in the quality strings suggest we have either Sanger or
+Illumina 1.8+ derived reads. In either case, they are Phred+33 encoded.
 \end{answer}
 
 \begin{information}
@@ -183,7 +184,9 @@ tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_reri
 Using the above command as a guide, can you
 devise and run the command for aligning the \texttt{6h} data?
 \begin{answer}
-%TODO
+\begin{lstlisting}
+tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_6h genome/ZV9 data/6h_1.fastq data/6h_2.fastq
+\end{lstlisting}
 \end{answer}
 
 \begin{warning}
@@ -331,16 +334,17 @@ cufflinks -o cufflinks/ZV9_2cells_gff -G annotation/Danio_rerio.Zv9.66.gtf -b ge
 \end{lstlisting}
 \end{steps}
 
-\begin{warning}
-Don't forget to change the output directory for the question section below.
-Otherwise your command will overwrite the results of the previous run.
-\end{warning}
-
 \begin{questions}
 Using the above command, which we used to pre-align the \texttt{2cells} data,
 can you devise and run a command for the \texttt{6h} data?
+\begin{warning}
+Don't forget to change the output directory.
+Otherwise your command may overwrite the results of the \texttt{2cells} run.
+\end{warning}
 \begin{answer}
-%TODO
+\begin{lstlisting}
+cufflinks -o cufflinks/ZV9_6h_gff -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_6h/accepted_hits.bam
+\end{lstlisting}
 \end{answer}
 
 Take a look at the output directories that have been created. The results from
@@ -380,7 +384,12 @@ take too much time, please have a think about the cufflinks command you would
 need to use to run in order to perform a guided transcriptome assembly
 for the \texttt{2cells} dataset. Write your answer below:
 \begin{answer}
-%TODO
+\begin{lstlisting}
+# For the 2cells:
+cufflinks -o cufflinks/ZV9_2cells_gff_guided -g annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
+# For the 6h:
+cufflinks -o cufflinks/ZV9_6h_gff_guided -g annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_6h/accepted_hits.bam
+\end{lstlisting}
 \end{answer}
 
 \end{questions}
@@ -504,7 +513,7 @@ Gene list and then press Submit List.
 Click on Gene Ontology and then click on the CHART button of the GOTERM\_BP\_ALL item.
 
 \begin{questions}
-Do these categories make sense given the samples we’re studying?
+Do these categories make sense given the samples we're studying?
 \begin{answer}
 %TODO
 \end{answer}

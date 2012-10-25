@@ -5,7 +5,7 @@ The data you will examine in this exercise is again from Staphylococcus aureus
 which has a genome of around 3MB. The reads are 454 single end.
 
 The required data can be downloaded from the SRA. Specifically, the run data
-(SRR000892,SRR000893) from the SRA Experiment SRX000181.
+(SRR000892, SRR000893) from the SRA Experiment SRX000181.
 
 \center{\url{http://www.ebi.ac.uk/ena/data/view/SRX000181}}
 \end{note}
@@ -68,14 +68,15 @@ weighted.hist(data$long_cov, data$lgth, breaks=0:50)
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{de_novo/velvet_Rplot002.png}
-\label{fig:velvet_Rplot002}
+\includegraphics[width=0.8\textwidth]{de_novo/velvet/velvet_Rplot003.png}
+\label{fig:velvet_Rplot003}
 \end{figure}
 
 For me the histogram suggests to me to choose a coverage cut-off of around 9
-with an expected coverage of about 19. If you disagree, feel free to try
-different settings, but first leave R before running \texttt{velvetg} with the
-coverage parameters typing:
+with an expected coverage of about 19.
+
+If you disagree, feel free to try different settings, but first leave R before
+running \texttt{velvetg}:
 \begin{lstlisting}
 q()
 

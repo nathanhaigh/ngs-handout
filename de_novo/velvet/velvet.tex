@@ -1,5 +1,5 @@
 % Define the top matter
-\renewcommand{\moduleTitle}{\textit{de novo} Assembly}
+\renewcommand{\moduleTitle}{\textit{de novo} Genome Assembly}
 \renewcommand{\moduleAuthors}{%
   Matthias Haimel \mailto{mhaimel@ebi.ac.uk}\\
   Nathan S. Watson-Haigh \mailto{nathan.watson-haigh@awri.com.au}
@@ -17,8 +17,16 @@
 After completing this practical the trainee should be able to:
 %TODO
 \begin{itemize}
-  \item TODO 1\\
-  \item TODO 2\\
+  \item Compile velvet with appropriate compile-time parameters set for a specific analysis
+  \item Be able to choose appropriate assembly parameters
+  \item Assemble a set of single-ended reads
+  \item Assemble a set of paired-end reads from a single insert-size library
+%  \item Assemble a set of long 454 single-end reads
+%  \item Assemble multiple paired-end libraries with different insert-sizes
+%  \item Assemble a hybrid set of long 454 single-end reads and a set of paired-end reads
+  \item Be able to visualise an assembly in AMOS Hawkeye
+  \item Understand the importance of using paired-end libraries in \textit{de
+        novo} genome assembly
 \end{itemize}
 
 \section{Resources You'll be Using}
@@ -42,33 +50,47 @@ sourced those tools and data from.
 
 \subsection{Sources of Data}
 \begin{itemize}
+\item \url{ftp://ftp.ensemblgenomes.org/pub/release-8/bacteria/fasta/Staphylococcus/s_aureus_mrsa252/dna/s_aureus_mrsa252.EB1_s_aureus_mrsa252.dna.chromosome.Chromosome.fa.gz}
+% single end data
 \item \url{http://www.ebi.ac.uk/ena/data/view/SRS004748}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022825/SRR022825.fastq.gz}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022823/SRR022823.fastq.gz}
-\item \url{http://www.ebi.ac.uk/ena/data/view/SRS004748}
-\item \url{ftp://ftp.ensemblgenomes.org/pub/release-8/bacteria/fasta/Staphylococcus/s_aureus_mrsa252/dna/s_aureus_mrsa252.EB1_s_aureus_mrsa252.dna.chromosome.Chromosome.fa.gz}
+% paired-end data
+%\item \url{http://www.ebi.ac.uk/ena/data/view/SRS004748}
+\item \url{http://www.ebi.ac.uk/ena/data/view/SRX008042}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022852/SRR022852_1.fastq.gz}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022852/SRR022852_2.fastq.gz}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR023/SRR023408/SRR023408_1.fastq.gz}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR023/SRR023408/SRR023408_2.fastq.gz}
+% 454 Module data
+%\item \url{http://www.ebi.ac.uk/ena/data/view/SRX000181}
+%\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR000/SRR000892/SRR000892.fastq.gz}
+%\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR000/SRR000893/SRR000893.fastq.gz}
+% Multiple insert sizes data
+%\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022852/SRR022852_1.fastq.gz}
+%\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022852/SRR022852_2.fastq.gz}
+% hybrid data
+% 454
+\item \url{http://www.ebi.ac.uk/ena/data/view/SRX000181}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR000/SRR000892/SRR000892.fastq.gz}
 \item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR000/SRR000893/SRR000893.fastq.gz}
+% illumina paired-end
 \item \url{http://www.ebi.ac.uk/ena/data/view/SRX007709}
-\item \url{http://www.ebi.ac.uk/ena/data/view/SRX000181}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022863/SRR022863_1.fastq.gz}
+\item \url{ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR022/SRR022863/SRR022863_2.fastq.gz}
 \end{itemize}
 
 \newpage
 
 \section{Introduction}
-Some general introduction
+The aim of this module is to become familiar with performing \textit{de novo}
+genome assembly using Velvet, a de Bruijn graph based assembler, on a variety of
+sequence data.
 
 \section{Prepare the Environment}
 \begin{information}
-The first exercise should get you comfortable with the computer environment. I
-am going to assume that either you have some minimal experience with command
-line UNIX, or that the very short introduction I should have given you by now
-was sufficient. Please ask if neither of the above is true. It is not as tricky
-as it looks \ldots honest!
+The first exercise should get you a little more comfortable with the computer
+environment and the command line.
 \end{information}
 
 \begin{steps}
@@ -117,7 +139,7 @@ pwd
 \section{Downloading and Compiling Velvet}
 \begin{note}
 For the duration of this workshop, all the software you require has been set up
-for you already. This might not be the case when you return to “real life”. Many
+for you already. This might not be the case when you return to ``real life''. Many
 of the programs you will need, including velvet, are quite easy to set up, it
 might be instructive to try a couple.
 \end{note}
@@ -127,7 +149,10 @@ Although you will be using the preinstalled version of velvet, it is useful to
 know how to compile velvet as some of the parameters you might like to control
 can only be set at compile time. You can find the latest version of velvet at:
 
-\center{\url{http://www.ebi.ac.uk/~zerbino/velvet/}}
+{\centering
+\url{http://www.ebi.ac.uk/~zerbino/velvet/}
+ 
+}
 
 You could go to this URL and download the latest velvet version, or
 equivalently, you could type the following, which will download, unpack,
@@ -153,12 +178,10 @@ ls --color=always
 \end{steps}
 
 \begin{note}
-The switch \texttt{--color}, offensively misspelled in American!, instructs that
-files be coloured according to their type. This is often the default. Here we
-are just being cautious. The \texttt{=always} is included as colouring is
-usually suppressed in scripts. If you run this exercise using the script
-provided, just \texttt{--color} would not be enough. \texttt{--color=always}
-insists on file colouring even from a script.
+The switch \texttt{--color}, instructs that files be coloured according to their
+type. This is often the default but we are just being explicit. By specifying
+the value \texttt{always}, we ensure that colouring is always applied, even from
+a script.
 \end{note}
 
 \begin{steps}
@@ -166,7 +189,7 @@ Have a look of the output the command produces and you will see that
 \texttt{MAXKMERLENGTH=31} and \texttt{CATEGORIES=2} parameters were passed into
 the compiler.
 
-This indicates that the default compilation was set for De Bruijn graph k-mers of
+This indicates that the default compilation was set for de Bruijn graph k-mers of
 maximum size 31 and to allow a maximum of just 2 read categories. You can
 override these, and other, default configuration choices using command line
 parameters. Assume, you want to run velvet with a k-mer length of 41 using 3
@@ -201,11 +224,11 @@ Possibly a number of reason:\\
 
 Should you get better results by using a longer k-mer length?
 \begin{answer}
-If you can achieve a good kmer coverage - yes.
+If you can achieve a good k-mer coverage - yes.
 \end{answer}
 \end{questions}
 
-\begin{steps}
+\begin{bonus}
 velvet can also be used to process SOLID colour space data. To do this you need
 a further make parameter. With the following command clean away your last
 compilation and try the following parameters:
@@ -214,11 +237,10 @@ make clean
 make MAXKMERLENGTH=41 CATEGORIES=3 color
 ./velveth_de
 \end{lstlisting}
-
-\end{steps}
+\end{bonus}
 
 \begin{questions}
-What effect would the following compil-time parameters have on velvet:\\
+What effect would the following compile-time parameters have on velvet:\\
 \texttt{OPENMP=Y}
 \begin{answer}
 Turn on multithreading
@@ -256,10 +278,11 @@ the velvet Manual: \url{https://github.com/dzerbino/velvet/wiki/Manual}
 
 \input{de_novo/velvet/paired_end.tex}
 
-\input{de_novo/velvet/454_reads.tex}
+%\input{de_novo/velvet/454_reads.tex}
 
-\input{de_novo/velvet/multiple_insert_sizes.tex}
+%\input{de_novo/velvet/multiple_insert_sizes.tex}
 
 \begin{advanced}
 \input{de_novo/velvet/hybrid.tex}
 \end{advanced}
+

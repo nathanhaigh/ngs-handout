@@ -1,4 +1,4 @@
-\section{Assembling Mixed Insert Length Libraries}
+\section{Assembling Multiple Insert Length Libraries}
 
 \begin{note}
 Like the previous examples, the data you will examine in this exercise is again
@@ -47,11 +47,13 @@ weighted.hist(data$short1_cov+data$short2_cov, data$lgth, breaks=0:70)
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{de_novo/velvet_Rplot003.png}
-\label{fig:velvet_Rplot003}
+\includegraphics[width=0.8\textwidth]{de_novo/velvet/velvet_Rplot004.png}
+\label{fig:velvet_Rplot004}
 \end{figure}
 
-For me the histogram suggests to me to choose a coverage cut-off of around 20
+% TODO Check the above figure as the expected coverage (36) and coverage
+% cut-offs (20) used below do not agree.
+For me the histogram suggests a coverage cut-off of around 20
 with an expected coverage of about 36. If you disagree, feel free to try
 different settings, but first leave R before running velvetg with the coverage
 parameters typing:
@@ -96,36 +98,36 @@ Yes
 \end{answer}
 \end{questions}
 
-\begin{bonus}
-Find and download a different insert length library
-% TODO: \footnote affects the width of the shaded box - \renewcommand{\footnote}?
-\footnotemark[1]
-from the
-study SRP001086 and recompile velvet to allow the use of three insert length
-libraries. Maybe you could use the library you trimmed during previous
-exercises. You should be able to find these files here:
-\texttt{~/NGS/velvet/part2/SRX008042/SRR023408\_trim?.fastq}. If you don't still
-have these files, you can find a copy of them here:
-\texttt{~/NGS/Data/SRR023408\_trim?.fastq}.
-Use the fresh compiled Velvet version with the three (two provided and one
-downloaded library) to assemble the genome.
-\begin{questions}
-Does the extra library make any difference?
-\begin{answer}
-TODO
-\end{answer}
-
-How does the overall coverage change?
-\begin{answer}
-TODO
-\end{answer}
-
-Any other comments?
-\begin{answer}
-TODO
-\end{answer}
-\end{questions}
-\footnotetext[1]{Paired insert
-lengths can be found on the NCBI SRA page in the library section (Nominal
-length) e.g. \url{http://www.ncbi.nlm.nih.gov/sra?term=SRR022866}}
-\end{bonus}
+% \begin{bonus}
+% Find and download a different insert length library
+% % TODO: \footnote affects the width of the shaded box - \renewcommand{\footnote}?
+% \footnotemark[1]
+% from the
+% study SRP001086 and recompile velvet to allow the use of three insert length
+% libraries. Maybe you could use the library you trimmed during previous
+% exercises. You should be able to find these files here:
+% \texttt{~/NGS/velvet/part2/SRX008042/SRR023408\_trim?.fastq}. If you don't still
+% have these files, you can find a copy of them here:
+% \texttt{~/NGS/Data/SRR023408\_trim?.fastq}.
+% Use the fresh compiled Velvet version with the three (two provided and one
+% downloaded library) to assemble the genome.
+% \begin{questions}
+% Does the extra library make any difference?
+% \begin{answer}
+% % TODO
+% \end{answer}
+% 
+% How does the overall coverage change?
+% \begin{answer}
+% % TODO
+% \end{answer}
+% 
+% Any other comments?
+% \begin{answer}
+% % TODO
+% \end{answer}
+% \end{questions}
+% \footnotetext[1]{Paired insert
+% lengths can be found on the NCBI SRA page in the library section (Nominal
+% length) e.g. \url{http://www.ncbi.nlm.nih.gov/sra?term=SRR022866}}
+% \end{bonus}

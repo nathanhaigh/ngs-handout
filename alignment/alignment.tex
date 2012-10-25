@@ -15,10 +15,11 @@
 
 After completing this practical the trainee should be able to:
 \begin{itemize}
-  \item Perform the simple NGS data alignment task against one interested reference data \\
-  \item Interpret and manipulate the mapping output using samtools \\
-  \item Visualise the alignment via a standard genome browser, e.g. IGV browser \\
+  \item Perform the simple NGS data alignment task against one interested reference data
+  \item Interpret and manipulate the mapping output using samtools
+  \item Visualise the alignment via a standard genome browser, e.g. IGV browser
 \end{itemize}
+
 \section{Resources You'll be Using}
  
 \subsection{Tools Used}
@@ -38,6 +39,7 @@ After completing this practical the trainee should be able to:
 \end{description}
 
 \subsection{Sources of Data}
+% TODO more specific about how the data was derived for this module
   \url{http://www.ebi.ac.uk/arrayexpress/experiments/E-GEOD-11431}
 % \url{http://www.ebi.ac.uk/ena/data/view/ERR022484}\\
 % \url{http://www.ebi.ac.uk/ena/data/view/ERR022485}
@@ -180,9 +182,11 @@ SRR002012.48 & 16 & chr1 & etc \\
 
 What kind of information does the header provide?
 \begin{answer}
-1. @HD: Header line; VN: Format version; SO: the sorting order of alignment.
-2. @SQ: Reference sequence information; SN: reference sequence name; LN: reference sequence length.
-3. @PG: Read group information; ID: Read group identifier; VN: Program version; CL: the command line that produces the alignment.
+\begin{itemize}
+  \item @HD: Header line; VN: Format version; SO: the sorting order of alignment.
+  \item @SQ: Reference sequence information; SN: reference sequence name; LN: reference sequence length.
+  \item @PG: Read group information; ID: Read group identifier; VN: Program version; CL: the command line that produces the alignment.
+\end{itemize}
 \end{answer}
 
 To which chromosome are the reads mapped? 
@@ -337,7 +341,7 @@ is Thymidine (T).
 \end{answer}
 \end{questions}
 
-\section{Practice}
+\section{Practice Makes Perfect!}
 In the ChIP-seq folder you will find another \texttt{.fastq} file called
 \texttt{gfp.fastq}. Follow the above described analysis for this dataset as well.
 

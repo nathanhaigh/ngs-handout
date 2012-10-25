@@ -15,10 +15,10 @@
 
 After completing this practical the trainee should be able to:
 \begin{itemize}
-  \item Assess the overall quality of NGS sequence reads\\
+  \item Assess the overall quality of NGS sequence reads
   \item Visualise the quality, and other associated matrices, of reads to decide
-        on filters and cutoffs for cleaning up data ready for downstream analysis\\
-  \item Clean up and pre-process the sequences data for further analysis\\
+        on filters and cutoffs for cleaning up data ready for downstream analysis
+  \item Clean up and pre-process the sequences data for further analysis
 \end{itemize}
 
 \section{Resources You'll be Using}
@@ -27,16 +27,14 @@ After completing this practical the trainee should be able to:
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
   \item[FastQC]\hfill\\
   	\url{http://www.bioinformatics.babraham.ac.uk/projects/fastqc/}
-  \item[fastx-toolkit]\hfill\\
+  \item[FASTX-Toolkit]\hfill\\
   	\url{http://hannonlab.cshl.edu/fastx_toolkit/}
-  \item[picard]\hfill\\
+  \item[Picard]\hfill\\
   	\url{http://picard.sourceforge.net/}
-  \item[fastq-mcf]\hfill\\
-  	\url{http://code.google.com/p/ea-utils/wiki/FastqMcf}
 \end{description}
 
 % \subsection{Sources of Data}
-% TODO
+% TODO Provide a publically available data set used for this module
 % \url{http://www.ebi.ac.uk/ena/data/view/ERR022484}\\
 % \url{http://www.ebi.ac.uk/ena/data/view/ERR022485}
 
@@ -73,8 +71,8 @@ correction methods exist but are beyond the scope of this tutorial.
 
 \begin{information}
 To investigate sequence data quality we will demonstrate tools called FastQC
-and fastx-toolkit. FastQC will process and present the reports in a visual manner.
-Based on the results, the sequence data can be processed using the fastx-toolkit.
+and FASTX-Toolkit. FastQC will process and present the reports in a visual manner.
+Based on the results, the sequence data can be processed using the FASTX-Toolkit.
 We will use one data set in this practical, which can be found in the QC
 directory on your desktop.
 \end{information}
@@ -238,7 +236,7 @@ and quality-based trimming.
 
 \subsection{Fixed Length Trimming}
 Low quality read ends can be trimmed using a fixed-length timmer. We will use the
-\texttt{fastx\_trimmer} from the fastx-toolkit. Usage message to find out various options
+\texttt{fastx\_trimmer} from the FASTX-Toolkit. Usage message to find out various options
 you can use with this tool. Type \fonttt{fastx\_trimmer -h} at anytime to display help.
 
 \begin{steps}
@@ -263,7 +261,7 @@ We used the following options in the command above:
 \end{note}
 
 \begin{steps}
-Run fastqc on the trimmed file and visualise the quality scores of the trimmed file.
+Run FastQC on the trimmed file and visualise the quality scores of the trimmed file.
 \begin{lstlisting}
 fastqc -f fastq bad_example_trimmed01.fastq
 firefox bad_example_trimmed01_fastqc/fastqc_report.html &
@@ -416,7 +414,7 @@ fastx_clipper -v -Q 33 -l 20 -M 15 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG -i bad_ex
 \begin{note}
 An alternative tool, not installed on this system, for adapter clipping is
 \texttt{fastq-mcf}. A list of adapters is provided in a text file. For more
-information, see Fastqmcf at the URL provided at the start of this module.
+information, see Fastqmcf at \url{http://code.google.com/p/ea-utils/wiki/FastqMcf}.
 \end{note}
 
 \subsection{Removing Duplicates}
