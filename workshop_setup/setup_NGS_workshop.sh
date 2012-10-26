@@ -298,7 +298,6 @@ done
 # Setup working directory and symlinks as expected by the tutorial
 echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
 if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
-  echo "  Creating working directory for the RNA-seq module: $top_dir/$working_dir/$module_dir"
   mkdir -p "$top_dir/$working_dir/$module_dir"
   echo "DONE"
   cd $top_dir/$working_dir/$module_dir
