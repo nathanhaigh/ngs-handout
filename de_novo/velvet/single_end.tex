@@ -51,7 +51,7 @@ by typing \texttt{velvetg} or \texttt{velveth} in your terminal.
 \end{information}
 
 \begin{steps}
-Now run \textt{velveth} for the reads in \texttt{SRR022825.fastq.gz} and
+Now run \texttt{velveth} for the reads in \texttt{SRR022825.fastq.gz} and
 \texttt{SRR022823.fastq.gz} using the following options:
 \begin{itemize}
   \item A de Bruijn graph k-mer of 25
@@ -203,7 +203,7 @@ below:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/velvet_Rplot001.png}
-\label{fig:SRS004748_coverage_hist}
+\caption{\label{fig:SRS004748_coverage_hist}}
 \end{figure}
 
 \begin{steps}
@@ -304,7 +304,7 @@ velvetg run_25 -cov_cutoff 6 -exp_cov 14 -amos_file yes
 \end{lstlisting}
 
 \begin{note}
-We need the \texttt{-exp\_cov} argument to enable read-tracking in Velvet.
+The \texttt{-exp\_cov} argument to enable read-tracking \texttt{-read\_trkg yes} in Velvet.
 Without read tracking enabled, very little read-level information can be output
 to the AMOS message file. This results in a pretty useless visualisation in
 Hawkeye! However, since reads are being tracked, the analysis takes longer and
@@ -325,13 +325,13 @@ this:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/hawkeye_single_ended.png}
-\label{fig:hawkeye_single_ended}
+\caption{\label{fig:hawkeye_single_ended}}
 \end{figure}
 
 \end{steps}
 
 \begin{bonus}
-If you have time, try running the \tettt{velvetg} command without the
+If you have time, try running the \texttt{velvetg} command without the
 \texttt{-exp\_cov} argument, create the AMOS bank and see how the assemblies
 look different in Hawkeye. Here's a hint:
 \begin{lstlisting}

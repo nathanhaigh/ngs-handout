@@ -3,7 +3,7 @@
 The use of paired-end data in \textit{de novo} genome assembly results in better
 quality assemblies, particularly for larger, more complex genomes. In addition,
 paired-end constraint violation (expected distance and orientation of paired
-reads) can be used to identify missassemblies.
+reads) can be used to identify misassemblies.
 
 \begin{warning}
 If you are doing \textit{de novo} assembly, pay the extra and get paired-ends:
@@ -244,7 +244,7 @@ Comment on the number of contigs and total length generated for each run.
     Contigs.fa & 163 & 2,857,439 & 11,526 \\
     \bottomrule
     \end{tabular}%
-  \label{tab:velvetrunresults}%
+  \caption{\label{tab:velvetrunresults}}%
 \end{table}%
 \end{answer}
 \end{questions}
@@ -388,7 +388,7 @@ Look at tabs for both files:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/paired_fastqc.png}
-\label{fig:paired_fastqc}
+\caption{\label{fig:paired_fastqc}}
 \end{figure}
 
 \begin{questions}
@@ -442,7 +442,7 @@ base sequence quality"
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/paired_fastqc_quality_plots.png}
-\label{fig:paired_fastqc_quality_plots}
+\caption{\label{fig:paired_fastqc_quality_plots}}
 \end{figure}
 
 \begin{steps}
@@ -527,7 +527,6 @@ R --no-save
 library(plotrix) 
 data <- read.table("run_21/stats.txt", header=TRUE) 
 data2 <- read.table("run_21trim/stats.txt", header=TRUE) 
-x11()
 par(mfrow=c(1,2))
 weighted.hist(data$short1_cov, data$lgth, breaks=0:50)
 weighted.hist(data2$short1_cov, data2$lgth, breaks=0:50)
@@ -536,7 +535,7 @@ weighted.hist(data2$short1_cov, data2$lgth, breaks=0:50)
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/velvet_Rplot002.png}
-\label{fig:velvet_Rplot002}
+\caption{\label{fig:velvet_Rplot002}}
 \end{figure}
 
 For the untrimmed read histogram (left) there is an expected coverage of around
@@ -606,7 +605,7 @@ Compare the results, produced during the last exercises, with each other:
     N50 (k-mer used) & & & \\[0.5\questionspacing]
     \bottomrule
     \end{tabular*}
-  \label{tab:comparison}
+  \caption{\label{tab:comparison}}
 \end{table}
 
 \begin{answer}
@@ -625,7 +624,7 @@ Compare the results, produced during the last exercises, with each other:
     N50 (k-mer used) & 68,843 (25) & 2,803 (21) & 2,914 (21)\\[0.5\questionspacing]
     \bottomrule
     \end{tabular*}
-  \label{tab:comparison_result}
+  \caption{\label{tab:comparison_result}}
 \end{table}
 \end{answer}
 

@@ -48,7 +48,7 @@ weighted.hist(data$short1_cov+data$short2_cov, data$lgth, breaks=0:70)
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/velvet_Rplot004.png}
-\label{fig:velvet_Rplot004}
+\caption{\label{fig:velvet_Rplot004}}
 \end{figure}
 
 For me the histogram suggests a coverage cut-off of around 28
@@ -77,10 +77,10 @@ gnx -min 100 -nx 25,50,75 run_25/contigs.fa*
 \begin{questions}
 What was the best N50 you got?
 \begin{answer}
-70,042 bp
+62,741 bp
 \end{answer}
 
-How did the runtime/results compare to one paired-end library runs?
+How did the runtime/results compare to a run with a single paired-end library?
 \begin{answer}
 More memory, longer runtime, (in this case) similar results
 \end{answer}
@@ -98,7 +98,6 @@ Yes
 
 
 \begin{bonus}
-
 Output an AMOS message file, convert it into an AMOS bank, update the
 estimations for the insert size distributions and view the assembly with
 Hawkeye.
@@ -106,6 +105,7 @@ Hawkeye.
 \begin{lstlisting}
 time velvetg run_25 -cov_cutoff 28 -exp_cov 36 -ins_length 170 -ins_length2 350 -amos_file yes -read_trkg yes
 cp run_25/contigs.fa run_25/contigs.fa.4
+gnx -min 100 -nx 25,50,75 run_25/contigs.fa.4
 
 bank-transact -c -b run_25/velvet_asm.bnk -m run_25/velvet_asm.afg
 asmQC -b run_25/velvet_asm.bnk -scaff -recompute -update -numsd 2
@@ -114,10 +114,10 @@ hawkeye run_25/velvet_asm.bnk
 
 \begin{questions}
 What are the mean and SD for the insert size distributions for the two libraries
-used int he assembly?
+used in the assembly?
 \begin{answer}
-Mean: 170; SD:17
-Mean: 350; SD:35
+Mean: 129; SD:31
+Mean: 227; SD:19
 \end{answer}
 \end{questions}
 

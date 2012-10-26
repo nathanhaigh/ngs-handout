@@ -63,14 +63,13 @@ histogram using the column \texttt{long\_cov} by typing:
 R --no-save
 library(plotrix) 
 data <- read.table("run_25/stats.txt", header=TRUE) 
-x11() 
 weighted.hist(data$long_cov, data$lgth, breaks=0:50)
 \end{lstlisting}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/velvet_Rplot003.png}
-\label{fig:velvet_Rplot003}
+\caption{\label{fig:velvetRplot003}}
 \end{figure}
 
 For me the histogram suggests to me to choose a coverage cut-off of around 9
@@ -89,7 +88,7 @@ cp run_25/contigs.fa run_25/contigs.fa.1
 time velvetg run_25 -long_cov_cutoff 9 -exp_cov 19
 cp run_25/contigs.fa run_25/contigs.fa.2
 
-gnx -min 100 -nx 25,50,75 run_25/contigs.fa.*
+gnx -min 100 -nx 25,50,75 run_25/contigs.fa*
 \end{lstlisting}
 
 \end{steps}
