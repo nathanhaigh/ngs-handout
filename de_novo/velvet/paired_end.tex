@@ -268,16 +268,15 @@ hawkeye run_25/velvet_asm.bnk
 Looking at the scaffold view of a contig, comment on the proportion of ``happy
 mates'' to ``compressed mates'' and ``stretched mates''.
 \begin{answer}
-There is quite a high proportion of compressed mates and very few stretched
+Nearly all mates are compressed with no stretched mates and very few happy
 mates.
 \end{answer}
 
 What is the mean and standard deviation of the insert size reported under the
 Libraries tab?
 \begin{answer}
-% TODO
-% Mean: 350 bp
-% SD: XX bp
+Mean: 350 bp
+SD: 35 bp
 \end{answer}
 
 Look at the actual distribution of insert sizes for this library. Can you
@@ -311,9 +310,9 @@ There are similar numbers of stretched and compressed mates.
 What is the mean and standard deviation of the insert size reported under the
 Libraries tab?
 \begin{answer}
-% TODO
-% Mean: 350 bp
-% SD: XX bp
+TODO
+Mean: 226 bp
+SD: 25 bp
 \end{answer}
 
 Look at the actual distribution of insert sizes for this library. Does the mean
@@ -322,11 +321,14 @@ and SD reported in both places now match?
 Yes
 \end{answer}
 
-Can you find a region with an unusually high proportion of stretched, compressed
-or incorrectly orientated mates? What might this situation indicate?
+Can you find a region with an unusually high proportion of stretched, compressed,
+incorrectly orientated or linking mates? What might this situation indicate?
 \begin{answer}
-This would indicate a possible misassembly and worthy of further
-investigation.
+This would indicate a possible misassembly and worthy of further investigation.
+
+Look at the largest scaffold, there are stacks of stretched pairs which span
+contig boundaries. This indicates that the gap size has been underestimated
+during the scaffolding phase.
 \end{answer}
 \end{questions}
 
