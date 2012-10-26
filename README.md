@@ -1,4 +1,4 @@
-This github repo has been setup to help foster a more sustainable collaborative
+This GitHub repo has been setup to help foster a more sustainable collaborative
 environment in which the workshop content can be developed and refined. To
 facilitate this we are:
 
@@ -61,10 +61,10 @@ Computer Lab Setup
 ==================
 This workshop has been designed to be run on VM's on Australia's NeCTAR
 Research Cloud. Trainees, then use the NoMachine NX Client to provide a remote
-dekstop like connection to their own dedicated VM for the duration of the
+desktop like connection to their own dedicated VM for the duration of the
 workshop.
 
-This approach means that the workshop can be delievered in a road-show style
+This approach means that the workshop can be delivered in a road-show style
 form around Australia, without being limited by local computational resources.
 The level of IT support, required of the local hosting institution, is minimal
 and only requires the installation of the NoMachine NX Client and SSH firewall

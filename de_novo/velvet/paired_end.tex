@@ -2,7 +2,7 @@
 
 The use of paired-end data in \textit{de novo} genome assembly results in better
 quality assemblies, particularly for larger, more complex genomes. In addition,
-paired-end constraint violation (expected disatnce and orientation of paired
+paired-end constraint violation (expected distance and orientation of paired
 reads) can be used to identify missassemblies.
 
 \begin{warning}
@@ -249,10 +249,6 @@ Comment on the number of contigs and total length generated for each run.
 \end{answer}
 \end{questions}
 
-
-
-
-
 \subsection{AMOS Hawkeye}
 
 We will now output the assembly in the AMOS massage format and visualise the
@@ -329,8 +325,8 @@ Yes
 Can you find a region with an unusually high proportion of stretched, compressed
 or incorrectly orientated mates? What might this situation indicate?
 \begin{answer}
-This would indicate a possible missassembly and worthy of further
-investiogation.
+This would indicate a possible misassembly and worthy of further
+investigation.
 \end{answer}
 \end{questions}
 
@@ -473,7 +469,7 @@ fastx_trimmer -Q 33 -f 3 -l 29 -i SRR023408_2.fastq -o SRR023408_trim2.fastq
 \begin{advanced}
 Many NGS read files are large. This means that simply reading and writing files
 can become the bottleneck, also known as I/O bound. Therefore, it is often good practice to
-avoid uneccassary disk read/write.
+avoid unnecessary disk read/write.
 
 We could do what is called pipelining to send a stream of data from one command
 to another, using the pipe (\texttt{|}) character, without the need for
@@ -520,7 +516,7 @@ Time saving, increased N50, reduced coverage
 
 \begin{steps}
 The evidence is that trimming improved the assembly. The thing to do surely, is
-to run velvetg with the \texttt{-cov\_cutoff} and \texttt{-exp\_cov}. In order
+to run \texttt{velvetg} with the \texttt{-cov\_cutoff} and \texttt{-exp\_cov}. In order
 to use \texttt{-cov\_cutoff} and \texttt{-exp\_cov} sensibly, you need to
 investigate with R, as you did in the previous exercise, what parameter values
 to use. Start up R and produce the weighted histograms:
@@ -546,7 +542,7 @@ For the untrimmed read histogram (left) there is an expected coverage of around
 there is an expected coverage of around 9 with a coverage cut-off of around 5.
 
 If you disagree, feel free to try different settings, but first leave R before
-running velvetg:
+running \texttt{velvetg}:
 \begin{lstlisting}
 q()
 
@@ -572,9 +568,9 @@ Memory
 Lower memory usage
 \end{answer}
 
-k-mer choice (Can you use kmer 31 for a read of length 30 bp?)
+k-mer choice (Can you use k-mer 31 for a read of length 30 bp?)
 \begin{answer}
-K-mer has to be lower than the read length and the Kmer coverage should be
+K-mer has to be lower than the read length and the K-mer coverage should be
 sufficient to produce results.
 \end{answer}
 

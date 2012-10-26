@@ -11,7 +11,7 @@ computational resources do I need, what do I have access to and how do I access
 them?
 \end{itemize}
 
-We're extatic you're thinking this way and want to help guide you! However, lets
+We're ecstatic you're thinking this way and want to help guide you! However, lets
 take this one step at a time.
 
 The quickest way to dabble is to use a clone of the operating system (OS) you've
@@ -42,7 +42,7 @@ alternative.
 
 This approach will use, at most, the computational resources available on
 your own computer. If you are analysing non-microbial organisms or performing
-de novo assemlies, you may find these resources are insufficient. If this is the
+\textit{de novo} assemblies, you may find these resources are insufficient. If this is the
 case, you really should speak to someone from IT support at your institution or
 get in touch with a bioinformatician for advise.
 
@@ -71,7 +71,7 @@ Here are the steps to setting up a VM in VirtualBox with our image file:
   \item Confirm remaining settings
   \item Select the ``NGS Training'' VM and click Start to boot he machine.
   \item Once booted, log into the VM as either \texttt{ubuntu} (a sudoer user;
-  i.e. has admin rights) or as \texttt{ngstrainee} (a regular unprivilaged
+  i.e. has admin rights) or as \texttt{ngstrainee} (a regular unprivileged
   user). See table below for passwords.
 \end{enumerate}
 
@@ -118,7 +118,7 @@ own personal cloud allocation.
 
 \begin{enumerate}
   \item In the NeCTAR Research Cloud dashboard, click ``Images \& Snapshots''
-  to list all the publically available images from which you can instantiate a
+  to list all the publicly available images from which you can instantiate a
   VM. Under ``Snapshots" Click the ``Launch" button for the latest version of the
   ``NGSTraining" snapshot:
   \begin{figure}[H]
@@ -131,11 +131,11 @@ own personal cloud allocation.
   ``Launch Instance".
   In the ``Launch Instances'' pop-up frame choose the following settings:
   \begin{description}
-  \item[Server Name] A human readable name for your convieience. e.g. ``My NGS VM''
+  \item[Server Name] A human readable name for your convenience. e.g. ``My NGS VM''
   \item[Flavor] The resources you want to allocate to this VM. I suggest a
   Medium sized VM (2 CPUs and 8 GBytes RAM). This will use all your personal
   allocation, but anything less will probably be insufficient. You could request
-  a new allcoation of resources if you want to instantiate a larger VM with more
+  a new allocation of resources if you want to instantiate a larger VM with more
   memory.
   \item[Security Groups] Select SSH.
   \end{description}
@@ -294,7 +294,7 @@ inside it. The most common errors are:
 You'll need to terminate the instance and create a new VM from scratch
 \item You failed to select "Unix GNOME" when you configured the NX Client
 session. You'll need to reconfigure the session using the NX Client
-\item Your institutions firwall blocks TCP port 22. You may need to request this
+\item Your institutions firewall blocks TCP port 22. You may need to request this
 port to be opened by your local network team or configure the NX client to use a
 proxy server.
 \end{itemize}

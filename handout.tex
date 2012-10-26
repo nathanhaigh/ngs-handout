@@ -9,20 +9,19 @@
 \usepackage{hyperref}
 \usepackage{fullpage}	% See http://en.wikibooks.org/wiki/LaTeX/Page_Layout#Manual_Page_Formatting for layout
 \usepackage{enumitem}
-%\usepackage[parfill]{parskip}	% Don't indent the first line of paragraphs
 \linespread{1.0} % Line spacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.2cm}
 \usepackage{mdframed}
-%\usepackage{parskip}
 \usepackage{etoolbox}
 \usepackage[nobottomtitles]{titlesec}
 \usepackage[section]{placeins}
-\setlength{\parindent}{0pt}
+
 \usepackage{ifthen}
 \usepackage{array}
 % packages for Creative Commons Licences
 \usepackage{xmpincl}
 \includexmp{licences/CC_Attribution_3.0_Unported}	% includes XML metadata into the PDF
-%\usepackage{scrextend}
 \usepackage{microtype}
 \usepackage{accsupp}
 \usepackage{textcomp}
@@ -531,6 +530,43 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 
 \chapterstyle{workshop}
 
+% Code for making a page run of ruled lines. From:
+% http://tex.stackexchange.com/a/79018/19412
+% Defines \myruledpage command with two mandatory arguments; the first one gives
+% the length of the first column of rules, and the second one controls the
+% separation between rules;
+\makeatletter
+% Code taken from exam.cls and modified
+\newlength\linefillheight
+\newlength\linefillthickness
+\setlength\linefillheight{.25in}
+\setlength\linefillthickness{0.1pt}
+\newcommand\linefill[1]{\leavevmode
+    \rule{#1}{\linefillthickness}\ \leaders\hrule height \linefillthickness \hfill\kern\z@}
+\newcommand\fillwithlines[2]{%
+  \begingroup
+  \ifhmode
+    \par
+  \fi
+  \hrule height \z@
+  \nobreak
+  \setbox0=\hbox to \hsize{\hskip \@totalleftmargin
+          \vrule height \linefillheight depth \z@ width \z@
+          \linefill{#2}}%
+  % We use \cleaders (rather than \leaders) so that a given
+  % vertical space will always produce the same number of lines
+  % no matter where on the page it happens to start:
+  \cleaders \copy0 \vskip #1 \hbox{}%
+  \endgroup
+}
+\makeatother
+\newcommand\myruledpage[2]{%
+  \setlength\linefillheight{#2}
+  \fillwithlines{\stretch{1}}{#1}
+\newpage}
+
+
+
 \begin{document}
 
 %
@@ -610,5 +646,16 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 % Access to Workshop Documents
 %
 \input{post-workshop/documents_and_data.tex}
+
+\chapter{Space for Personal Notes or Feedback}
+\clearpage
+
+%
+% Some empty ruled comments pages
+%
+\myruledpage{3cm}{1cm}
+\myruledpage{3cm}{1cm}
+\myruledpage{3cm}{1cm}
+\myruledpage{3cm}{1cm}
 
 \end{document}

@@ -1,8 +1,8 @@
 The ```setup_NGS_workshop.sh``` script is for downloading the documents and data required for
 this NGS workshop. It also makes the workshop's working directory writable by the specified
-user and creates some convieient symlinks to the data under the specified user's home and desktop.
+user and creates some convenient symlinks to the data under the specified user's home and desktop.
 
-First, ssh into the VM as user ```ubuntu``` and pull down the bash setup script from github:
+First, ssh into the VM as user ```ubuntu``` and pull down the bash setup script from GitHub:
 
     cd
     wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
@@ -18,7 +18,7 @@ See the script's help, for information about command line arguments and defaults
     USAGE: setup_NGS_workshop.sh [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>]
            [-t <trainee username>] [-c | -r] 
       Downloads documents and data for the BPA NGS workshop, setting write permissions on the working
-      directory for the specified user and creates convienient symlinks for said user.
+      directory for the specified user and creates convenient symlinks for said user.
 
       where:
         -h Show this help text

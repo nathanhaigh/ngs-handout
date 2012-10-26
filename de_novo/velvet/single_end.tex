@@ -51,7 +51,7 @@ by typing \texttt{velvetg} or \texttt{velveth} in your terminal.
 \end{information}
 
 \begin{steps}
-Now run velveth for the reads in \texttt{SRR022825.fastq.gz} and
+Now run \textt{velveth} for the reads in \texttt{SRR022825.fastq.gz} and
 \texttt{SRR022823.fastq.gz} using the following options:
 \begin{itemize}
   \item A de Bruijn graph k-mer of 25
@@ -84,7 +84,7 @@ Sequences, Roadmaps, Log
 
 Describe the content of the two \texttt{velveth} output files?
 \begin{answer}
-Sequences: fasta file version of provided reads\\
+Sequences: FASTA file version of provided reads\\
 Roadmaps: Internal file of velvet - basic information about # reads, k-mer size
 \end{answer}
 
@@ -95,14 +95,14 @@ Time stamp, Executed commands; velvet version + compiler parameters, results
 \end{questions}
 
 \begin{steps}
-Now move one directory level up and run velvetg on your output directory, with
+Now move one directory level up and run \texttt{velvetg} on your output directory, with
 the commands:
 \begin{lstlisting}
 cd ../
 time velvetg run_25
 \end{lstlisting}
 
-Move back into your results directory to examine the effects of velvetg:
+Move back into your results directory to examine the effects of \texttt{velvetg}:
 \begin{lstlisting}
 cd run_22
 ls -l
@@ -219,7 +219,7 @@ The weighted histogram suggests to me that the expected coverage is around 14
 and that everything below 6 is likely to be noise. Some coverage is also
 represented at around 20, 30 and greater 50, which might be contamination or
 repeats (depending on the dataset), but at the moment this should not worry you.
-To see the improvements, rerun velvetg first with \texttt{-cov\_cutoff} 6 and
+To see the improvements, rerun \texttt{velvetg} first with \texttt{-cov\_cutoff} 6 and
 after checking the N50 use only / add \texttt{-exp\_cov} 14 to the command line
 option. Also keep a copy of the contigs file for comparison:
 \begin{lstlisting}
@@ -258,7 +258,7 @@ What is the N50 with \texttt{-cov\_cutoff} 6 \texttt{-exp\_cov} 14:
 5,417 bp
 \end{answer}
 
-Did you notice a variation in the time velvetg took to run? If so, can you
+Did you notice a variation in the time \texttt{velvetg} took to run? If so, can you
 explain why that might be?
 \begin{answer}
 Velvet reuses already calculated results (from PreGraph,Graph)
@@ -281,7 +281,7 @@ obtained.
 -max\_coverage: cut-off value for the upper range (like cov\_cutoff for the lower range)\\
 -max\_branch\_length: length of branch to look for bubble\\
 -unused\_reads: write unused reads into file\\
--amos\_file: write amos file for further usage\\
+-amos\_file: write AMOS message file\\
 -read\_trkg: tracking read (more memory usage) - automatically on for certain operations\\
 \end{answer}
 \\

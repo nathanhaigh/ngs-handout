@@ -129,7 +129,7 @@ formatted reads are in.
 \end{note}
 
 \begin{questions}
-Can you tell which quality encoding our fastq formatted reads are in?
+Can you tell which quality encoding our FASTQ formatted reads are in?
 \begin{answer}
 The presence of numbers in the quality strings suggest we have either Sanger or
 Illumina 1.8+ derived reads. In either case, they are Phred+33 encoded.
@@ -203,7 +203,7 @@ open the \texttt{RNA-seq} directory which can be found on your Desktop. Click on
 subdirectory and then on the directory called \texttt{ZV9\_2cells}.
 
 Tophat reports the alignments in a BAM file called \texttt{accepted\_hits.bam}.
-Among others it also creates a junctions.bed files that stores the coordinates
+Among others it also creates a \texttt{junctions.bed} files that stores the coordinates
 of the splice junctions present in your dataset, as these have been extracted
 from the spliced alignments.
 
@@ -229,7 +229,7 @@ the track a meaningful name.
 Follow the same steps in order to load the \texttt{junctions.bed} file from the same
 directory.
 
-Using the same proceedure, load the Ensembl annotation
+Using the same procedure, load the Ensembl annotation
 \texttt{Danio\_rerio.Zv9.66.gtf} file stored under the \texttt{RNA-seq/annotation}
 directory.
 
@@ -278,7 +278,7 @@ Then load them onto IGV following the steps above.
 \section{Isoform Expression and Transcriptome Assembly}
 There are a number of tools that perform reconstruction of the transcriptome
 and for this workshop we are going to use Cufflinks. Cufflinks can do
-transcriptome assembly either ab initio or using a reference annotation. It
+transcriptome assembly either \textit{ab initio} or using a reference annotation. It
 also quantifies the isoform expression in FPKMs.
 
 A reminder from the presentation this morning that FPKM stands for `Fragments
@@ -302,7 +302,7 @@ The annotation from Ensembl of Danio rerio is stored under the directory
 \texttt{annotation} in a file called \texttt{Danio\_rerio.Zv9.66.gtf}.
 
 \begin{information}
-The general format of the cufflinks command is:
+The general format of the \textt{cufflinks} command is:
 \begin{lstlisting}
 cufflinks [options]* <aligned_reads.(sam|bam)>
 \end{lstlisting}
@@ -373,14 +373,14 @@ annotation as a guide, thus allowing for novel transcripts.
 
 \begin{information}
 Performing the guided transcriptome analysis for the \texttt{2cells} and
-\texttt{6h} data sets would take 15-20min each. Therefore, we have
+\texttt{6h} data sets would take 15-20 min each. Therefore, we have
 pre-computed these for you and have the results available under subdirectories:
 \texttt{cufflinks/ZV9\_2cells} and \texttt{cufflinks/ZV9\_6h}.
 \end{information}
 
 \begin{questions}
 Rather than running the commands for guided transcriptome assembly, which would
-take too much time, please have a think about the cufflinks command you would
+take too much time, please have a think about the \texttt{cufflinks} command you would
 need to use to run in order to perform a guided transcriptome assembly
 for the \texttt{2cells} dataset. Write your answer below:
 \begin{answer}

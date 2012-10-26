@@ -25,7 +25,7 @@ cd SRX000181
 \end{lstlisting}
 
 The downloaded files can be used directly in velvet. To let velvet know that
-these fastq files are long reads, you pass in the parameter \texttt{-long} by
+these FASTQ files are long reads, you pass in the parameter \texttt{-long} by
 using the commands:
 \begin{lstlisting}
 ln -s ~/NGS/Data/SRR000892.fastq.gz
@@ -36,7 +36,8 @@ time velvetg run_25
 \end{steps}
 
 \begin{questions}
-Take a look at the stats.txt file. Which columns are used compared to short reads and why?
+Take a look at the \texttt{stats.txt} file. Which columns are used compared to
+short reads and why?
 \begin{answer}
 long\_cov instead of e.g. short1\_cov
 \end{answer}
@@ -46,14 +47,14 @@ Which N50 do you get?
 28 (k-mer N50)
 \end{answer}
 
-How long did the velvetg run take?
+How long did the \texttt{velvetg} run take?
 \begin{answer}
 \texttt{real    0m36.333s; user    2m33.238s; sys     0m3.893s}
 \end{answer}
 \end{questions}
 
 \begin{steps}
-The right thing to do is to run velvetg setting the cut-offs. But for long reads
+The right thing to do is to run \texttt{velvetg} setting the cut-offs. But for long reads
 there is an option called \texttt{-long\_cov\_cutoff} to filter them
 independently because of the difference in usage in velvet. To investigate with
 R, as you did in the previous exercises, start up R and produce the weighted

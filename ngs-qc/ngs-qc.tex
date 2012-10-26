@@ -50,7 +50,7 @@ consequences please check the data quality!
 For the purpose of this tutorial we are focusing only on Illumina sequencing
 which uses 'sequence by synthesis' technology in a highly parallel fashion.
 Although Illumina high throughput  sequencing provides highly accurate sequence
-data, several sequence artefacts, including base calling errors and small
+data, several sequence artifacts, including base calling errors and small
 insertions/deletions, poor quality reads and primer/adapter contamination are
 quite common in the high throughput sequencing data. The primary errors are
 substitution errors. The error rates can vary from 0.5-2.0\% with errors mainly
@@ -203,7 +203,8 @@ Around 80 bp position
 
 How can we trim the reads to filter out the low quality data?
 \begin{answer}
-By trimming off the bases after a fixed position of the read. or by trimming off bases based on the quality score.
+By trimming off the bases after a fixed position of the read. or by trimming off
+bases based on the quality score.
 \end{answer}
 \end{questions}
 
@@ -235,7 +236,7 @@ which best suits your data. Here we are giving examples of fixed-length trimming
 and quality-based trimming.
 
 \subsection{Fixed Length Trimming}
-Low quality read ends can be trimmed using a fixed-length timmer. We will use the
+Low quality read ends can be trimmed using a fixed-length trimming. We will use the
 \texttt{fastx\_trimmer} from the FASTX-Toolkit. Usage message to find out various options
 you can use with this tool. Type \fonttt{fastx\_trimmer -h} at anytime to display help.
 
@@ -253,9 +254,9 @@ fastx_trimmer -Q 33 -f 1 -l 80 -i bad_example.fastq -o bad_example_trimmed01.fas
 We used the following options in the command above:
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
  \item[-Q 33] Indicates the input quality scores are Phred+33 encoded
- \item[-f] First base to be retianed in the output
+ \item[-f] First base to be retained in the output
  \item[-l] Last base to be retained in the output
- \item[-i] Input fastq file name
+ \item[-i] Input FASTQ file name
  \item[-o] Output file name
 \end{description}
 \end{note}
@@ -305,9 +306,9 @@ the 5' end of the reads?
 \end{questions}
 
 \subsection{Quality Based Trimming}
-Base call quality scores can also be used to dynamically determine the trim points for each read. A quality
-score threshold and minimum read length following trimming can be used to remove low
-quality data.
+Base call quality scores can also be used to dynamically determine the trim
+points for each read. A quality score threshold and minimum read length
+following trimming can be used to remove low quality data.
 
 \begin{steps}
 Run the following command to quality trim your data:
@@ -389,7 +390,7 @@ No. (Hint: look at the overrepresented sequences.
 \subsection{Adapter Clipping}
 Sometime sequence reads may end up getting the leftover of adapters and primers
 used in the sequencing process. It's good practice to screen your data for
-these possible contaminations for more sensitive alignment and assembly based
+these possible contamination for more sensitive alignment and assembly based
 analysis.
 
 \begin{note}
@@ -398,7 +399,7 @@ molecules being sequenced. For example when sequencing miRNAs.
 \end{note}
 
 Various QC tools are available to screen and/or clip these adapter/primer
-sequences from your data. (e.g. FastQC, fastx, cutadapt).
+sequences from your data. (e.g. FastQC, FASTX-Toolkit, cutadapt).
 
 \begin{steps}
 Here we are demonstrating \texttt{fastx\_clipper} to trim a given adapter
