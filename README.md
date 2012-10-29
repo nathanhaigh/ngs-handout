@@ -72,3 +72,5 @@ access over port 22 TCP.
 
 We has also developed an Ubuntu 12.04 Image, based on Cloud BioLinux, for the
 purpose of running this workshop.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/974448c02a6cd1b11b1aecabb6a3a244 "githalytics.com")](http://githalytics.com/nathanhaigh/ngs_workshop)
