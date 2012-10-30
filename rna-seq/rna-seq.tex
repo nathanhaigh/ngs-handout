@@ -241,17 +241,20 @@ zoom. Type: \texttt{chr12:20,270,921-20,300,943}
 \begin{questions}
 Can you identify the splice junctions from the BAM file?
 \begin{answer}
-%TODO
+Slice junctions can be identified in the alignment BAM files.
+These are the aligned RNA-Seq reads that have skipped-bases from the reference genome (most likely introns).
+In the SAM file CIGAR string these splice-junctions are represented by "N" (intron gap skipped bases). 
+Note deletions are usually smaller gaps (1N or 2N). 
 \end{answer}
 
 Are the junctions annotated for \texttt{CBY1} consistent with the annotation?
 \begin{answer}
-%TODO
+Read alignment supports an extended length in exon 5 to the gene model (cby1-001) 
 \end{answer}
 
 Are all annotated genes, from both RefSeq and Ensembl, expressed?
 \begin{answer}
-%TODO
+No BX000473.1-201 is not expressed
 \end{answer}
 
 \end{questions}
