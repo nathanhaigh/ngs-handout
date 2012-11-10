@@ -135,7 +135,7 @@ function dl_file_from_cloud_storage() {
 
 # download the trainee's handout
 cd "$top_dir/$data_sub_dir"
-dl_file_from_cloud_storage https://github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_v1.0.pdf
+dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_v1.0.pdf
 ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
 ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
 # make tutorial paths sync with shorter paths used used in tutorials
