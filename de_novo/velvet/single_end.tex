@@ -104,7 +104,7 @@ time velvetg run_25
 
 Move back into your results directory to examine the effects of \texttt{velvetg}:
 \begin{lstlisting}
-cd run_22
+cd run_25
 ls -l
 \end{lstlisting}
 \end{steps}
@@ -184,7 +184,7 @@ details of how to choose the parameters, go to ``Choice of a coverage cutoff'':
 
 \begin{steps}
 Briefly, the k-mer coverage (and much more information) for each contig is stored
-in the file \texttt{stats.txt} and can be used with R to visualize the coverage
+in the file \texttt{stats.txt} and can be used with R to visualize the k-mer coverage
 distribution. Take a look at the \texttt{stats.txt} file, start R, load and
 visualize the data using the following commands:
 \begin{lstlisting}
@@ -203,7 +203,7 @@ below:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{de_novo/velvet/velvet_Rplot001.png}
-\caption{\label{fig:SRS004748_coverage_hist}}
+\caption{\label{fig:SRS004748_coverage_hist} A weighted k-mer coverage histogram of the single-end reads.}
 \end{figure}
 
 \begin{steps}

@@ -59,7 +59,7 @@ the gene expression between two different conditions in order to identify
 differentially expressed genes.
 
 \section{Prepare the Environment}
-We will use a dataset derived from sequencing of mRNA from Danio rerio embryos
+We will use a dataset derived from sequencing of mRNA from \textit{Danio rerio} embryos
 in two different developmental stages. Sequencing was performed on the Illumina
 platform and generated 76bp paired-end sequence data using polyA selected RNA.
 Due to the time constraints of the practical we will only use a subset of the
@@ -76,7 +76,7 @@ the following:
 \end{description}
 
 \begin{steps}
-Open the Terminal and go to the directory where the data is stored:
+Open the Terminal and go to the \texttt{RNA-seq} working directory:
 \begin{lstlisting}
 cd ~/RNA-seq/
 \end{lstlisting}
@@ -86,25 +86,25 @@ cd ~/RNA-seq/
 %\textcolor{red}{
 \begin{warning}
   All commands entered into the terminal for this tutorial should be from within the
-  \texttt{RNA-seq} directory above.
+  \texttt{$\sim$/RNA-seq} directory.
 \end{warning}
 
 \begin{steps}
 Check that the \texttt{data} directory contains the above-mentioned files by typing:
 \begin{lstlisting}
-ls -l data
+ls data
 \end{lstlisting}
 \end{steps}
 
 \section{Alignment}
-There are numerous tools performing short read alignment and the choice of aligner
+There are numerous tools for performing short read alignment and the choice of aligner
 should be carefully made according to the analysis goals/requirements. Here we will
 use Tophat, a widely used ultrafast aligner that performs spliced alignments.
 
-Tophat is based on Bowtie to perform alignments and uses an indexed genome for the
-alignment to keep its memory footprint small. We have already seen how to index the
-genome (see Alignment hands-on session), therefore for time purposes we have already
-generated the index for the zebrafish genome and placed it under the \texttt{genome}
+Tophat is based on the Bowtie aligner and uses an indexed genome for the
+alignment to speed up the alignment and keep its memory footprint small. As you
+have performed a Bowtie index procedure previously, and to save time, we have
+generated the index for you and placed it under the \texttt{genome}
 subdirectory.
 
 \begin{steps}
@@ -125,15 +125,15 @@ before is the basename of the indexed genome.
 \end{information}
 
 \begin{note}
-Like with Bowtie before you run Tophat, you have to know which quality encoding the FASTQ
-formatted reads are in.
+As with Bowtie, you have to know which quality encoding the FASTQ
+files are in.
 \end{note}
 
 \begin{questions}
-Can you tell which quality encoding our FASTQ formatted reads are in?
+Can you tell which quality encoding our FASTQ files are in?
 \begin{answer}
 The presence of numbers in the quality strings suggest we have either Sanger or
-Illumina 1.8+ derived reads. In either case, they are Phred+33 encoded.
+Illumina 1.8+ derived reads. Either way, they are Phred+33 encoded.
 \end{answer}
 
 \begin{information}
@@ -151,15 +151,15 @@ head -n 20 data/2cells_1.fastq
 Some other parameters that we are going to use to run Tophat are listed below:
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
  \item[-g] Maximum number of multihits allowed. Short reads are likely to map to
- more than one locations in the genome even though these reads can have originated
- from only one of these regions. In RNA-seq we allow for a restricted number of
+ more than one location in the genome even though these reads can have originated
+ from only one of these regions. In RNA-seq we allow for a limited number of
  multihits, and in this case we ask Tophat to report only reads that map at most
  onto 2 different loci.
  \item[--library-type] Before performing any type of RNA-seq analysis you need
  to know a few things about the library preparation. Was it done using a
  strand-specific protocol or not? If yes, which strand? In our data the protocol
  was NOT strand specific.
- \item[-J] Improve spliced alignment by providing Tophat with annotated splice
+ \item[-j] Improve spliced alignment by providing Tophat with annotated splice
  junctions. Pre-existing genome annotation is an advantage when analysing RNA-seq
  data. This file contains the coordinates of annotated splice junctions from Ensembl.
  These are stored under the sub-directory \texttt{annotation} in a file called
@@ -262,11 +262,11 @@ No BX000473.1-201 is not expressed
 \begin{information}
 We already know that in order to load a BAM file onto IGV we need to have
 this file sorted by genomic location and indexed. Here's a reminder of the
-command syntax to perform these tasks
+command syntax to perform these tasks:
 
 \begin{lstlisting}
-samtools sort [bam_file_to_be_sorted] [prefix_of_sorted_bam_output_file]
-samtools index [sorted_bam_file]
+samtools sort <bam_file_to_be_sorted> <prefix_of_sorted_bam_output_file>
+samtools index <sorted_bam_file>
 \end{lstlisting}
 
 \end{information}
@@ -275,7 +275,7 @@ samtools index [sorted_bam_file]
 Once Tophat finishes running, sort the output BAM file and then index the
 sorted BAM file using the information above to guide you.
 
-Then load them onto IGV following the steps above.
+Load the sorted BAM file into IGV as described previously.
 \end{steps}
 
 \newpage
@@ -283,10 +283,8 @@ Then load them onto IGV following the steps above.
 There are a number of tools that perform reconstruction of the transcriptome
 and for this workshop we are going to use Cufflinks. Cufflinks can do
 transcriptome assembly either \textit{ab initio} or using a reference annotation. It
-also quantifies the isoform expression in FPKMs.
-
-A reminder from the presentation this morning that FPKM stands for `Fragments
-Per Kilobase of exon per Million fragments mapped'. 
+also quantifies the isoform expression in Fragments
+Per Kilobase of exon per Million fragments mapped (FPKM).
 
 \begin{steps}
 Cufflinks has a number of parameters in order to perform transcriptome
@@ -302,8 +300,8 @@ annotation both strictly and as a guide. In the first case Cufflinks will only
 report isoforms that are included in the annotation, while in the latter case
 it will report novel isoforms as well.
 
-The annotation from Ensembl of Danio rerio is stored under the directory
-\texttt{annotation} in a file called \texttt{Danio\_rerio.Zv9.66.gtf}.
+The Ensembl annotation for \textit{Danio rerio} is available in
+\texttt{annotation/Danio\_rerio.Zv9.66.gtf}.
 
 \begin{information}
 The general format of the \texttt{cufflinks} command is:
@@ -314,7 +312,7 @@ Where the input is the aligned reads (either in SAM or BAM format).
 \end{information}
 
 \begin{note}
-Some of available parameters of Cufflinks that we are going to use to run
+Some of the available parameters for Cufflinks that we are going to use to run
 Cufflinks are listed below:
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
   \item[-o] Output directory
@@ -327,7 +325,10 @@ Cufflinks are listed below:
   \item[-u] Tells Cufflinks to do an initial estimation procedure to more
   accurately weight reads mapping to multiple locations in the genome
   (multi-hits). 
-  \item[--library-type] See Tophat parameters
+  \item[--library-type] Before performing any type of RNA-seq analysis you need
+  to know a few things about the library preparation. Was it done using a
+  strand-specific protocol or not? If yes, which strand? In our data the protocol
+  was NOT strand specific.
 \end{description}
 \end{note}
 

@@ -62,7 +62,7 @@ annotation and motif analysis on the predicted binding regions.
 \section{Prepare the Environment}
 
 \begin{information}
-The material for this practical can be found in the ChIP-seq directory on your
+The material for this practical can be found in the \texttt{ChIP-seq} directory on your
 desktop. This directory also contains an electronic version of this document,
 which can be useful to copy and paste commands. Please make sure that this
 directory also contains the SAM/BAM files you produced during the alignment
@@ -70,21 +70,15 @@ practical.
 \end{information}
 
 \begin{steps}
-If you didn't have time to align the control file called \texttt{gfp.fastq} during the
-alignment practical, please do it now.
-
-Follow the same steps as for the \texttt{Oct4.fastq} file.
+If you didn't have time to align the control file called \texttt{gfp.fastq}
+during the alignment practical, please do it now. Follow the same steps, from
+the bowtie alignment step, as for the \texttt{Oct4.fastq} file.
 \end{steps}
 
-\begin{information}
-Of course, the same bowtie index can be used, so the index building step can be
-skipped.
-\end{information}
-
 \begin{note}
-In ChIP-seq analysis (unlike in other applications such as RNA-seq) we often
-would like to exclude all reads that map to more than one location in the
-genome, to avoid false positives. When using Bowtie, this can be done using the
+In ChIP-seq analysis (unlike in other applications such as RNA-seq) it can be useful
+to exclude all reads that map to more than one location in the
+genome. When using Bowtie, this can be done using the
 \texttt{-m 1} option, which tells it to report only unique matches (See
 \texttt{bowtie --help} for more details).
 \end{note}
@@ -125,13 +119,12 @@ Options that you will have to use include:
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
  \item[-t] To indicate the input ChIP file.
  \item[-c] To indicate the name of the control file.
- \item[--format] To change the file format. The default format is bed..
+ \item[--format] To change the file format. The default format is bed.
  \item[--name] To set the name of the output files.
  \item[--gsize] This is the mappable genome size. With the read length we have,
  $70\%$ of the genome is a fair estimation. Since in this analysis we include
- only reads from chromosome 1, we will use as gsize $70\%$ of the length of
- chromosome 1 (197 Mb).
- \item[--tsize] To set the read length (look at the fastq files to check the
+ only reads from chromosome 1 (197Mbases), we will use a \texttt{--gsize} of 138Mbases (70\% of 197Mbases).
+ \item[--tsize] To set the read length (look at the FASTQ files to check the
  length).
  \item[--wig] To generate signal wig files for viewing in a genome browser.
  Since this process is time consuming, it is recommended to run MACS first with
@@ -146,16 +139,16 @@ Options that you will have to use include:
 Now run macs using the following command:
 
 \begin{lstlisting}
-macs -t [Oct4 aligned bam file] -c [gfp aligned bam file] --format=BAM --name=Oct4 --gsize=138000000 --tsize=26 --diag --wig 
+macs -t <Oct4_aligned_bam_file> -c <gfp_aligned_bam_file> --format=BAM --name=Oct4 --gsize=138000000 --tsize=26 --diag --wig 
 \end{lstlisting}
 
-Look at the output saturation table (\texttt{Oct4 diag.xls}). To open Excel
-files, right-click on them, choose Open with and select OpenOffice. Do you think
+Look at the output saturation table (\texttt{Oct4\_diag.xls}). To open this file
+file, right-click on it and choose ``Open with'' and select LibreOffice. Do you think
 that more sequencing is necessary?
 
 Open the Excel peak file and view the peak details. Note that the number of tags
 (column 6) refers to the number of reads in the whole peak region and not the
-summit height.
+peak height.
 
 \end{steps}
 
@@ -181,7 +174,9 @@ ideas for further analyses.
 Launch a web browser and go to the Ensembl website at
 \url{http://www.ensembl.org/index.html}
 
-Choose the genome of interest (that is, mouse) on the left side of the page.
+Choose the genome of interest (in this case, mouse) on the left side of the
+page, browse to any location in the genome or click one of the demo links
+provided on the web page.
 
 Click on the \textbf{Manage your data} link on the left, then choose
 \textbf{Attach remote file}.
@@ -189,14 +184,9 @@ Click on the \textbf{Manage your data} link on the left, then choose
 \end{steps}
 
 \begin{note}
-One option is to browse to the wig file MACS generated (usually under MACS
-wiggle/treat) and to upload it to Ensembl (option \textbf{Upload data}).
-However, since wig files describing sequencing signal are very big, they would
-take a long time to upload, and the browsing process will be very slow.
-
-As a better alternative, wig files can be converted to an indexed binary format
-and put into a web accessible server (HTTP, HTTPS, or FTP) instead on the
-Ensembl server. This makes all the browsing process much faster. Detailed
+Wig files are large so are inconvenient for uploading directly to the Ensemble Genome browser. Instead, we will convert it to an indexed binary format
+and put this into a web accessible place such as on a HTTP, HTTPS, or FTP server.
+This makes all the browsing process much faster. Detailed
 instructions for generating a bigWig from a wig type file can be found at:
 
 \url{http://genome.ucsc.edu/goldenPath/help/bigWig.html}.
@@ -206,30 +196,31 @@ instructions for generating a bigWig from a wig type file can be found at:
 \begin{steps}
 We have generated bigWig files in advance for you to upload to the Ensembl
 browser. They are at the following URL:
-\url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/Oct4.bw}. To visualise the
-data:
+\url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/Oct4.bw}
+
+To visualise the data:
 \begin{itemize}
 	\item Paste the location above in the field File URL. 
-	\item Choose data format Bigwig. 
+	\item Choose data format bigWig. 
 	\item Choose some informative name and in the next window choose the colour of your preference. 
 	\item Click \textbf{Save} and close the window to return to the genome browser. 
 \end{itemize}
-Repeat the process for the control sample, located at
+Repeat the process for the gfp control sample, located at
 \url{http://www.ebi.ac.uk/~remco/ChIP-Seq_course/gfp.bw}.
  
 After uploading, choose \textbf{Configure this page}, and under \textbf{Your
 data} tick both boxes. Closing the window will save these changes.
 
 Go to a region on chromosome 1 (e.g. \texttt{1:34823162-35323161}), and zoom in and out
-to view the signal and peak regions. Be aware that the data scale automatically,
-so bigger-looking peaks need not actually be bigger. Always look at the values
+to view the signal and peak regions. Be aware that the y-axis of each track is auto-scaled independently of each other,
+so bigger-looking peaks may not actually be bigger! Always look at the values
 on the left hand side axis.
 \end{steps}
 
 \begin{questions}
-What can you say about the profile of Oct4 peaks? 
+What can you say about the profile of Oct4 peaks in this region? 
 \begin{answer}
-There is no significant peaks of Oct4 over the selected region.
+There are no significant Oct4 peaks over the selected region.
 \end{answer}
 
 Compare it with H3K4me3 histone modification wig file we have generated at 
@@ -277,6 +268,7 @@ using PeakAnalyzer.
 \begin{steps}
 Go to the PeakAnalyzer directory and launch the program by typing:
 \begin{lstlisting}
+cd ~ChIP-seq/PeakAnalyzer
 java -jar PeakAnalyzer.jar &
 \end{lstlisting}
 
@@ -288,7 +280,7 @@ We would like to find the closest downstream genes to each peak, and the genes
 that overlap with the peak region. For that purpose you should choose the
 \textbf{NDG} option and click \textbf{Next}.
 
-Fill in the location of the peak file \texttt{Oct4 peaks.bed}, and choose the mouse GTF
+Fill in the location of the peak file \texttt{Oct4\_peaks.bed}, and choose the mouse GTF
 as the annotation file. You don't have to define a symbol file since gene
 symbols are included in the GTF file.
 
@@ -296,12 +288,11 @@ Choose the output directory and run the program.
 \end{steps}
 
 \begin{information}
-When the program has finished running, you will have the option of generating
-plots, by pressing \textbf{Generate plots} (You can only do this if R is
-installed on your computer, as is the case here. Otherwise, if you don't want to
-install R, you can generate similar plots with Excel using the output files that
-were generated by PeakAnalyzer.). A PDF file with the plots will be generated in
-the output folder.
+When the program has finished running, you will have the option to generate
+plots, by pressing the \textbf{Generate plots} button. This is only possible if R is
+installed on your computer, as it is on this system. A PDF file with the plots will be generated in
+the output folder. You could generate similar plots with Excel using the output files that
+were generated by PeakAnalyzer. 
 \end{information}
 
 \begin{note}
@@ -314,6 +305,13 @@ DAVID (\url{http://david.abcc.ncifcrf.gov}) or GOstat
 GO categories.
 \end{note}
 
+\begin{bonus}
+We can pull out Ensemble Transcript IDs from the \texttt{Oct4\_peaks.ndg.bed}
+file and write them to another file ready for use with DAVID or GOstat:
+\begin{lstlisting}
+cut -f 5 Oct4_peaks.ndg.bed | sed '1 d' > Oct4_peaks.ndg.tid
+\end{lstlisting}
+\end{bonus}
 
 \section{Motif analysis}
 
@@ -341,21 +339,22 @@ Choose the split peaks utility and click \textbf{Next}. The input consists of
 files generated by most peak-finding tools: a file containing the chromosome,
 start and end locations of the enriched regions, and a \texttt{.wig} signal file
 describing the size and shape of each peak. Fill in the location of both files
-\texttt{Oct4 peaks.bed} and the wig file generated by MACS, which is under
-\texttt{Oct4\_MACS\_wiggle/treat}, check the option to \textbf{Fetch subpeak
+\texttt{Oct4\_peaks.bed} and the wig file generated by MACS, which is under the
+\texttt{Oct4\_MACS\_wiggle/treat/} directory, check the option to \textbf{Fetch subpeak
 sequences} and click \textbf{Next}.
 
 In the next window you have to set some parameters for splitting the peaks.
 
-Separation float - This value determines when a peak will be separated into
-sub-peaks. This is the ratio between a valley and its neighbouring summit (the
-lower summit of the two). For example, if you set this height to be 0.5, two
-sub-peaks will be separated only if the height of the lower summit is twice the
-height of the valley. Keep the default value.
-
-Minimum height - only sub-peaks with at least this number of tags in their
-summit region will be separated. Set this to be 5. Change the organism name from
-the default human to mouse and run the program.
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+ \item[Separation float] Keep the default value. This value determines when a
+ peak will be separated into sub-peaks. This is the ratio between a valley and
+ its neighbouring summit (the lower summit of the two). For example, if you set
+ this height to be \texttt{0.5}, two sub-peaks will be separated only if the
+ height of the lower summit is twice the height of the valley.
+ \item[Minimum height] Set this to be \texttt{5}. Only sub-peaks with at least this
+ number of tags in their summit region will be separated. Change the organism
+ name from the default human to mouse and run the program.
+\end{description}
 \end{steps}
 
 \begin{information}
@@ -371,11 +370,11 @@ Open a web bowser and go to the MEME website at
 \url{http://meme.ebi.edu.au/meme/cgi-bin/meme.cgi}, and fill in the necessary
 details, such as:
 \begin{itemize}
-	\item your e-mail address 
-	\item the sub-peaks FASTA file \texttt{Oct4 peaks.bestSubPeaks.fa} (will need uploading), or just paste in the sequences. 
-	\item the number of motifs we expect to find (1 per sequence) 
-	\item the width of the desired motif (between 6 to 20) 
-	\item the maximum number of motifs to find (3 by default). For Oct4 one classical motif is known. 
+	\item Your e-mail address 
+	\item The sub-peaks FASTA file \texttt{Oct4\_peaks.bestSubPeaks.fa} (will need uploading), or just paste in the sequences. 
+	\item The number of motifs we expect to find (1 per sequence) 
+	\item The width of the desired motif (between 6 to 20) 
+	\item The maximum number of motifs to find (3 by default). For Oct4 one classical motif is known. 
 \end{itemize}
 \end{steps}
 

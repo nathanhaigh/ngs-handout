@@ -113,8 +113,8 @@ mkdir -p NGS/velvet/{part1,part2,part3}
 
 \begin{information}
 The \texttt{-p} tells \texttt{mkdir} (make directory) to make any parent
-directories if they don't exist. You could create the directories one-at-a-time
-by doing:
+directories if they don't already exist. You could have created the above directories one-at-a-time
+by doing this instead:
 \begin{lstlisting}
 mkdir NGS
 mkdir NGS/velvet
@@ -159,7 +159,6 @@ inspect, compile and execute your locally compiled version of velvet:
 \begin{lstlisting}
 cd ~/NGS/velvet/part1
 pwd
-cp ~/NGS/Data/velvet_1.2.07.tgz ./
 tar xzf ~/NGS/Data/velvet_1.2.07.tgz
 ls -R
 cd velvet_1.2.07

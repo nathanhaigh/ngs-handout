@@ -33,6 +33,13 @@ After completing this practical the trainee should be able to:
   	\url{http://picard.sourceforge.net/}
 \end{description}
 
+\section{Useful Links}
+ 
+\begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
+  \item[FASTQ Encoding]\hfill\\
+    \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}
+\end{description}
+
 % \subsection{Sources of Data}
 % TODO Provide a publically available data set used for this module
 % \url{http://www.ebi.ac.uk/ena/data/view/ERR022484}\\
@@ -63,6 +70,7 @@ like trimming off low quality bases, cleaning up any sequencing adapters and
 removing PCR duplicates. We can also look at other statistics such
 as, sequence length distribution, base composition, sequence complexity,
 presence of ambiguous bases etc. to assess the overall quality of the data set.
+
 Highly redundant coverage ($>$15X) of the genome can be used to correct sequencing
 errors in the reads before assembly and errors. Various k-mer based error
 correction methods exist but are beyond the scope of this tutorial.
@@ -141,34 +149,34 @@ for different quality statistics. E.g.:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{ngs-qc/bad_example.png}
-\caption{Per base sequence quality plot for \texttt{bad\_example.fastq}. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
+\caption{Per base sequence quality plot for \texttt{bad\_example.fastq}.}
 \label{fig:bad_example_untrimmed_plot}
 \end{figure}
 
 \begin{information}
-A quality score (or Q-score) expresses an error probability.  In particular, it
+A Phred quality score (or Q-score) expresses an error probability.  In particular, it
 serves as a convenient and compact way to communicate very small error
 probabilities.
-Given an assertion, A, the probability that A is not true, $P(~ A)$, is expressed
+The probability that base $A$ is wrong ($P(\sim A)$) is expressed
 by a quality score, $Q(A)$, according to the relationship:
 \\\\
 $Q(A) =-10 log10(P(\sim A))$
 \\\\
-Where $P(~ A)$ is the estimated probability of an assertion A being wrong.
 The relationship between the quality score and error probability is demonstrated
 with the following table:
 
 \begin{table}[H]
   \centering
   \caption{Error probabilities associated with various quality (Q) values}
-    \begin{tabular}{rr}
+    \begin{tabular}{rrr}
     \toprule
-    \textbf{Quality score, Q(A)} & \textbf{Error probability, P($\sim$A)} \\
+    \textbf{Quality score, Q(A)} & \textbf{Error probability, P($\sim$A)} & \textbf{Accuracy of the base call} \\
     \midrule
-    10    & 0.1 \\
-    20    & 0.01 \\
-    30    & 0.001 \\
-    40    & 0.0001 \\
+    10    & 0.1     & 90\% \\
+    20    & 0.01    & 99\% \\
+    30    & 0.001   & 99.9\% \\
+    40    & 0.0001  & 99.99\% \\
+    50    & 0.00001 & 99.999\% \\
     \bottomrule
     \end{tabular}
   \label{tab:quality_error_probs}
@@ -208,8 +216,8 @@ bases based on the quality score.
 
 \begin{bonus}
 \subsection{Good Quality Data}
-View the FastQC report files fastqc\_report.html to see examples of a good
-quality data and compare the quality plot with that of the bad\_example\_fastqc.
+View the FastQC report files \texttt{fastqc\_report.html} to see examples of a good
+quality data and compare the quality plot with that of the \texttt{bad\_example\_fastqc}.
 
 \begin{lstlisting}
 firefox good_example_fastqc/fastqc_report.html &
@@ -289,7 +297,7 @@ The output should look like:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{ngs-qc/bad_example_trimmed_to_80bp.png}
-\caption{Per base sequence quality plot for the fixed-length trimmed \texttt{bad\_example.fastq} reads. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
+\caption{Per base sequence quality plot for the fixed-length trimmed \texttt{bad\_example.fastq} reads.}
 \label{fig:bad_example_trimmed_plot}
 \end{figure}
 
@@ -348,7 +356,7 @@ The output should look like:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{ngs-qc/bad_example_quality_trimmed.png}
-\caption{Per base sequence quality plot for the quality-trimmed \texttt{bad\_example.fastq} reads. Base positions in the reads are shown on x-axis and quality score (Q Score) are shown on the Y-axis}
+\caption{Per base sequence quality plot for the quality-trimmed \texttt{bad\_example.fastq} reads.}
 \label{fig:bad_example_quality_trimmed_plot}
 \end{figure}
 
@@ -386,7 +394,7 @@ No. (Hint: look at the overrepresented sequences.
 
 \begin{advanced}
 \subsection{Adapter Clipping}
-Sometime sequence reads may end up getting the leftover of adapters and primers
+Sometimes sequence reads may end up getting the leftover of adapters and primers
 used in the sequencing process. It's good practice to screen your data for
 these possible contamination for more sensitive alignment and assembly based
 analysis.
@@ -413,7 +421,7 @@ fastx_clipper -v -Q 33 -l 20 -M 15 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG -i bad_ex
 \begin{note}
 An alternative tool, not installed on this system, for adapter clipping is
 \texttt{fastq-mcf}. A list of adapters is provided in a text file. For more
-information, see Fastqmcf at \url{http://code.google.com/p/ea-utils/wiki/FastqMcf}.
+information, see FastqMcf at \url{http://code.google.com/p/ea-utils/wiki/FastqMcf}.
 \end{note}
 
 \subsection{Removing Duplicates}
@@ -452,8 +460,8 @@ SAM/BAM alignment format.
 
 \begin{steps}
 Interested users can use the following general command to run the
-MarkDuplicates tool at their leisure and only need to provide a BAM file for
-INPUT:
+MarkDuplicates tool at their leisure. You only need to provide a BAM file for the
+INPUT argument (not provided):
 
 
 \begin{lstlisting}
