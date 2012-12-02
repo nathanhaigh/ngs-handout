@@ -1,27 +1,28 @@
 \documentclass[a4paper,12pt,twoside]{memoir}
-\let\footruleskip\undefined	% see http://tex.stackexchange.com/questions/37868/fancyhdr-and-memoir
-\usepackage{fancyhdr}	% For headers and footers
-\usepackage{listings}	% Required for insertion of code
-\usepackage{courier}	% Required for the courier font
+\let\footruleskip\undefined % see http://tex.stackexchange.com/questions/37868/fancyhdr-and-memoir
+\usepackage{fancyhdr} % For headers and footers
+\usepackage{listings} % Required for insertion of code
+\usepackage{courier}  % Required for the courier font
 \usepackage[usenames,dvipsnames]{color} % Required for custom colors
 \usepackage[table]{xcolor}
 \usepackage[pdftex]{graphicx}
 \usepackage{hyperref}
-\usepackage{fullpage}	% See http://en.wikibooks.org/wiki/LaTeX/Page_Layout#Manual_Page_Formatting for layout
+\usepackage{fullpage} % See http://en.wikibooks.org/wiki/LaTeX/Page_Layout#Manual_Page_Formatting for layout
 \usepackage{enumitem}
+%\usepackage[parfill]{parskip}  % Don't indent the first line of paragraphs
 \linespread{1.0} % Line spacing
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.2cm}
 \usepackage{mdframed}
+%\usepackage{parskip}
 \usepackage{etoolbox}
 \usepackage[nobottomtitles]{titlesec}
 \usepackage[section]{placeins}
-
+\setlength{\parindent}{0pt}
 \usepackage{ifthen}
 \usepackage{array}
 % packages for Creative Commons Licences
-\usepackage{xmpincl}
-\includexmp{licences/CC_Attribution_3.0_Unported}	% includes XML metadata into the PDF
+% \usepackage{xmpincl}
+% \includexmp{licences/CC_Attribution_3.0_Unported} % includes XML metadata into the PDF
+%\usepackage{scrextend}
 \usepackage{microtype}
 \usepackage{accsupp}
 \usepackage{textcomp}
@@ -44,7 +45,7 @@
 
 % config display of hyperlinks
 \hypersetup{
-    colorlinks=true,		    % false: boxed links; true: colored links
+    colorlinks=true,        % false: boxed links; true: colored links
     linkcolor=red,          % color of internal links
     citecolor=green,        % color of links to bibliography
     filecolor=magenta,      % color of file links
@@ -478,13 +479,12 @@
 %
 % Some User Defined Stuff
 %
-\newcommand{\workshopTitle}{Introduction to Next Generation Sequencing Hands-on Workshop}
-\newcommand{\workshopVenue}{Brisbane and Adelaide, Australia}
-\newcommand{\workshopDate}{Nov. 2012}
+\newcommand{\workshopTitle}{BioInfoSummer 2012\\Introduction to Next Generation Sequencing Hands-on Workshop}
+\newcommand{\workshopVenue}{Adelaide, Australia}
+\newcommand{\workshopDate}{4th Dec. 2012}
 \newcommand{\workshopAuthor}{
-Bioplatforms Australia (BPA)\\
-The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
-%The European BioinformaticsInstitute (EBI)\\
+Nathan S. Watson-Haigh\\
+Stephen Bent\\
 }
 %
 % End User Defined Stuff
@@ -526,46 +526,7 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 \excludecomment{answer}
 }{}
 
-%\includeonly{workshop_preamble.tex,rna-seq.tex}
-
 \chapterstyle{workshop}
-
-% Code for making a page run of ruled lines. From:
-% http://tex.stackexchange.com/a/79018/19412
-% Defines \myruledpage command with two mandatory arguments; the first one gives
-% the length of the first column of rules, and the second one controls the
-% separation between rules;
-\makeatletter
-% Code taken from exam.cls and modified
-\newlength\linefillheight
-\newlength\linefillthickness
-\setlength\linefillheight{.25in}
-\setlength\linefillthickness{0.1pt}
-\newcommand\linefill[1]{\leavevmode
-    \rule{#1}{\linefillthickness}\ \leaders\hrule height \linefillthickness \hfill\kern\z@}
-\newcommand\fillwithlines[2]{%
-  \begingroup
-  \ifhmode
-    \par
-  \fi
-  \hrule height \z@
-  \nobreak
-  \setbox0=\hbox to \hsize{\hskip \@totalleftmargin
-          \vrule height \linefillheight depth \z@ width \z@
-          \linefill{#2}}%
-  % We use \cleaders (rather than \leaders) so that a given
-  % vertical space will always produce the same number of lines
-  % no matter where on the page it happens to start:
-  \cleaders \copy0 \vskip #1 \hbox{}%
-  \endgroup
-}
-\makeatother
-\newcommand\myruledpage[2]{%
-  \setlength\linefillheight{#2}
-  \fillwithlines{\stretch{1}}{#1}
-\newpage}
-
-
 
 \begin{document}
 
@@ -573,12 +534,6 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 % Workshop Title Page
 %
 \workshoptitlepage
-
-%
-% CC-BY
-%
-\input{licence.tex}
-\clearpage
 
 \tableofcontents
 
@@ -588,7 +543,7 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 %
 % Trainers Page
 %
-\input{trainers.tex}
+%\input{trainers.tex}
 
 %
 % Workshop Preamble
@@ -607,55 +562,14 @@ The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
 \input{ngs-qc/ngs-qc.tex}
 
 %
-% Alignment Module
-%
-\input{alignment/alignment.tex}
-
-%
-% ChIP-Seq Module
-%
-\input{chip-seq/chip-seq.tex}
-
-%
 % RNA-Seq Module
 %
 \input{rna-seq/rna-seq.tex}
-
-%
-% Velvet de novo assembly
-%
-\input{de_novo/velvet/velvet.tex}
 
 %
 % End of modules
 % Switch back to normal workshop chapter styling
 %
 \chapterstyle{workshop}
-
-
-
-\chapter{Post-Workshop Information}
-\clearpage
-%
-% Access to Computational Resources
-%
-\input{post-workshop/computational_resources.tex}
-\clearpage
-
-%
-% Access to Workshop Documents
-%
-\input{post-workshop/documents_and_data.tex}
-
-\chapter{Space for Personal Notes or Feedback}
-\clearpage
-
-%
-% Some empty ruled comments pages
-%
-\myruledpage{3cm}{1cm}
-\myruledpage{3cm}{1cm}
-\myruledpage{3cm}{1cm}
-\myruledpage{3cm}{1cm}
 
 \end{document}
