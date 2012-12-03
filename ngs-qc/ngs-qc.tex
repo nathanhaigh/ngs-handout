@@ -209,8 +209,8 @@ Around 80 bp position
 
 How can we trim the reads to filter out the low quality data?
 \begin{answer}
-By trimming off the bases after a fixed position of the read. or by trimming off
-bases based on the quality score.
+By trimming off the bases after a fixed position of the read or by trimming off
+bases based on the quality score on a read-by-read basis.
 \end{answer}
 \end{questions}
 
@@ -237,11 +237,87 @@ improve after pre-processing the reads with errors.
 \end{note}
 
 \section{Read Trimming}
-Read trimming can be done in a variety of different ways. Choose a method
-which best suits your data. Here we are giving examples of fixed-length trimming
-and quality-based trimming.
+Read trimming can be done in a variety of different ways. Choose a method which
+best suits your data. Here we will use quality-based trimming but a fixed-length
+trimming example is provided in the appendix.
 
-\subsection{Fixed Length Trimming}
+\subsection{Quality Based Trimming}
+Base call quality scores can also be used to dynamically determine the trim
+points for each read. A quality score threshold and minimum read length
+following trimming can be used to remove low quality data.
+
+\begin{steps}
+Run the following commands to quality trim your bad data:
+\begin{lstlisting}
+cd ~/QC
+fastq_quality_trimmer -h
+fastq_quality_trimmer -Q 33 -t 20 -l 50 -i bad_example.fastq -o bad_example_quality_trimmed.fastq
+\end{lstlisting}
+\end{steps}
+
+\begin{steps}
+Run FastQC on the quality trimmed file and visualise the quality scores.
+
+\begin{lstlisting}
+fastqc -f fastq bad_example_quality_trimmed.fastq
+firefox bad_example_quality_trimmed_fastqc/fastqc_report.html &
+\end{lstlisting}
+
+The output should look like:
+
+\begin{table}[H]
+  \centering
+  \caption{FastQC Basic Statistics table}
+    \begin{tabular}{ll}
+    \toprule
+    Filename & bad\_example\_quality\_trimmed.fastq\\
+    \midrule
+    File type & Conventional base calls\\
+    Encoding & Sanger / Illumina 1.9\\
+    Total Sequences & 38976\\
+    Filtered Sequences & 0\\
+    Sequence length & 50-100\\
+    \%GC & 48\\
+    \bottomrule
+    \end{tabular}
+  \label{tab:badexamplequalitytrimmed}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{ngs-qc/bad_example_quality_trimmed.png}
+\caption{Per base sequence quality plot for the quality-trimmed \texttt{bad\_example.fastq} reads.}
+\label{fig:bad_example_quality_trimmed_plot}
+\end{figure}
+
+\end{steps}
+
+\begin{questions}
+How many sequences did you have following the trimming?
+\begin{answer}
+38,976. More than 1,000 reads were discared for being too short following
+trimming.
+\end{answer}
+
+What was the quality score range following trimming?
+\begin{answer}
+18-40
+\end{answer}
+
+How did the read lengths change following trimming?
+\begin{answer}
+Prior to trimming, all reads were 100bp long. Following trimming, some of the
+reads were as short as the 50bp minimum read length we specified with the
+\texttt{-l 50} argument in the \texttt{fastq_quality_trimmer} command.
+\end{answer}
+
+\end{questions}
+
+\newpage
+
+\section{Appendix}
+
+\subsection{Fixed-Length Read Trimming}
 Low quality read ends can be trimmed using a fixed-length trimming. We will use the
 \texttt{fastx\_trimmer} from the FASTX-Toolkit. Usage message to find out various options
 you can use with this tool. Type \texttt{fastx\_trimmer -h} at anytime to display help.
@@ -311,88 +387,6 @@ the 5' end of the reads?
 \end{answer}
 \end{questions}
 
-\subsection{Quality Based Trimming}
-Base call quality scores can also be used to dynamically determine the trim
-points for each read. A quality score threshold and minimum read length
-following trimming can be used to remove low quality data.
-
-\begin{steps}
-Run the following command to quality trim your data:
-\begin{lstlisting}
-cd ~/QC
-fastq_quality_trimmer -h
-fastq_quality_trimmer -Q 33 -t 20 -l 50 -i bad_example.fastq -o bad_example_quality_trimmed.fastq
-\end{lstlisting}
-\end{steps}
-
-\begin{steps}
-Run FastQC on the quality trimmed file and visualise the quality scores.
-
-\begin{lstlisting}
-fastqc -f fastq bad_example_quality_trimmed.fastq
-firefox bad_example_quality_trimmed_fastqc/fastqc_report.html &
-\end{lstlisting}
-
-The output should look like:
-
-\begin{table}[H]
-  \centering
-  \caption{FastQC Basic Statistics table}
-    \begin{tabular}{ll}
-    \toprule
-    Filename & bad\_example\_quality\_trimmed.fastq\\
-    \midrule
-    File type & Conventional base calls\\
-    Encoding & Sanger / Illumina 1.9\\
-    Total Sequences & 38976\\
-    Filtered Sequences & 0\\
-    Sequence length & 50-100\\
-    \%GC & 48\\
-    \bottomrule
-    \end{tabular}
-  \label{tab:badexamplequalitytrimmed}
-\end{table}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{ngs-qc/bad_example_quality_trimmed.png}
-\caption{Per base sequence quality plot for the quality-trimmed \texttt{bad\_example.fastq} reads.}
-\label{fig:bad_example_quality_trimmed_plot}
-\end{figure}
-
-\end{steps}
-
-\begin{questions}
-How did the quality score range change with two types of trimming?
-\begin{answer}
-Some poor quality bases (Q $<$20) are still present at the 3' end of the
-fixed-length trimmed reads. It also removes bases that are good quality.
-
-Quality-based trimming retains the 3' ends of reads which have good quality
-scores.
-\end{answer}
-
-Did the number of total reads change after two types of trimming?
-\begin{answer}
-Quality trimming discarded $>$1000 reads. However, We retain a lot of maximal
-length reads which have good quality all the way to the ends.
-\end{answer}
-
-What reads lengths were obtained after quality based trimming?
-\begin{answer}
-50-100
-
-Reads $<$50 bp, following quality trimming, were discarded.
-\end{answer}
-
-Did you observe adapter sequences in the data?
-\begin{answer}
-No. (Hint: look at the overrepresented sequences.
-\end{answer}
-
-\end{questions}
-
-\begin{advanced}
 \subsection{Adapter Clipping}
 Sometimes sequence reads may end up getting the leftover of adapters and primers
 used in the sequencing process. It's good practice to screen your data for
@@ -470,5 +464,3 @@ java -jar /usr/share/java/picard/MarkDuplicates.jar INPUT=<alignment_file.bam> V
 
 \end{lstlisting}
 \end{steps}
-
-\end{advanced}

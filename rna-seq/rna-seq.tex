@@ -86,7 +86,7 @@ cd ~/RNA-seq/
 %\textcolor{red}{
 \begin{warning}
   All commands entered into the terminal for this tutorial should be from within the
-  \texttt{$\sim$/RNA-seq} directory.
+  \textbf{\texttt{$\sim$/RNA-seq}} directory.
 \end{warning}
 
 \begin{steps}
@@ -102,10 +102,13 @@ should be carefully made according to the analysis goals/requirements. Here we w
 use Tophat, a widely used ultrafast aligner that performs spliced alignments.
 
 Tophat is based on the Bowtie aligner and uses an indexed genome for the
-alignment to speed up the alignment and keep its memory footprint small. As you
-have performed a Bowtie index procedure previously, and to save time, we have
-generated the index for you and placed it under the \texttt{genome}
-subdirectory.
+alignment to speed up the alignment and keep its memory footprint small. Created
+the index for the \textit{Danio rerio} genome:
+
+\begin{lstlisting}
+cd ~/RNA-seq
+bowtie-build genome/Danio_rerio.Zv9.66.dna.fa genome/ZV9
+\end{lstlisting}
 
 \begin{steps}
 Tophat has a number of parameters in order to perform the alignment. To view them all type:
@@ -120,31 +123,24 @@ The general format of the tophat command is:
 tophat [options]* <index_base> <reads_1> <reads_2>
 \end{lstlisting}
 
-Where the last two arguments are the \texttt{.fastq} files of the paired end reads, and the argument
-before is the basename of the indexed genome.
+Where the last two arguments are the \texttt{.fastq} files of the paired end
+reads, and the argument before is the basename of the indexed genome.
 \end{information}
 
 \begin{note}
-As with Bowtie, you have to know which quality encoding the FASTQ
-files are in.
+The quality values in the FASTQ files used in this hands-on session are Phred+33
+encoded. We explicitly tell tophat of this fact by using the command line
+argument \texttt{--solexa-quals}. See the appendix for further information about
+FASTQ encoding.
 \end{note}
 
-\begin{questions}
-Can you tell which quality encoding our FASTQ files are in?
-\begin{answer}
-The presence of numbers in the quality strings suggest we have either Sanger or
-Illumina 1.8+ derived reads. Either way, they are Phred+33 encoded.
-\end{answer}
-
 \begin{information}
-Look at the first few reads in the file \texttt{data/2cells\_1.fastq} and
-then compare the quality strings with the table found at:
-\url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}. 
+You can look at the first few reads in the file \texttt{data/2cells\_1.fastq} with:
+ 
 \begin{lstlisting}
 head -n 20 data/2cells_1.fastq
 \end{lstlisting}
 \end{information}
-\end{questions}
 
 %\reversemarginpar\marginpar{\vskip+0em\hfill\includegraphics[height=1cm]{./graphics/notes.png}}
 \begin{note}
@@ -170,72 +166,64 @@ Some other parameters that we are going to use to run Tophat are listed below:
 \end{description}
 \end{note}
 
-Since it takes a long time to perform spliced alignments, even for this subset of
-reads, we have pre-aligned the \texttt{2cells} data for you using the following command:
+It takes some time (approx. 20 min) to perform tophat spliced alignments, even for this subset of
+reads. Therefore, we have pre-aligned the \texttt{2cells} data for you using the following command:
 \begin{warning}
-  DO NOT run this command yourself - you may overwrite the output files of the
-  pre-aligned data.
-\end{warning}
+You DO NOT need to run this command yourself - we have done this for you.
 
 \begin{lstlisting}
 tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_2cells genome/ZV9 data/2cells_1.fastq data/2cells_2.fastq
 \end{lstlisting}
-
-\begin{questions}
-Using the above command as a guide, can you
-devise and run the command for aligning the \texttt{6h} data?
-\begin{answer}
-\begin{lstlisting}
-tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_6h genome/ZV9 data/6h_1.fastq data/6h_2.fastq
-\end{lstlisting}
-\end{answer}
-
-\begin{warning}
-The alignment will take approximately 17 minutes. In the meantime please move
-on with the practical and we will get back to the terminal once the alignment
-is done.
 \end{warning}
 
-\end{questions}
-
 \begin{steps}
-We will firstly look at some of the files produced by Tophat. For this please
-open the \texttt{RNA-seq} directory which can be found on your Desktop. Click on the \texttt{tophat}
-subdirectory and then on the directory called \texttt{ZV9\_2cells}.
-
-Tophat reports the alignments in a BAM file called \texttt{accepted\_hits.bam}.
-Among others it also creates a \texttt{junctions.bed} files that stores the coordinates
-of the splice junctions present in your dataset, as these have been extracted
-from the spliced alignments.
-
-Now we will load the BAM file and the splice junctions onto IGV to visualize
-the alignments reported by Tophat.
-
-In order to launch IGV type double click on the IGV 2.1 icon on your Desktop.
-Ignore any warnings and when it opens you have to load the genome of interest.
-
-On the top left of your screen choose from the drop down menu Zebrafish (Zv9).
-Then in order to load the desire files go to:
+Align the \texttt{6h} data yourself using the following command:  
 
 \begin{lstlisting}
-File >> Load from File
+# Takes approx. 20mins
+tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_6h genome/ZV9 data/6h_1.fastq data/6h_2.fastq
 \end{lstlisting}
 
-In the pop-up window, navigate to the \texttt{Desktop/RNA-seq/tophat/ZV9\_2cells}
-directory
-and select the file \texttt{accepted\_hits.sorted.bam}. Once the file is loaded
-right-click on the name of the track on the left and choose Rename Track. Give
-the track a meaningful name.
+\end{steps}
 
-Follow the same steps in order to load the \texttt{junctions.bed} file from the same
-directory.
+The \texttt{6h} read alignment will take approx. 20 min to complete. Therefore,
+we'll take a look at some of the files, generated by tophat, for the
+pre-computed \texttt{2cells} data.
 
-Using the same procedure, load the Ensembl annotation
-\texttt{Danio\_rerio.Zv9.66.gtf} file stored under the \texttt{RNA-seq/annotation}
-directory.
+\subsection{Alignment Visualisation in IGV}
 
-On the top middle box you can specify the region you want your browser to
-zoom. Type: \texttt{chr12:20,270,921-20,300,943}
+The Integrative Genomics Viewer (IGV) is able to provide a visualisation of read
+alignments given a reference sequence and a BAM file. We'll visualise the
+information contained in the \texttt{accepted\_hits.bam} and
+\texttt{junctions.bed} files for the pre-computed \texttt{2cells} data. The
+former, contains the tophat sliced alignments of the reads to the reference
+while the latter stores the coordinates of the splice junctions present in the
+data set.
+
+\begin{steps}
+Open the \texttt{RNA-seq} directory on your Desktop and double-click the
+\texttt{tophat} subdirectory and then the \texttt{ZV9\_2cells} directory.
+
+\begin{enumerate}
+  \item Launch IGV by double-clicking the ``IGV 2.1'' icon on the Desktop
+  (ignore any warnings that you may get as it opens). \emph{NOTE: IGV may take
+  several minutes to load for the first time, please be patient.}
+  \item Choose ``Zebrafish (Zv9)'' from the drop-down box in the top left of the
+  IGV window.
+  \item Load the \texttt{accepted\_hits.sorted.bam} file by clicking the
+  ``File'' menu, selecting ``Load from File'' and navigating to the
+  \texttt{Desktop/RNA-seq/tophat/ZV9\_2cells} directory.
+  \item Rename the track by right-clicking on its name and choosing ``Rename
+  Track''. Give it a meaningful name like ``2cells BAM''.
+  \item Load the \texttt{junctions.bed} from the same directory and rename the
+  track ``2cells Junctions BED''.
+  \item Load the Ensembl annotations file \texttt{Danio\_rerio.Zv9.66.gtf}
+  stored in the \texttt{RNA-seq/annotation} directory.
+  \item Navigate to a region on chromosome 12 by typing
+  \texttt{chr12:20,270,921-20,300,943} into the search box at the top of the IGV
+  window.
+\end{enumerate}
+
 \end{steps}
 
 \begin{questions}
@@ -243,8 +231,6 @@ Can you identify the splice junctions from the BAM file?
 \begin{answer}
 Slice junctions can be identified in the alignment BAM files.
 These are the aligned RNA-Seq reads that have skipped-bases from the reference genome (most likely introns).
-In the SAM file CIGAR string these splice-junctions are represented by "N" (intron gap skipped bases). 
-Note deletions are usually smaller gaps (1N or 2N). 
 \end{answer}
 
 Are the junctions annotated for \texttt{CBY1} consistent with the annotation?
@@ -259,23 +245,16 @@ No BX000473.1-201 is not expressed
 
 \end{questions}
 
-\begin{information}
-We already know that in order to load a BAM file onto IGV we need to have
-this file sorted by genomic location and indexed. Here's a reminder of the
-command syntax to perform these tasks:
+\begin{steps}
+Once tophat finishes aligning the 6h data you will need to sort the alignments found in the BAM file and then index the
+sorted BAM file.
 
 \begin{lstlisting}
-samtools sort <bam_file_to_be_sorted> <prefix_of_sorted_bam_output_file>
-samtools index <sorted_bam_file>
+samtools sort tophat/ZV9_6h/accepted_hits.bam tophat/ZV9_6h/accepted_hits.sorted
+samtools index tophat/ZV9_6h/accepted_hits.sorted.bam
 \end{lstlisting}
 
-\end{information}
-
-\begin{steps}
-Once Tophat finishes running, sort the output BAM file and then index the
-sorted BAM file using the information above to guide you.
-
-Load the sorted BAM file into IGV as described previously.
+Load the sorted BAM file into IGV, as described previously, and rename the track appropriately.
 \end{steps}
 
 \newpage
@@ -315,16 +294,16 @@ Where the input is the aligned reads (either in SAM or BAM format).
 Some of the available parameters for Cufflinks that we are going to use to run
 Cufflinks are listed below:
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
-  \item[-o] Output directory
-  \item[-G] Tells Cufflinks to use the supplied annotation strictly in order
-  to estimate isoform annotation
+  \item[-o] Output directory.
+  \item[-G] Tells Cufflinks to use the supplied GTF annotations strictly in order
+  to estimate isoform annotation.
   \item[-b] Instructs Cufflinks to run a bias detection and correction algorithm
   which can significantly improve accuracy of transcript abundance estimates.
   To do this Cufflinks requires a multi-fasta file with the genomic sequences
-  against which we have aligned the reads
+  against which we have aligned the reads.
   \item[-u] Tells Cufflinks to do an initial estimation procedure to more
   accurately weight reads mapping to multiple locations in the genome
-  (multi-hits). 
+  (multi-hits).
   \item[--library-type] Before performing any type of RNA-seq analysis you need
   to know a few things about the library preparation. Was it done using a
   strand-specific protocol or not? If yes, which strand? In our data the protocol
@@ -333,31 +312,17 @@ Cufflinks are listed below:
 \end{note}
 
 \begin{steps}
-In the terminal type:
+Perform transcriptome assembly, strictly using the supplied GTF annotations, for the \texttt{2cells} and \texttt{6h} data using cufflinks:
 \begin{lstlisting}
-cufflinks -o cufflinks/ZV9_2cells_gff -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
+# 2cells data (takes approx. 5mins):
+cufflinks -o cufflinks/ZV9_2cells_gtf -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
+# 6h data (takes approx. 5mins):
+cufflinks -o cufflinks/ZV9_6h_gtf -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_6h/accepted_hits.bam
 \end{lstlisting}
 \end{steps}
 
-\begin{questions}
-Using the above command, which we used to pre-align the \texttt{2cells} data,
-can you devise and run a command for the \texttt{6h} data?
-\begin{warning}
-Don't forget to change the output directory.
-Otherwise your command may overwrite the results of the \texttt{2cells} run.
-\end{warning}
-\begin{answer}
-\begin{lstlisting}
-cufflinks -o cufflinks/ZV9_6h_gff -G annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_6h/accepted_hits.bam
-\end{lstlisting}
-\end{answer}
-
-Take a look at the output directories that have been created. The results from
-Cufflinks are stored in 4 different files, see below.
-\end{questions}
-
 \begin{information}
-Here's a short description of these files:
+Cufflinks generates several files in the specified output directory. Here's a short description of these files:
 
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
 \item[genes.fpkm\_tracking] Contains the estimated gene-level expression values.
@@ -370,50 +335,50 @@ The complete documentation can be found at:
 \url{http://cufflinks.cbcb.umd.edu/manual.html#cufflinks_output}
 \end{information}
 
-Now in order to perform guided transcriptome assembly (transcriptome assembly
-that reports novel transcripts as well) we need to change the \texttt{-G}
-option of the previous command to \texttt{-g} instead.
-This tells Cufflinks to assemble the transcriptome using the supplied
-annotation as a guide, thus allowing for novel transcripts.
-
 \begin{information}
-Performing the guided transcriptome analysis for the \texttt{2cells} and
-\texttt{6h} data sets would take 15-20 min each. Therefore, we have
-pre-computed these for you and have the results available under subdirectories:
-\texttt{cufflinks/ZV9\_2cells} and \texttt{cufflinks/ZV9\_6h}.
+So far we have forced cufflinks, by using the \texttt{-G} option, to strictly
+use the GTF annotations provided and thus novel transcripts will not be reported. We
+can get cufflinks to perform a GTF-guided transcriptome assembly by using the
+\texttt{-g} option instead. Thus, novel transcripts will be reported.
+
 \end{information}
 
-\begin{questions}
-Rather than running the commands for guided transcriptome assembly, which would
-take too much time, please have a think about the \texttt{cufflinks} command you would
-need to use to run in order to perform a guided transcriptome assembly
-for the \texttt{2cells} dataset. Write your answer below:
-\begin{answer}
-\begin{lstlisting}
-# For the 2cells:
-cufflinks -o cufflinks/ZV9_2cells_gff_guided -g annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
-# For the 6h:
-cufflinks -o cufflinks/ZV9_6h_gff_guided -g annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_6h/accepted_hits.bam
-\end{lstlisting}
-\end{answer}
+\begin{warning}
+GTF-guided transcriptome assembly is more computationally intensive than
+strictly using the GTF annotations. Therefore, we have pre-computed these
+GTF-guided assemblies for you and have placed the results under subdirectories:
+\texttt{cufflinks/ZV9\_2cells\_gtf\_guided} and
+\texttt{cufflinks/ZV9\_6h\_gft\_guided}.
 
-\end{questions}
+You DO NOT need to run these commands. We provide them so you know how we
+generated the the GTF-guided transcriptome assemblies:
+\begin{lstlisting}
+# 2cells guided transcriptome assembly (takes approx. 30mins):
+cufflinks -o cufflinks/ZV9_2cells_gtf_guided -g annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_2cells/accepted_hits.bam
+# 6h guided transcriptome assembly (takes approx. 30mins):
+cufflinks -o cufflinks/ZV9_6h_gtf_guided -g annotation/Danio_rerio.Zv9.66.gtf -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded tophat/ZV9_6h/accepted_hits.bam
+\end{lstlisting}
+
+\end{warning}
 
 \begin{steps}
-Go back to the IGV browser and load the file \texttt{transcripts.gtf} which is located
-in the subdirectory \texttt{cufflinks/ZV9\_2cells/}. Rename the track into
-something meaningful.
-
-This file contains the transcripts that Cufflinks assembled based on the
-alignment of our reads onto the genome.
+\begin{enumerate}
+  \item Go back to IGV and load the pre-computed, GTF-guided transcriptome
+  assembly for the \texttt{2cells} data
+  (\texttt{cufflinks/ZV9\_2cells\_gtf\_guided/transcripts.gtf}).
+  \item Rename the track as ``2cells GTF-Guided Transcripts''.
+  \item In the search box type \texttt{ENSDART00000082297} in order for the
+  browser to zoom in to the gene of interest.
+\end{enumerate}
 \end{steps}
 
 \begin{questions}
-In the search box type \texttt{ENSDART00000082297} in order for the browser to zoom in
-to the gene of interest. Compare between the already annotated transcripts and
-the ones assembled by Cufflinks. Do you observe any difference?
+Do you observe any difference between the Ensembl GTF annotations and the
+GTF-guided transcripts assembled by cufflinks (the ``2cells GTF-Guided Transcripts'' track)?
 \begin{answer}
-No difference (I remember an extra exon ?)
+Yes. It appears that the Ensembl annotations may have truncated the last exon.
+However, our data also doesn't contain reads that span between the last two
+exons.
 \end{answer}
 
 \end{questions}
@@ -422,8 +387,10 @@ No difference (I remember an extra exon ?)
 One of the stand-alone tools that perform differential expression analysis is
 Cuffdiff. We use this tool to compare between two conditions; for example
 different conditions could be control and disease, or wild-type and mutant, or
-various developmental stages. In our case we want to identify genes that are
-differentially expressed between two developmental stages; a \texttt{2cell}
+various developmental stages.
+
+In our case we want to identify genes that are
+differentially expressed between two developmental stages; a \texttt{2cells}
 embryo and \texttt{6h} post fertilization.
 
 \begin{information}
@@ -437,28 +404,29 @@ file of the genome of interest, and the aligned reads (either in SAM or BAM
 format) for the conditions.
 Some of the Cufflinks options that we will use to run the program are:
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
-  \item[-o] output directory
-  \item[-L] labels for the different conditions
-  \item[-T] Tells Cuffdiff that the reads are from a time series experiment
-  \item[-b] Same as for Cufflinks
-  \item[-u] Same as for Cufflinks
-  \item[--library-type] Same as for Cufflinks
+  \item[-o] Output directory.
+  \item[-L] Labels for the different conditions
+  \item[-T] Tells Cuffdiff that the reads are from a time series experiment.
+  \item[-b] Instructs Cufflinks to run a bias detection and correction algorithm
+  which can significantly improve accuracy of transcript abundance estimates.
+  To do this Cufflinks requires a multi-fasta file with the genomic sequences
+  against which we have aligned the reads.
+  \item[-u] Tells Cufflinks to do an initial estimation procedure to more
+  accurately weight reads mapping to multiple locations in the genome
+  (multi-hits). 
+  \item[--library-type] Before performing any type of RNA-seq analysis you need
+ to know a few things about the library preparation. Was it done using a
+ strand-specific protocol or not? If yes, which strand? In our data the protocol
+ was NOT strand specific.
 \end{description}
 \end{information}
 
 \begin{steps}
-To run cuffdiff type on the terminal:
+Run cuffdiff on the cufflinks generated BAM files for the 2cells vs. 6h data sets:
 \begin{lstlisting}
 cuffdiff -o cuffdiff/ -L ZV9_2cells,ZV9_6h -T -b genome/Danio_rerio.Zv9.66.dna.fa -u --library-type fr-unstranded annotation/Danio_rerio.Zv9.66.gtf tophat/ZV9_2cells/accepted_hits.bam tophat/ZV9_6h/accepted_hits.bam
 \end{lstlisting}
 \end{steps}
-
-\begin{warning}
-In the command above we have assumed that the directory where you stored the
-results of Tophat for dataset \texttt{6h} was named \texttt{ZV9\_6h}. If this
-is not the case please change the previous command accordingly otherwise you
-will get an error.
-\end{warning}
 
 \begin{steps}
 We are interested in the differential expression at the gene level. The results
@@ -481,27 +449,62 @@ Look again at the first few lines of the sorted file by typing:
 head -n 20 cuffdiff/gene_exp_qval.sorted.diff
 \end{lstlisting}
 
-Copy the Ensembl identifier of one of these genes. Now go back to the IGV
-browser and paste it in the search box. Look at the raw aligned data for the
-two datasets.
+Copy an Ensembl transcript identifier from the first two columns for one of
+these genes (e.g. \texttt{ENSDARG00000077178}). Now go back to the IGV browser
+and paste it in the search box.
 \end{steps}
 
 \begin{questions}
-Do you see any difference in the gene coverage between the two conditions that
-would justify that this gene has been called as differentially expressed?
-\begin{answer}
-Read number in coverage track higher in 2cell
-\end{answer}
-
-\end{questions}
-
+Do you see any difference in the read coverage between the \texttt{2cells} and
+\texttt{6h} conditions that might have given rise to this transcript being
+called as differentially expressed?
 \begin{warning}
 Note that the coverage on the Ensembl browser is based on raw reads and no
 normalisation has taken place contrary to the FPKM values.
 \end{warning}
 
-\begin{bonus}
-\section{Functional Annotation of Differentially Expressed Genes}
+\begin{answer}
+The read coverage of this transcript (\texttt{ENSDARG00000077178}) in the 2cells
+data set is much higher than in the 6h data set.
+\end{answer}
+
+\end{questions}
+
+\newpage
+
+\section{Appendix}
+
+\subsection{Quality Value Encoding Schema}
+
+In order to use a single character to encode Phred qualities, ASCII characters
+are used (\url{http://www.asciitable.com/}). All ASCII characters have a decimal
+number associated with them but the first 32 characters and non-printable (e.g.
+backspace, shift, return, escape). Therefore, the first printable ASCII
+character is number 33, the exclamation mark (!). In Phred+33 encoded quality
+values the exclamation mark takes the Phred quality score of zero.
+
+Early Solexa (now Illumina) sequencing needed to encode negative quality values.
+Because ASCII characters $<$ 33 and non-printable, using the Phred+33 encoding was
+not possible. Therefore, they simply moved the offset from 33 to 64 thus
+inventing the Phred+64 encoded quality values. In this encoding a Phred quality
+of zero is denoted by the ASCII number 64 (the @ character). Since Illumina 1.8,
+quality values are now encoded using Phred+33.
+
+FASTQ does not provide a way to describe what quality encoding is used for the
+quality values. Therefore, you should find this out from your sequencing
+provider. Alternatively, you may be able to figure this out by determining what
+ASCII characters are present in the FASTQ file. E.g the presence of numbers in
+the quality strings, can only mean the quality values are Phred+33 encoded.
+However, due to the overlapping nature of the Phred+33 and Phred+64 encoding
+schema it is not always possible to identify what encoding is in use. For
+example, if the only characters seen in the quality string are (@ABCDEFGHI),
+then it is impossible to know if you have really good Phred+33 encoded qualities
+or really bad Phred+64 encoded qualities.
+
+For a grapical representation of the different ASCII characters used in the two
+encoding schema see: \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}.
+
+\subsection{Functional Annotation of Differentially Expressed Genes}
 After you have performed the differential expression analysis you are interested
 in identifying if there is any functionality enrichment for your differentially
 expressed genes.
@@ -528,7 +531,6 @@ Browse around DAVID website and check what other information are available.
 Cellular component, Molecular function, Biological Processes, Tissue expression, Pathways, Literature, Protein domains 
 \end{answer}
 \end{questions}
-\end{bonus}
 
 \newpage
 

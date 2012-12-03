@@ -11,27 +11,27 @@ realclean() {
   # remove the workshop directory
   sudo rm -rf "$top_dir"
   # remove the module dirs from the user's home directory
-  sudo rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
+  sudo rm /home/$trainee_user/{QC,RNA-seq}
   # remove the module dirs from the user's Desktop
-  sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
+  sudo rm /home/$trainee_user/Desktop/{QC,RNA-seq}
   rm $0
 }
 
 # default command line argument values
 #####
 #set -x
-top_dir='/mnt/NGS_workshop'
+top_dir='/mnt/BioInfoSummer'
 data_sub_dir='data'
 #dl_sub_dir='downloads'
 working_dir='working_dir'
 trainee_user='ngstrainee'
 
 usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-t <trainee username>] [-c | -r] 
-  Downloads documents and data for the BPA NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
+  Downloads documents and data for the BioInfoSummer NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
 
   where:
     -h Show this help text
-    -p Parent directory. Top level directory for all the workshop related content (default: /mnt/NGS_workshop)
+    -p Parent directory. Top level directory for all the workshop related content (default: /mnt/BioInfoSummer)
     -d Data directory. Relative to the parent directory specified by -p (default: data)
     -w Working directory. Relative to the parent directory specified by -p  (default: working_dir)
     -t Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)
@@ -133,18 +133,18 @@ function dl_file_from_cloud_storage() {
   fi
 }
 
-# download the trainee's handout
-cd "$top_dir/$data_sub_dir"
-dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_v1.0.pdf
-ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
-ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
-# make tutorial paths sync with shorter paths used used in tutorials
-if [[ ! -e ~/handout.pdf ]]; then
-  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/handout.pdf"
-fi
-if [[ ! -e ~/Desktop/handout.pdf ]]; then
-  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/Desktop/handout.pdf"
-fi
+## download the trainee's handout
+#cd "$top_dir/$data_sub_dir"
+#dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_v1.0.pdf
+#ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
+#ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
+## make tutorial paths sync with shorter paths used used in tutorials
+#if [[ ! -e ~/handout.pdf ]]; then
+#  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/handout.pdf"
+#fi
+#if [[ ! -e ~/Desktop/handout.pdf ]]; then
+#  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/Desktop/handout.pdf"
+#fi
 
 ###############
 ## QC module ##
@@ -187,71 +187,6 @@ if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; the
   sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 ####################
-
-
-###############################
-## Alignment/ChIP-seq module ##
-###############################
-module_dir='ChIP-seq'
-files=(
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/Oct4.fastq'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/gfp.fastq'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/Oct4.bam'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/gfp.bam'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mouse.mm9.genome'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mm9.fa'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/PeakAnalyzer_1.4.tar.gz'
-)
-echo "Setting up module: $module_dir"
-# Download the ChIP-seq files from cloud object storage
-echo "  Downloading data files ... "
-cd "$top_dir/$data_sub_dir"
-for file in "${files[@]}"
-do
-  dl_file_from_cloud_storage $file
-done
-# Setup working directory and symlinks as expected by the tutorial
-echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
-if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
-  mkdir -p "$top_dir/$working_dir/$module_dir"
-  echo "DONE"
-  cd "$top_dir/$working_dir/$module_dir"
-  ln -s $top_dir/$data_sub_dir/Oct4.fastq
-  ln -s $top_dir/$data_sub_dir/gfp.fastq
-  tar -xzf $top_dir/$data_sub_dir/PeakAnalyzer_1.4.tar.gz
-  mkdir -p "$top_dir/$working_dir/$module_dir/bowtie_index"
-  cd "$top_dir/$working_dir/$module_dir/bowtie_index"
-  ln -s $top_dir/$data_sub_dir/mm9.fa
-  ln -s $top_dir/$data_sub_dir/mouse.mm9.genome
-  mkdir -p "$top_dir/$working_dir/$module_dir/data"
-  cd "$top_dir/$working_dir/$module_dir/data"
-  ln -s $top_dir/$data_sub_dir/gfp.bam
-
-  # precomputed files
-  #ln -s $top_dir/$data_sub_dir/mm9.1.ebwt $top_dir/$working_dir/$module_dir/bowtie_index/
-  #ln -s $top_dir/$data_sub_dir/mm9.2.ebwt $top_dir/$working_dir/$module_dir/bowtie_index/
-  #ln -s $top_dir/$data_sub_dir/mm9.3.ebwt $top_dir/$working_dir/$module_dir/bowtie_index/
-  #ln -s $top_dir/$data_sub_dir/mm9.4.ebwt $top_dir/$working_dir/$module_dir/bowtie_index/
-  #ln -s $top_dir/$data_sub_dir/mm9.rev.1.ebwt $top_dir/$working_dir/$module_dir/bowtie_index/
-  #ln -s $top_dir/$data_sub_dir/mm9.rev.2.ebwt $top_dir/$working_dir/$module_dir/bowtie_index/
-
-  # make tutorial paths sync with shorter paths used used in tutorials
-  if [[ ! -e ~/Desktop/ChIP-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/ChIP-seq"
-  fi
-  if [[ ! -e ~/ChIP-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/ChIP-seq"
-  fi
-  #ln -s $top_dir/$data_sub_dir/bad_example.fastq $top_dir/$working_dir/$module_dir/
-else
-  echo "Already exists"
-fi
-# last thing to run for this module
-if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
-  echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
-fi
-##########################
 
 
 ####################
@@ -322,15 +257,17 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p $top_dir/$working_dir/$module_dir/{tophat,cufflinks,cuffdiff}
   cd $top_dir/$working_dir/$module_dir/cuffdiff
   ln -s $top_dir/$data_sub_dir/globalDiffExprs_Genes_qval.01_top100.tab
-  mkdir -p $top_dir/$working_dir/$module_dir/cufflinks/{ZV9_2cells,ZV9_6h}
-  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_2cells
+  mkdir -p $top_dir/$working_dir/$module_dir/cufflinks/{ZV9_2cells,ZV9_6h}_gtf_guided
+  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_2cells_gtf_guided
   ln -s $top_dir/$data_sub_dir/2cells_genes.fpkm_tracking genes.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/2cells_isoforms.fpkm_tracking isoforms.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/2cells_transcripts.gtf transcripts.gtf
-  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_6h
+  touch skipped.gtf
+  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_6h_gtf_guided
   ln -s $top_dir/$data_sub_dir/6h_genes.fpkm_tracking genes.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/6h_isoforms.fpkm_tracking isoforms.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/6h_transcripts.gtf transcripts.gtf
+  touch skipped.gtf
   mkdir -p $top_dir/$working_dir/$module_dir/tophat/ZV9_2cells
   cd $top_dir/$working_dir/$module_dir/tophat/ZV9_2cells
   ln -s $top_dir/$data_sub_dir/accepted_hits.bam
@@ -357,59 +294,3 @@ if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; the
 fi
 
 #########################
-
-
-
-
-#############################
-## de novo assembly module ##
-#############################
-module_dir='de_novo'
-files=(
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/velvet_1.2.07.tgz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022825.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022823.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/s_aureus_mrsa252.EB1_s_aureus_mrsa252.dna.chromosome.Chromosome.fa.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022852_1.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022852_2.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_1.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_2.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR000892.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR000893.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022863_1.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR022863_2.fastq.gz'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_trim1.fastq'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataDeNovo/SRR023408_trim2.fastq'
-)
-echo "Setting up module: $module_dir"
-# Download the de novo assembly files from cloud object storage
-echo "  Downloading data files ... "
-cd "$top_dir/$data_sub_dir"
-for file in "${files[@]}"
-do
-  dl_file_from_cloud_storage $file
-done
-# Setup working directory and symlinks as expected by the tutorial
-echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
-if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
-  mkdir -p "$top_dir/$working_dir/$module_dir"
-  echo "DONE"
-  cd "$top_dir/$working_dir/$module_dir"
-  ln -s $top_dir/$data_sub_dir Data
-  # make tutorial paths sync with shorter paths used by the EBI folks
-  if [[ ! -e ~/NGS ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/NGS"
-  fi
-  if [[ ! -e ~/Desktop/NGS ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/NGS"
-  fi
-else
-  echo "Already exists"
-fi
-# last thing to run for this module
-if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
-  echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
-fi
-##################################
-
