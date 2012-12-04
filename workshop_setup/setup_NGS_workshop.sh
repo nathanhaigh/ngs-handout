@@ -323,12 +323,12 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p $top_dir/$working_dir/$module_dir/{tophat,cufflinks,cuffdiff}
   cd $top_dir/$working_dir/$module_dir/cuffdiff
   ln -s $top_dir/$data_sub_dir/globalDiffExprs_Genes_qval.01_top100.tab
-  mkdir -p $top_dir/$working_dir/$module_dir/cufflinks/{ZV9_2cells,ZV9_6h}
-  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_2cells
+  mkdir -p $top_dir/$working_dir/$module_dir/cufflinks/{ZV9_2cells,ZV9_6h}_gtf_guided
+  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_2cells_gtf_guided
   ln -s $top_dir/$data_sub_dir/2cells_genes.fpkm_tracking genes.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/2cells_isoforms.fpkm_tracking isoforms.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/2cells_transcripts.gtf transcripts.gtf
-  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_6h
+  cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_6h_gtf_guided
   ln -s $top_dir/$data_sub_dir/6h_genes.fpkm_tracking genes.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/6h_isoforms.fpkm_tracking isoforms.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/6h_transcripts.gtf transcripts.gtf
