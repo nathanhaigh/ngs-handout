@@ -25,8 +25,9 @@ data_sub_dir='data'
 #dl_sub_dir='downloads'
 working_dir='working_dir'
 trainee_user='ngstrainee'
+sudoer_user='ubuntu'
 
-usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-t <trainee username>] [-c | -r] 
+usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-t <trainee username>] [-s <sudoer username>] [-c | -r] 
   Downloads documents and data for the BPA NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
 
   where:
@@ -35,11 +36,12 @@ usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w 
     -d Data directory. Relative to the parent directory specified by -p (default: data)
     -w Working directory. Relative to the parent directory specified by -p  (default: working_dir)
     -t Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)
+    -s Sudoer's username. The contents of the data directory (specified by -d) will be made to be owned by this user (default: ubuntu)
     -r Removes all trace of the workshop from the VM
     -c Cleanup the working directory. Removes the working directory and rerun this script with the same arguments this script was called with"
 
 # parse any command line options to change default values
-while getopts ":hp:d:w:t:rc" opt; do
+while getopts ":hp:d:w:t:s:rc" opt; do
   case $opt in
     h) echo "$usage"
        exit
@@ -51,6 +53,8 @@ while getopts ":hp:d:w:t:rc" opt; do
     w) working_dir=$OPTARG
        ;;
     t) trainee_user=$OPTARG
+       ;;
+    s) sudoer_user==$OPTARG
        ;;
     r) realclean
        exit
@@ -328,10 +332,12 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   ln -s $top_dir/$data_sub_dir/2cells_genes.fpkm_tracking genes.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/2cells_isoforms.fpkm_tracking isoforms.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/2cells_transcripts.gtf transcripts.gtf
+  touch skipped.gtf
   cd $top_dir/$working_dir/$module_dir/cufflinks/ZV9_6h_gtf_guided
   ln -s $top_dir/$data_sub_dir/6h_genes.fpkm_tracking genes.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/6h_isoforms.fpkm_tracking isoforms.fpkm_tracking
   ln -s $top_dir/$data_sub_dir/6h_transcripts.gtf transcripts.gtf
+  touch skipped.gtf
   mkdir -p $top_dir/$working_dir/$module_dir/tophat/ZV9_2cells
   cd $top_dir/$working_dir/$module_dir/tophat/ZV9_2cells
   ln -s $top_dir/$data_sub_dir/accepted_hits.bam
@@ -413,4 +419,10 @@ if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; the
   sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 ##################################
+
+
+#################################################
+## Last thing to be run for the whole workshop ##
+#################################################
+sudo chown -R "$sudoer_user" "$top_dir/$data_sub_dir"
 
