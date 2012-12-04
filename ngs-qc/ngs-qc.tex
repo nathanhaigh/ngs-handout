@@ -75,6 +75,36 @@ Highly redundant coverage ($>$15X) of the genome can be used to correct sequenci
 errors in the reads before assembly and errors. Various k-mer based error
 correction methods exist but are beyond the scope of this tutorial.
 
+\subsection{Quality Value Encoding Schema}
+
+In order to use a single character to encode Phred qualities, ASCII characters
+are used (\url{http://shop.alterlinks.com/ascii-table/ascii-table-us.php}). All ASCII characters have a decimal
+number associated with them but the first 32 characters and non-printable (e.g.
+backspace, shift, return, escape). Therefore, the first printable ASCII
+character is number 33, the exclamation mark (!). In Phred+33 encoded quality
+values the exclamation mark takes the Phred quality score of zero.
+
+Early Solexa (now Illumina) sequencing needed to encode negative quality values.
+Because ASCII characters $<$ 33 and non-printable, using the Phred+33 encoding was
+not possible. Therefore, they simply moved the offset from 33 to 64 thus
+inventing the Phred+64 encoded quality values. In this encoding a Phred quality
+of zero is denoted by the ASCII number 64 (the @ character). Since Illumina 1.8,
+quality values are now encoded using Phred+33.
+
+FASTQ does not provide a way to describe what quality encoding is used for the
+quality values. Therefore, you should find this out from your sequencing
+provider. Alternatively, you may be able to figure this out by determining what
+ASCII characters are present in the FASTQ file. E.g the presence of numbers in
+the quality strings, can only mean the quality values are Phred+33 encoded.
+However, due to the overlapping nature of the Phred+33 and Phred+64 encoding
+schema it is not always possible to identify what encoding is in use. For
+example, if the only characters seen in the quality string are (@ABCDEFGHI),
+then it is impossible to know if you have really good Phred+33 encoded qualities
+or really bad Phred+64 encoded qualities.
+
+For a grapical representation of the different ASCII characters used in the two
+encoding schema see: \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}.
+
 \section{Prepare the Environment}
 
 \begin{information}
@@ -209,7 +239,7 @@ Around 80 bp position
 
 How can we trim the reads to filter out the low quality data?
 \begin{answer}
-By trimming off the bases after a fixed position of the read. or by trimming off
+By trimming off the bases after a fixed position of the read or by trimming off
 bases based on the quality score.
 \end{answer}
 \end{questions}
