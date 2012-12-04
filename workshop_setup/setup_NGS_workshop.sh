@@ -135,10 +135,11 @@ function dl_file_from_cloud_storage() {
 
 # download the trainee's handout
 cd "$top_dir/$data_sub_dir"
-dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_v1.0.pdf
-ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
-ln -s $top_dir/$data_sub_dir/trainee_handout_v1.0.pdf  $top_dir/$working_dir/handout.pdf
-# make tutorial paths sync with shorter paths used used in tutorials
+dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_latest.pdf
+dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout_latest.pdf
+ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
+ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
+# make tutorial paths sync with shorter paths used in tutorials
 if [[ ! -e ~/handout.pdf ]]; then
   sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/handout.pdf"
 fi

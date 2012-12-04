@@ -8,9 +8,9 @@ Unported License (see the Licence page at the beginning of this handout).
 For convienience, you can access up-to-date PDF versions of the \LaTeX\ documents at:
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
 \item[Trainee Handout]\hfill\\
-\url{https://github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout.pdf}
+\url{https://github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_latest.pdf}
 \item[Trainer Handout]\hfill\\
-\url{https://github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout.pdf}
+\url{https://github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout_latest.pdf}
 \end{description}
 
 \section{Access to Workshop Data}
@@ -20,18 +20,27 @@ documents and data. This way you can revisit and work through this workshop in
 your own time.
 
 In order to do this, we have provided you with access to a shell script which
-can be executed on your NGS Training VM by the \texttt{ubuntu} user. This pulls
+should be executed on your NGS Training VM by the \texttt{ubuntu} user. This pulls
 approx. 3.3 GBytes of data from the NeCTAR Cloud storage and configures the system
 for running this workshop:
 
 % NOTE This bash script could be entered into the user data when instantiating
 % the VM in the first place
 \begin{lstlisting}
-# As the ubuntu user
+# As the ubuntu user run the following commands:
 cd /tmp
 wget https://github.com/nathanhaigh/ngs_workshop/raw/master/\
 workshop_setup/setup_NGS_workshop.sh
 bash setup_NGS_workshop.sh
+\end{lstlisting}
+
+While you're at it, you may also like to change the timezone of your VM to match
+that of your own. To do this simply run the following commands as the
+\texttt{ubuntu} user:
+\begin{lstlisting}
+TZ="Australia/Adelaide"
+echo "$TZ" | sudo tee /etc/timezone
+sudo dpkg-reconfigure --frontend noninteractive tzdata
 \end{lstlisting}
 
 For further information about what this script does and possible command line
