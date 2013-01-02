@@ -74,8 +74,6 @@ while getopts ":hp:d:w:t:s:rc" opt; do
   esac
 done
 
-cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809'
-
 # Add $(hostname) to /etc/hosts
 #sudo sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
 
@@ -120,8 +118,8 @@ fi
 
 # function for downloading files from cloud storage
 # call it like this:
-# dl_file_from_cloud_storage $file
-function dl_file_from_cloud_storage() {
+# dl_file $file
+function dl_file() {
   local url="$1"
   echo -n "    $url ... "
   
@@ -139,8 +137,8 @@ function dl_file_from_cloud_storage() {
 
 # download the trainee's handout
 cd "$top_dir/$data_sub_dir"
-dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_latest.pdf
-dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout_latest.pdf
+dl_file http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_latest.pdf
+dl_file http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout_latest.pdf
 ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
 ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
 # make tutorial paths sync with shorter paths used in tutorials
@@ -165,7 +163,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $file
+  dl_file $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -213,7 +211,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $file
+  dl_file $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -298,7 +296,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $file
+  dl_file $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
@@ -394,7 +392,7 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $file
+  dl_file $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "

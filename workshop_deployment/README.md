@@ -1,21 +1,21 @@
-The ```setup_NGS_workshop.sh``` script is for downloading the documents and data required for
+The ```NGS_workshop_deployment.sh``` script is for downloading the documents and data required for
 this NGS workshop. It also makes the workshop's working directory writable by the specified
 user and creates some convenient symlinks to the data under the specified user's home and desktop.
 
 First, ssh into the VM as user ```ubuntu``` and pull down the bash setup script from GitHub:
 
     cd
-    wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_setup/setup_NGS_workshop.sh
+    wget https://github.com/nathanhaigh/ngs_workshop/raw/master/workshop_deployment/NGS_workshop_deployment.sh
 
 Execute the bash script (ignore any warnings from sudo about being ```unable to resolve host```
 if you are running this script on the NeCTAR Research Cloud):
 
-    bash setup_NGS_workshop.sh
+    bash NGS_workshop_deployment.sh
 
 See the script's help, for information about command line arguments and defaults used:
     
-    bash setup_NGS_workshop.sh -h
-    USAGE: setup_NGS_workshop.sh [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>]
+    bash NGS_workshop_deployment.sh -h
+    USAGE: NGS_workshop_deployment.sh [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>]
            [-t <trainee username>] [-c | -r] 
       Downloads documents and data for the BPA NGS workshop, setting write permissions on the working
       directory for the specified user and creates convenient symlinks for said user.
@@ -41,7 +41,7 @@ You may wish to see what's been setup and the total size of the NGS workshop dat
 
 Script Details
 ==============
-By default, the ```setup_NGS_workshop.sh``` script will:
+By default, the ```NGS_workshop_deployment.sh``` script will:
 * Create a directory structure under ```/mnt/NGS_workshop```
 * Create a data directory ```/mnt/NGS_workshop/data``` for storing the data required for the NGS tutorials
 * Pull approx. 3.3 GBytes of data from the NeCTAR Cloud storage into ```/mnt/NGS_workshop/data```
@@ -88,16 +88,16 @@ Clean the VM For Another Workshop
 =================================
 If another workshop is to be run, then the NGS workshop working directory on the VM can be cleaned and
 reinitialised without pulling down all the workshop data again. To do this, login to the VM as the ```ubuntu``` user
-and run the ```setup_NGS_workshop.sh``` script with the ```-c``` flag:
+and run the ```NGS_workshop_deployment.sh``` script with the ```-c``` flag:
 
     cd
-    bash setup_NGS_workshop.sh -c
+    bash NGS_workshop_deployment.sh -c
 
 Real Clean the VM
 =================
-ALL the NGS workshop data can be scrubbed from the VM by running the ```setup_NGS_workshop.sh``` script,
+ALL the NGS workshop data can be scrubbed from the VM by running the ```NGS_workshop_deployment.sh``` script,
 as the ```ubuntu``` user, with the ```-r``` flag:
 
     cd
-    bash setup_NGS_workshop.sh -r
+    bash NGS_workshop_deployment.sh -r
     
