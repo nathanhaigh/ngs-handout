@@ -8,9 +8,9 @@ Unported License (see the Licence page at the beginning of this handout).
 For convienience, you can access up-to-date PDF versions of the \LaTeX\ documents at:
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
 \item[Trainee Handout]\hfill\\
-\url{https://github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_latest.pdf}
+\url{https://github.com/nathanhaigh/ngs_workshop/blob/Intro_to_Linux_and_RNA-Seq/trainee_handout.pdf}
 \item[Trainer Handout]\hfill\\
-\url{https://github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout_latest.pdf}
+\url{https://github.com/nathanhaigh/ngs_workshop/blob/Intro_to_Linux_and_RNA-Seq/trainer_handout.pdf}
 \end{description}
 
 \section{Access to Workshop Data}
@@ -29,27 +29,28 @@ for running this workshop:
 \begin{lstlisting}
 # As the ubuntu user run the following commands:
 cd /tmp
-wget https://github.com/nathanhaigh/ngs_workshop/raw/master/\
-workshop_setup/setup_NGS_workshop.sh
-bash setup_NGS_workshop.sh
+wget
+https://github.com/nathanhaigh/ngs_workshop/raw/\
+Intro_to_Linux_and_RNA-Seq/workshop_setup/\
+setup_workshop.sh bash
+setup_workshop.sh
 \end{lstlisting}
 
 While you're at it, you may also like to change the timezone of your VM to match
 that of your own. To do this simply run the following commands as the
 \texttt{ubuntu} user:
 \begin{lstlisting}
-TZ="Australia/Adelaide"
-echo "$TZ" | sudo tee /etc/timezone
+echo "Australia/Adelaide" | sudo tee /etc/timezone
 sudo dpkg-reconfigure --frontend noninteractive tzdata
 \end{lstlisting}
 
 For further information about what this script does and possible command line
 arguments, see the script's help:
 \begin{lstlisting}
-bash setup_NGS_workshop.sh -h
+bash setup_workshop.sh -h
 \end{lstlisting}
 
 
 For further information about setting up the VM for the workshop, please see:
 \\\\
-\url{https://github.com/nathanhaigh/ngs_workshop/blob/master/workshop_setup/README.md}
+\url{https://github.com/nathanhaigh/ngs_workshop/blob/Intro_to_Linux_and_RNA-Seq/workshop_setup/README.md}
