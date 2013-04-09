@@ -133,20 +133,6 @@ function dl_file_from_cloud_storage() {
   fi
 }
 
-## download the trainee's handout
-#cd "$top_dir/$data_sub_dir"
-#dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_latest.pdf
-#dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout_latest.pdf
-#ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
-#ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
-## make tutorial paths sync with shorter paths used in tutorials
-#if [[ ! -e ~/handout.pdf ]]; then
-#  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/handout.pdf"
-#fi
-#if [[ ! -e ~/Desktop/handout.pdf ]]; then
-#  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/Desktop/handout.pdf"
-#fi
-
 ###############
 ## QC module ##
 ###############
@@ -295,3 +281,18 @@ if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; the
 fi
 
 #########################
+
+# Setup for the Software Carpentry Shell workshop
+#####
+#wget https://swift.rc.nectar.org.au:8888/v1/AUTH_809/SWC_the_shell/Files_needed_for_Command_Line_Session.zip
+#unzip Files_needed_for_Command_Line_Session.zip
+#rm Files_needed_for_Command_Line_Session.zip
+#su $TRAINEE_USER -c "cp -R file_system/* ~/"
+#
+#chmod u=rx /home/$TRAINEE_USER/swc/vlad/venus
+#chmod u=r /home/$TRAINEE_USER/swc/vlad/mars
+#chmod u=x /home/$TRAINEE_USER/swc/vlad/pluto
+#chmod +x /home/$TRAINEE_USER/swc/labs/setup
+#chmod 777 /home/$TRAINEE_USER/swc/vlad/final.grd
+#
+#su $TRAINEE_USER -c "ln -s ~/ChIP-seq/bowtie_index/mm9.fa ~/swc/"
