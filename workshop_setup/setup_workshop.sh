@@ -20,18 +20,18 @@ realclean() {
 # default command line argument values
 #####
 #set -x
-top_dir='/mnt/BioInfoSummer'
+top_dir='/mnt/workshop'
 data_sub_dir='data'
 #dl_sub_dir='downloads'
 working_dir='working_dir'
 trainee_user='ngstrainee'
 
 usage="USAGE: $(basename $0) [-h] [-p <absolute path>] [-d <relative path>] [-w <relative path>] [-t <trainee username>] [-c | -r] 
-  Downloads documents and data for the BioInfoSummer NGS workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
+  Downloads documents and data for the Into. to Linux and RNA-Seq workshop, setting write permissions on the working directory for the specified user and creates convienient symlinks for said user.
 
   where:
     -h Show this help text
-    -p Parent directory. Top level directory for all the workshop related content (default: /mnt/BioInfoSummer)
+    -p Parent directory. Top level directory for all the workshop related content (default: /mnt/workshop)
     -d Data directory. Relative to the parent directory specified by -p (default: data)
     -w Working directory. Relative to the parent directory specified by -p  (default: working_dir)
     -t Trainee's username. Symlinks, to the workshop content, will be created under this users home directory (default: ngstrainee)
@@ -287,12 +287,11 @@ fi
 #wget https://swift.rc.nectar.org.au:8888/v1/AUTH_809/SWC_the_shell/Files_needed_for_Command_Line_Session.zip
 #unzip Files_needed_for_Command_Line_Session.zip
 #rm Files_needed_for_Command_Line_Session.zip
-#su $TRAINEE_USER -c "cp -R file_system/* ~/"
+#su $trainee_user -c "cp -R file_system/* ~/"
 #
-#chmod u=rx /home/$TRAINEE_USER/swc/vlad/venus
-#chmod u=r /home/$TRAINEE_USER/swc/vlad/mars
-#chmod u=x /home/$TRAINEE_USER/swc/vlad/pluto
-#chmod +x /home/$TRAINEE_USER/swc/labs/setup
-#chmod 777 /home/$TRAINEE_USER/swc/vlad/final.grd
-#
-#su $TRAINEE_USER -c "ln -s ~/ChIP-seq/bowtie_index/mm9.fa ~/swc/"
+#chmod u=rx /home/$trainee_user/swc/vlad/venus
+#chmod u=r /home/$trainee_user/swc/vlad/mars
+#chmod u=x /home/$trainee_user/swc/vlad/pluto
+#chmod +x /home/$trainee_user/swc/labs/setup
+#chmod 777 /home/$trainee_user/swc/vlad/final.grd
+
