@@ -3,17 +3,17 @@
 cleanup() {
   echo "Cleaning up the VM"
   # remove the working directory, this will be recreated shortly
-  sudo rm -rf "$top_dir/$working_dir"
+  rm -rf "$top_dir/$working_dir"
   bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -t "$trainee_user"
 }
 realclean() {
   echo "Removing all trace of this workshop from the VM"
   # remove the workshop directory
-  sudo rm -rf "$top_dir"
+  rm -rf "$top_dir"
   # remove the module dirs from the user's home directory
-  sudo rm /home/$trainee_user/{QC,RNA-seq}
+  rm /home/$trainee_user/{QC,RNA-seq}
   # remove the module dirs from the user's Desktop
-  sudo rm /home/$trainee_user/Desktop/{QC,RNA-seq}
+  rm /home/$trainee_user/Desktop/{QC,RNA-seq}
   rm $0
 }
 
@@ -70,26 +70,24 @@ while getopts ":hp:d:w:t:rc" opt; do
   esac
 done
 
-cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809'
-
 # Add $(hostname) to /etc/hosts
-#sudo sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
+#sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
 
 echo "Top level directory is: $top_dir"
-if [ ! -e "$top_dir" ]; then
+if [ ! -d "$top_dir" ]; then
   echo "Creating top level directory: $top_dir"
-  sudo mkdir -p "$top_dir"
+  mkdir -p "$top_dir"
 fi
 if [ $(stat -c %U "$top_dir") != "$USER" ]; then
   echo "Making top level directory owned by $USER"
-  sudo chown "$USER" "$top_dir"
+  chown "$USER" "$top_dir"
   chgrp "$USER" "$top_dir"
 else
   echo "Top level directory already owned by $USER"
 fi
 
 # Create directory structure for data to be pulled from NeCTAR object storage
-if [ ! -e "$top_dir/$data_sub_dir" ]; then
+if [ ! -d "$top_dir/$data_sub_dir" ]; then
   echo "Creating raw data directory: $top_dir/$data_sub_dir"
   mkdir -p "$top_dir/$data_sub_dir"
 else
@@ -100,7 +98,7 @@ fi
 #  mkdir -p "$top_dir/$dl_sub_dir"
 #fi
 
-if [ ! -e "$top_dir/$working_dir" ]; then
+if [ ! -d "$top_dir/$working_dir" ]; then
   echo "Creating working directory: $top_dir/$working_dir"
   mkdir -p "$top_dir/$working_dir"
 else
@@ -108,7 +106,7 @@ else
 fi
 if [ $(stat -c %U "$top_dir/$working_dir") != "$trainee_user" ]; then
   echo "Making working directory owned by $trainee_user"
-  sudo chown "$trainee_user" "$top_dir/$working_dir"
+  chown "$trainee_user" "$top_dir/$working_dir"
 else
   echo "Working directory already owned by $trainee_user"
 fi
@@ -116,8 +114,8 @@ fi
 
 # function for downloading files from cloud storage
 # call it like this:
-# dl_file_from_cloud_storage $file
-function dl_file_from_cloud_storage() {
+# download_file $file
+function download_file() {
   local url="$1"
   echo -n "    $url ... "
   
@@ -147,11 +145,11 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $file
+  download_file $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
-if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
+if [ ! -d "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p "$top_dir/$working_dir/$module_dir"
   echo "DONE"
   cd "$top_dir/$working_dir/$module_dir"
@@ -159,11 +157,11 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   ln -s $top_dir/$data_sub_dir/good_example.fastq
 
   # make tutorial paths sync with shorter paths used used in tutorials
-  if [[ ! -e ~/QC ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/QC"
+  if [[ ! -e /home/$trainee_user/QC ]]; then
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/QC"
   fi
-  if [[ ! -e ~/Desktop/QC ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/QC"
+  if [[ ! -e /home/$trainee_user/Desktop/QC ]]; then
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/Desktop/QC"
   fi
 else
   echo "Already exists"
@@ -171,7 +169,7 @@ fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
   echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
+  chown -R "$trainee_user:$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 ####################
 
@@ -215,11 +213,11 @@ echo "  Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  dl_file_from_cloud_storage $file
+  download_file $file
 done
 # Setup working directory and symlinks as expected by the tutorial
 echo -n "  Creating working directory $top_dir/$working_dir/$module_dir ... "
-if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
+if [ ! -d "$top_dir/$working_dir/$module_dir" ]; then
   mkdir -p "$top_dir/$working_dir/$module_dir"
   echo "DONE"
   cd $top_dir/$working_dir/$module_dir
@@ -264,11 +262,11 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   ln -s $top_dir/$data_sub_dir/deletions.bed
   ln -s $top_dir/$data_sub_dir/insertions.bed
   # make tutorial paths sync with shorter paths used by the EBI folks
-  if [[ ! -e ~/RNA-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/RNA-seq"
+  if [[ ! -e /home/$trainee_user/RNA-seq ]]; then
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/RNA-seq"
   fi
-  if [[ ! -e ~/Desktop/RNA-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/RNA-seq"
+  if [[ ! -e /home/$trainee_user/Desktop/RNA-seq ]]; then
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/Desktop/RNA-seq"
   fi
 else
   echo "Already exists"
@@ -277,21 +275,92 @@ fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
   echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
+  chown -R "$trainee_user:$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 
 #########################
 
+#####
 # Setup for the Software Carpentry Shell workshop
 #####
-#wget https://swift.rc.nectar.org.au:8888/v1/AUTH_809/SWC_the_shell/Files_needed_for_Command_Line_Session.zip
-#unzip Files_needed_for_Command_Line_Session.zip
-#rm Files_needed_for_Command_Line_Session.zip
-#su $trainee_user -c "cp -R file_system/* ~/"
-#
-#chmod u=rx /home/$trainee_user/swc/vlad/venus
-#chmod u=r /home/$trainee_user/swc/vlad/mars
-#chmod u=x /home/$trainee_user/swc/vlad/pluto
-#chmod +x /home/$trainee_user/swc/labs/setup
-#chmod 777 /home/$trainee_user/swc/vlad/final.grd
+module_dir='swc_shell'
+files=(
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_33065ff5c34a4652aa2fefb292b3195a/SWC/swc_shell.tar.gz'
+)
+echo "Setting up module: $module_dir"
+# Download the files
+echo "  Downloading data files ... "
+cd "$top_dir/$data_sub_dir"
+for file in "${files[@]}"
+do
+  download_file $file
+done
+
+if [[ ! -d "$top_dir/$working_dir/$module_dir" ]]; then
+    mkdir -p "$top_dir/$working_dir/$module_dir"
+    cd "$top_dir/$working_dir/$module_dir"
+    tar xzf $top_dir/$data_sub_dir/swc_shell.tar.gz
+        
+    if [[ ! -e /home/$trainee_user/shell ]]; then
+        su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/shell"
+    fi
+    if [[ ! -e /home/$trainee_user/Desktop/shell ]]; then
+        su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/Desktop/shell"
+    fi
+fi
+if [[ ! -d "/data/backup" ]]; then
+    mkdir -p "/data/backup"
+    whoami > /data/access.log 
+    ifconfig > /data/network.cfg 
+    cat /proc/cpuinfo > /data/hardware.cfg
+fi
+if [[ ! -d "/users" ]]; then
+    mkdir -p "/users"
+    ln -s /home/$trainee_user /users/vlad
+fi
+# last thing to run for this module
+if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
+  echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
+  chown -R "$trainee_user:$trainee_user" "$top_dir/$working_dir/$module_dir"
+fi
+
+#####
+# Setup for Advanced shell excercises
+#####
+module_dir='adv_shell'
+files=(
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_33065ff5c34a4652aa2fefb292b3195a/ACAD_Mon/Commandline.zip'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_33065ff5c34a4652aa2fefb292b3195a/ACAD_Mon/words.zip'
+)
+echo "Setting up module: $module_dir"
+# Download the files
+echo "  Downloading data files ... "
+cd "$top_dir/$data_sub_dir"
+for file in "${files[@]}"
+do
+  download_file $file
+done
+if [[ ! -d "$top_dir/$working_dir/$module_dir" ]]; then
+    mkdir -p "$top_dir/$working_dir/$module_dir"
+    
+    unzip -nd $top_dir/$data_sub_dir $top_dir/$data_sub_dir/Commandline.zip
+    unzip -nd $top_dir/$data_sub_dir $top_dir/$data_sub_dir/words.zip
+    
+    cd $top_dir/$working_dir/$module_dir
+    ln -s $top_dir/$data_sub_dir/{words,CP07-ospC.fas,CQ25-ospC.fas,dnasequence.fas,Hinf_genes.gff,Hinf_genome.fasta,Hinf_reads.fastq,JB13-ospC.fas,JG16-ospC.fas,YM89-ospC.fas} ./
+    
+    
+    if [[ ! -e /home/$trainee_user/adv_shell ]]; then
+        su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/adv_shell"
+    fi
+    if [[ ! -e /home/$trainee_user/Desktop/adv_shell ]]; then
+        su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/Desktop/adv_shell"
+    fi
+fi
+# last thing to run for this module
+if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
+  echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
+  chown -R "$trainee_user:$trainee_user" "$top_dir/$working_dir/$module_dir"
+fi
+
 
