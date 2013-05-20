@@ -187,7 +187,7 @@ Briefly, the k-mer coverage (and much more information) for each contig is store
 in the file \texttt{stats.txt} and can be used with R to visualize the k-mer coverage
 distribution. Take a look at the \texttt{stats.txt} file, start R, load and
 visualize the data using the following commands:
-\begin{lstlisting}
+\begin{lstlisting}[style=R]
 R --no-save --no-restore
 library(plotrix)
 data <- read.table("stats.txt", header=TRUE)
@@ -209,7 +209,7 @@ below:
 \begin{steps}
 After choosing the expected coverage and the coverage cut-off, you can exit R by
 typing:
-\begin{lstlisting}
+\begin{lstlisting}[style=R]
 q()
 \end{lstlisting}
 \end{steps}

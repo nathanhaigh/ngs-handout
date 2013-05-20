@@ -62,6 +62,7 @@
     #1%
     \EndAccSupp{}%
 }
+% set the default style for lstlisting environments
 \lstset{ %
 %    language=sh,                    % the language of the code
     columns=fullflexible,
@@ -93,6 +94,26 @@
     literate=%{*}{{\textasteriskcentered}}{1}
              {~}{{\texttildelow}}{1} % reformat the high tilde to a normal tile which looks good for printing and is copy-and-pastable
              %{-}{{\textminus}}{1},
+}
+% Define a styling for commandline syntax
+% http://publib.boulder.ibm.com/tividd/td/TRM/GC32-1320-00/en_US/HTML/cmdref19.htm
+\definecolor{darkred}{rgb}{0.9,0,0}
+\lstdefinestyle{command_syntax}{
+	language=command_syntax,
+	numbers=none,
+	rulecolor=\color{darkred},
+	sensitive=false,
+	alsoletter={.},
+	moredelim=[s][\color{red}]{<}{>},
+	moredelim=[s][\color{blue}]{[}{]},
+	moredelim=[is][\color{orange}]{:}{:},
+	keywords=[10]{...},
+	keywordstyle=[10]{\color{magenta}}
+}
+% Define the R language styling
+\lstdefinestyle{R}{
+    rulecolor=\color{blue},     % if not set, the frame-color may be
+    % changed
 }
 
 % disables chapter, section and subsection numbering

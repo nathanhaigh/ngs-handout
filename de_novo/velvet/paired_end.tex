@@ -522,7 +522,7 @@ to run \texttt{velvetg} with the \texttt{-cov\_cutoff} and \texttt{-exp\_cov}. I
 to use \texttt{-cov\_cutoff} and \texttt{-exp\_cov} sensibly, you need to
 investigate with R, as you did in the previous exercise, what parameter values
 to use. Start up R and produce the weighted histograms:
-\begin{lstlisting}
+\begin{lstlisting}[style=R]
 R --no-save
 library(plotrix) 
 data <- read.table("run_21/stats.txt", header=TRUE) 
@@ -542,11 +542,13 @@ For the untrimmed read histogram (left) there is an expected coverage of around
 13 with a coverage cut-off of around 7. For the trimmed read histogram (right)
 there is an expected coverage of around 9 with a coverage cut-off of around 5.
 
-If you disagree, feel free to try different settings, but first leave R before
+If you disagree, feel free to try different settings, but first quit R before
 running \texttt{velvetg}:
-\begin{lstlisting}
+\begin{lstlisting}[style=R]
 q()
+\end{lstlisting}
 
+\begin{lstlisting}
 time velvetg run_21 -cov_cutoff 7 -exp_cov 13 -ins_length 92
 time velvetg run_21trim -cov_cutoff 5 -exp_cov 9 -ins_length 92
 \end{lstlisting}

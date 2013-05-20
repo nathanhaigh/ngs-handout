@@ -59,7 +59,7 @@ there is an option called \texttt{-long\_cov\_cutoff} to filter them
 independently because of the difference in usage in velvet. To investigate with
 R, as you did in the previous exercises, start up R and produce the weighted
 histogram using the column \texttt{long\_cov} by typing:
-\begin{lstlisting}
+\begin{lstlisting}[style=R]
 R --no-save
 library(plotrix) 
 data <- read.table("run_25/stats.txt", header=TRUE) 
@@ -77,9 +77,11 @@ with an expected coverage of about 19.
 
 If you disagree, feel free to try different settings, but first leave R before
 running \texttt{velvetg}:
-\begin{lstlisting}
+\begin{lstlisting}[style=R]
 q()
+\end{lstlisting}
 
+\begin{lstlisting}
 cp run_25/contigs.fa run_25/contigs.fa.0
 
 time velvetg run_25 -long_cov_cutoff 9
