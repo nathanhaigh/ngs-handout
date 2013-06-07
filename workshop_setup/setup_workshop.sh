@@ -3,17 +3,17 @@
 cleanup() {
   echo "Cleaning up the VM"
   # remove the working directory, this will be recreated shortly
-  sudo rm -rf "$top_dir/$working_dir"
+  rm -rf "$top_dir/$working_dir"
   bash $0 -p "$top_dir" -d "$data_sub_dir" -w "$working_dir" -t "$trainee_user"
 }
 realclean() {
   echo "Removing all trace of this workshop from the VM"
   # remove the workshop directory
-  sudo rm -rf "$top_dir"
+  rm -rf "$top_dir"
   # remove the module dirs from the user's home directory
-  sudo rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
+  rm /home/$trainee_user/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
   # remove the module dirs from the user's Desktop
-  sudo rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
+  rm /home/$trainee_user/Desktop/{ChIP-seq,NGS,QC,RNA-seq,handout.pdf}
   rm $0
 }
 
@@ -77,16 +77,16 @@ done
 cloud_storage_url_prefix='https://swift.rc.nectar.org.au:8888/v1/AUTH_809'
 
 # Add $(hostname) to /etc/hosts
-#sudo sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
+#sed -i -e "s/^\(127.0.0.1 localhost\)/\1 $(hostname)/" /etc/hosts
 
 echo "Top level directory is: $top_dir"
 if [ ! -e "$top_dir" ]; then
   echo "Creating top level directory: $top_dir"
-  sudo mkdir -p "$top_dir"
+  mkdir -p "$top_dir"
 fi
 if [ $(stat -c %U "$top_dir") != "$USER" ]; then
   echo "Making top level directory owned by $USER"
-  sudo chown "$USER" "$top_dir"
+  chown "$USER" "$top_dir"
   chgrp "$USER" "$top_dir"
 else
   echo "Top level directory already owned by $USER"
@@ -112,7 +112,7 @@ else
 fi
 if [ $(stat -c %U "$top_dir/$working_dir") != "$trainee_user" ]; then
   echo "Making working directory owned by $trainee_user"
-  sudo chown "$trainee_user" "$top_dir/$working_dir"
+  chown "$trainee_user" "$top_dir/$working_dir"
 else
   echo "Working directory already owned by $trainee_user"
 fi
@@ -136,20 +136,6 @@ function dl_file_from_cloud_storage() {
     echo "NOT SURE WHAT HTTP STATUS CODE $http_status_code MEANS"
   fi
 }
-
-# download the trainee's handout
-cd "$top_dir/$data_sub_dir"
-dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainee_handout_latest.pdf
-dl_file_from_cloud_storage http://cloud.github.com/downloads/nathanhaigh/ngs_workshop/trainer_handout_latest.pdf
-ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
-ln -s $top_dir/$data_sub_dir/trainee_handout_latest.pdf  $top_dir/$working_dir/handout.pdf
-# make tutorial paths sync with shorter paths used in tutorials
-if [[ ! -e ~/handout.pdf ]]; then
-  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/handout.pdf"
-fi
-if [[ ! -e ~/Desktop/handout.pdf ]]; then
-  sudo su $trainee_user -c "ln -s $top_dir/$working_dir/handout.pdf ~/Desktop/handout.pdf"
-fi
 
 ###############
 ## QC module ##
@@ -178,10 +164,10 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
 
   # make tutorial paths sync with shorter paths used used in tutorials
   if [[ ! -e ~/QC ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/QC"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/QC"
   fi
   if [[ ! -e ~/Desktop/QC ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/QC"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/QC"
   fi
 else
   echo "Already exists"
@@ -189,7 +175,7 @@ fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
   echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
+  chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 ####################
 
@@ -242,10 +228,10 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
 
   # make tutorial paths sync with shorter paths used used in tutorials
   if [[ ! -e ~/Desktop/ChIP-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/ChIP-seq"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/ChIP-seq"
   fi
   if [[ ! -e ~/ChIP-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/ChIP-seq"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/ChIP-seq"
   fi
   #ln -s $top_dir/$data_sub_dir/bad_example.fastq $top_dir/$working_dir/$module_dir/
 else
@@ -254,7 +240,7 @@ fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
   echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
+  chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 ##########################
 
@@ -348,10 +334,10 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   ln -s $top_dir/$data_sub_dir/insertions.bed
   # make tutorial paths sync with shorter paths used by the EBI folks
   if [[ ! -e ~/RNA-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/RNA-seq"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/RNA-seq"
   fi
   if [[ ! -e ~/Desktop/RNA-seq ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/RNA-seq"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/RNA-seq"
   fi
 else
   echo "Already exists"
@@ -360,7 +346,7 @@ fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
   echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
+  chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 
 #########################
@@ -405,10 +391,10 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   ln -s $top_dir/$data_sub_dir Data
   # make tutorial paths sync with shorter paths used by the EBI folks
   if [[ ! -e ~/NGS ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/NGS"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/NGS"
   fi
   if [[ ! -e ~/Desktop/NGS ]]; then
-    sudo su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/NGS"
+    su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir ~/Desktop/NGS"
   fi
 else
   echo "Already exists"
@@ -416,7 +402,7 @@ fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
   echo "  Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
-  sudo chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
+  chown -R "$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 ##################################
 
@@ -424,5 +410,5 @@ fi
 #################################################
 ## Last thing to be run for the whole workshop ##
 #################################################
-sudo chown -R "$sudoer_user" "$top_dir/$data_sub_dir"
+chown -R "$sudoer_user" "$top_dir/$data_sub_dir"
 
