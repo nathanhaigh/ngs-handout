@@ -107,17 +107,17 @@ bowtie --help
 Bowtie uses indexed genome for the alignment in order to keep its memory
 footprint small. Because of time constraints we will build the index only for
 one chromosome of the mouse genome. For this we need the chromosome sequence in
-FASTA format. This is stored in a file named \texttt{mm9}, under the subdirectory
-\texttt{bowtie\_index}.
+FASTA format. This is stored in a file named \texttt{mm10}, under the
+subdirectory \texttt{bowtie\_index}.
 
 The indexed chromosome is generated using the command:
 
 \begin{lstlisting}
-bowtie-build bowtie_index/mm9.fa bowtie_index/mm9
+bowtie-build bowtie_index/mm10.fa bowtie_index/mm10
 \end{lstlisting}
 
 This command will output 6 files that constitute the index. These files that
-have the prefix \texttt{mm9} are stored in the \texttt{bowtie\_index}
+have the prefix \texttt{mm10} are stored in the \texttt{bowtie\_index}
 subdirectory. To view if they files have been successfully created type:
 
 \begin{lstlisting}
@@ -128,8 +128,8 @@ ls -l bowtie_index
 \begin{information}
 Now that the genome is indexed we can move on to the actual alignment. The first
 argument for \texttt{bowtie} is the basename of the index for the genome to be searched;
-in our case this is \texttt{mm9}. We also want to make sure that the output is in SAM
-format using the \texttt{-S} parameter. The last argument is the name of the
+in our case this is \texttt{mm10}. We also want to make sure that the output is
+in SAM format using the \texttt{-S} parameter. The last argument is the name of the
 FASTQ file.
 \end{information}
 
@@ -137,7 +137,7 @@ FASTQ file.
 Align the Oct4 reads using Bowtie: 
 
 \begin{lstlisting}
-bowtie bowtie_index/mm9 -S Oct4.fastq > Oct4.sam
+bowtie bowtie_index/mm10 -S Oct4.fastq > Oct4.sam
 \end{lstlisting}
 
 The above command outputs the alignment in SAM format and stores them in the
@@ -179,7 +179,8 @@ The header line starts with the letter `@', i.e.:
 \begin{tabular}{llll}
 @HD & VN:1.0 & SO:unsorted & \\
 @SQ & SN:chr1 & LN:197195432 & \\
-@PG & ID:Bowtie &      VN:0.12.8  & CL:``bowtie bowtie\_index/mm9 -S Oct4.fastq'' \\
+@PG & ID:Bowtie &      VN:0.12.8  & CL:``bowtie bowtie\_index/mm10 -S
+Oct4.fastq'' \\
 \end{tabular}
 
 While, the actual alignments start with read id, i.e.:
@@ -286,14 +287,15 @@ bigWig binary file called \texttt{Oct4.bw}, using \texttt{bedGraphToBigWig} from
 the UCSC tools:
 
 \begin{lstlisting}
-genomeCoverageBed -bg -ibam Oct4.sorted.bam -g bowtie_index/mouse.mm9.genome > Oct4.bedgraph
-bedGraphToBigWig Oct4.bedgraph bowtie_index/mouse.mm9.genome Oct4.bw
+genomeCoverageBed -bg -ibam Oct4.sorted.bam -g bowtie_index/mouse.mm10.genome >
+Oct4.bedgraph bedGraphToBigWig Oct4.bedgraph bowtie_index/mouse.mm10.genome
+Oct4.bw
 \end{lstlisting}
 \end{steps}
 
 \begin{note}
-Both of the commands above take as input a file called \texttt{mouse.mm9.genome} that
-is stored under the subdirectory \texttt{bowtie\_index}. These genome files are
+Both of the commands above take as input a file called
+\texttt{mouse.mm10.genome} that is stored under the subdirectory \texttt{bowtie\_index}. These genome files are
 tab-delimited and describe the size of the chromosomes for the organism of
 interest. When using the UCSC Genome Browser, Ensembl, or Galaxy, you typically
 indicate which species/genome build you are working with. The way you do this for
@@ -306,11 +308,11 @@ BEDTools includes pre-defined genome files for human and mouse in the
 
 \begin{steps}
 Now we will load the data into the IGV browser for visualization. In order to
-launch IGV double click on the \texttt{IGV 2.1} icon on your Desktop. Ignore any warnings
+launch IGV double click on the \texttt{IGV 2.3} icon on your Desktop. Ignore any warnings
 and when it opens you have to load the genome of interest.
 
 On the top left of your screen choose from the drop down menu \texttt{Mus musculus
-(mm9)}. Then in order to load the desire files go to:
+(mm10)}. Then in order to load the desire files go to:
 
 \begin{lstlisting}[style=command_syntax]
 File > Load from File
