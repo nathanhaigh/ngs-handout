@@ -287,8 +287,7 @@ bigWig binary file called \texttt{Oct4.bw}, using \texttt{bedGraphToBigWig} from
 the UCSC tools:
 
 \begin{lstlisting}
-genomeCoverageBed -bg -ibam Oct4.sorted.bam -g bowtie_index/mouse.mm10.genome > \
-Oct4.bedgraph 
+genomeCoverageBed -bg -ibam Oct4.sorted.bam -g bowtie_index/mouse.mm10.genome > Oct4.bedgraph 
 bedGraphToBigWig Oct4.bedgraph bowtie_index/mouse.mm10.genome Oct4.bw
 \end{lstlisting}
 \end{steps}
