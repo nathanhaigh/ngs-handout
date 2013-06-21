@@ -464,8 +464,8 @@ reads as follows:
 \begin{lstlisting}
 gunzip < SRR023408_1.fastq.gz > SRR023408_1.fastq
 gunzip < SRR023408_2.fastq.gz > SRR023408_2.fastq
-fastx_trimmer -Q 33 -f 4 -l 32 -i SRR023408_1.fastq -o SRR023408_trim1.fastq 
-fastx_trimmer -Q 33 -f 3 -l 29 -i SRR023408_2.fastq -o SRR023408_trim2.fastq
+fastx_trimmer -Q 33 -f 1 -l 32 -i SRR023408_1.fastq -o SRR023408_trim1.fastq 
+fastx_trimmer -Q 33 -f 1 -l 27 -i SRR023408_2.fastq -o SRR023408_trim2.fastq
 \end{lstlisting}
 
 \begin{advanced}
