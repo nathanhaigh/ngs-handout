@@ -1,6 +1,9 @@
 # You want latexmk to *always* run, because make does not have all the info.
 .PHONY: trainee trainer
 
+# Add a directory to the path
+export PATH := /usr/local/texlive/2012/bin/x86_64-linux:$(PATH)
+
 # First rule should always be the default "all" rule, so both "make all" and
 # "make" will invoke it.
 all: trainee trainer
@@ -27,13 +30,14 @@ all: trainee trainer
 
 trainee: handout.tex
 	/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' handout.tex
-	/usr/local/texlive/2012/bin/x86_64-linux/latexmk -pdf -jobname=trainee_handout -pdflatex='/usr/local/texlive/2012/bin/x86_64-linux/pdflatex -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make handout.tex
+	latexmk -pdf -jobname=trainee_handout -pdflatex='pdflatex -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make handout.tex
 
 trainer: handout.tex
 	/bin/sed -i -e 's@^\\usepackage{btp}@\\usepackage[trainermanual]{btp}@' handout.tex
-	/usr/local/texlive/2012/bin/x86_64-linux/latexmk -pdf -jobname=trainer_handout -pdflatex='/usr/local/texlive/2012/bin/x86_64-linux/pdflatex -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make handout.tex
+	latexmk -pdf -jobname=trainer_handout -pdflatex='pdflatex -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make handout.tex
 	/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' handout.tex
 
 clean:
-	/usr/local/texlive/2012/bin/x86_64-linux/latexmk -CA -jobname=trainee_handout handout.tex
-	/usr/local/texlive/2012/bin/x86_64-linux/latexmk -CA -jobname=trainer_handout handout.tex
+	latexmk -CA -jobname=trainee_handout handout.tex
+	latexmk -CA -jobname=trainer_handout handout.tex
+	/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' handout.tex
