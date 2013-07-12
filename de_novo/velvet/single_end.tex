@@ -189,6 +189,7 @@ distribution. Take a look at the \texttt{stats.txt} file, start R, load and
 visualize the data using the following commands:
 \begin{lstlisting}[style=R]
 R --no-save --no-restore
+install.packages('plotrix')
 library(plotrix)
 data <- read.table("stats.txt", header=TRUE)
 weighted.hist(data$short1_cov, data$lgth, breaks=0:50)
