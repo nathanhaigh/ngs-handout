@@ -2,5 +2,5 @@ before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq python-software-properties 
  - sudo add-apt-repository -y ppa:texlive-backports/ppa
- - sudo apt-get install -qq texlive
+ - sudo apt-get install -qq texlive latexmk
 script: "make"
