@@ -356,6 +356,15 @@ fastq_quality_trimmer -Q 33 -t 20 -l 50 -i bad_example.fastq -o bad_example_qual
 \end{lstlisting}
 \end{steps}
 
+\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
+ \item[-Q 33] Indicates the input quality scores are Phred+33 encoded
+ \item[-t] quality score cut-off
+ \item[-l] minimum length of reads to output
+ \item[-i] Input FASTQ file name
+ \item[-o] Output file name
+\end{description}
+\end{note}
+
 \begin{steps}
 Run FastQC on the quality trimmed file and visualise the quality scores.
 
