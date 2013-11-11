@@ -150,34 +150,34 @@ echo " Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-download_file $file
+  download_file $file
 done
 
 if [[ ! -d "$top_dir/$working_dir/$module_dir" ]]; then
-mkdir -p "$top_dir/$working_dir/$module_dir"
+    mkdir -p "$top_dir/$working_dir/$module_dir"
     cd "$top_dir/$working_dir/$module_dir"
     tar xzf $top_dir/$data_sub_dir/swc_shell.tar.gz
         
     if [[ ! -e /home/$trainee_user/shell ]]; then
-su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/shell"
+      su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/shell"
     fi
-if [[ ! -e /home/$trainee_user/Desktop/shell ]]; then
-su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/Desktop/shell"
+    if [[ ! -e /home/$trainee_user/Desktop/shell ]]; then
+      su $trainee_user -c "ln -s $top_dir/$working_dir/$module_dir /home/$trainee_user/Desktop/shell"
     fi
 fi
 if [[ ! -d "/data/backup" ]]; then
-mkdir -p "/data/backup"
+    mkdir -p "/data/backup"
     whoami > /data/access.log
     ifconfig > /data/network.cfg
     cat /proc/cpuinfo > /data/hardware.cfg
 fi
 if [[ ! -d "/users" ]]; then
-mkdir -p "/users"
+    mkdir -p "/users"
     ln -s /home/$trainee_user /users/vlad
 fi
 # last thing to run for this module
 if [ $(stat -c %U "$top_dir/$working_dir/$module_dir") != "$trainee_user" ]; then
-echo " Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
+  echo " Making module's working directory ($top_dir/$working_dir/$module_dir) owned by $trainee_user"
   chown -R "$trainee_user:$trainee_user" "$top_dir/$working_dir/$module_dir"
 fi
 #########################
