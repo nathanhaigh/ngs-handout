@@ -150,7 +150,7 @@ echo " Downloading data files ... "
 cd "$top_dir/$data_sub_dir"
 for file in "${files[@]}"
 do
-  download_file $file
+  dl_file_from_cloud_storage $file
 done
 
 if [[ ! -d "$top_dir/$working_dir/$module_dir" ]]; then
