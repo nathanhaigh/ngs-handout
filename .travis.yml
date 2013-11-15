@@ -1,4 +1,4 @@
 # This code 
-before_script: latex_env_setup.sh
+before_script: ./latex_env_setup.sh
 script: "make"
 
