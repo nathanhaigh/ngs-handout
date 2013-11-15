@@ -2,7 +2,7 @@
 .PHONY: trainee trainer
 
 # Add a directory to the path
-export PATH := /usr/local/texlive/2012/bin/x86_64-linux:$(PATH)
+export PATH := /usr/local/texlive/2013/bin/x86_64-linux:$(PATH)
 
 # First rule should always be the default "all" rule, so both "make all" and
 # "make" will invoke it.
