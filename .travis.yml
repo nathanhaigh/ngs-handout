@@ -1,9 +1,6 @@
 # This code 
-env: CTAN_MIRROR_URL='http://mirror.aarnet.edu.au/pub/CTAN'
-
 before_script:
-  #- sudo ./latex_env_setup.sh
-  - wget ${CTAN_MIRROR_URL}/systems/texlive/tlnet/install-tl-unx.tar.gz
+  - wget http://mirror.aarnet.edu.au/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz
   - tar xzf install-tl-unx.tar.gz
   - sudo ./install-tl-*/install-tl -no-gui -profile texlive.profile
   - sudo /usr/local/texlive/2013/bin/x86_64-linux/tlmgr install mdframed preprint enumitem etoolbox titlesec xmpincl comment latexmk lm memoir listings xcolor url l3packages l3kernel placeins microtype float latex-bin fancyhdr graphics psnfss pdftex-def oberdiek colortbl hyperref
