@@ -1,4 +1,5 @@
 # This code 
+env: PATH=/usr/local/texlive/2013/bin/x86_64-linux
 before_script: sudo ./latex_env_setup.sh
 script: "make"
 
