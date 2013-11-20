@@ -4,7 +4,7 @@ env: PATH=$TEXDIR/bin/x86_64-linux:$PATH
 env: CTAN_MIRROR_URL='http://mirror.aarnet.edu.au/pub/CTAN'
 
 before_script:
-  - sudo ./latex_env_setup.sh
+  #- sudo ./latex_env_setup.sh
   - wget ${CTAN_MIRROR_URL}/systems/texlive/tlnet/install-tl-unx.tar.gz
   - tar xzf install-tl-unx.tar.gz
   - ./install-tl-*/install-tl -no-gui -profile texlive.profile
