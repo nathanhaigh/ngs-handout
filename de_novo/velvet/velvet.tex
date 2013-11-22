@@ -166,6 +166,7 @@ cd velvet_1.2.07
 make
 ./velveth
 \end{lstlisting}
+The standout displayed to screen when 'make' runs may contain an error message but it is ignored
 \end{information}
 
 \begin{steps}
@@ -196,7 +197,7 @@ categories, velvet needs to be recompiled to enable this functionality by
 typing:
 \begin{lstlisting}
 make clean
-make MAXKMERLENGTH=41 CATEGORIES=3;
+make MAXKMERLENGTH=41 CATEGORIES=3
 ./velveth
 \end{lstlisting}
 \end{steps}

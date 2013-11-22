@@ -31,6 +31,13 @@
 \usepackage{comment}
 \newtoggle{trainermanual}   % defaults to false
 
+\newcommand{\workshopTitle}{Example Workshop Title}
+\newcommand{\workshopVenue}{Example Location, Earth}
+\newcommand{\workshopDate}{MMM. YYYY}
+\newcommand{\workshopAuthor}{
+Example Workshop Author, Contributers etc\\
+}
+
 %%%%%%%%%%
 %%%%%%%%%%
 \DeclareOption{trainermanual}{\settoggle{trainermanual}{true}}
@@ -99,7 +106,6 @@
 % http://publib.boulder.ibm.com/tividd/td/TRM/GC32-1320-00/en_US/HTML/cmdref19.htm
 \definecolor{darkred}{rgb}{0.9,0,0}
 \lstdefinestyle{command_syntax}{
-	language=command_syntax,
 	numbers=none,
 	rulecolor=\color{darkred},
 	sensitive=false,
@@ -466,7 +472,7 @@
   \renewcommand*{\printchaptertitle}[1]{%
     \vskip\onelineskip
     \raggedleft {\chaptitlefont Module: ##1}\par\nobreak
-    \vspace{\vfill}
+    \vfill
     Primary Author(s):\par
     \moduleAuthors\par
     \vspace{1cm}
@@ -563,12 +569,6 @@
   \fillwithlines{\stretch{1}}{#1}
 \newpage}
 
-\newcommand{\workshopTitle}{Example Workshop Title}
-\newcommand{\workshopVenue}{Example Location, Earth}
-\newcommand{\workshopDate}{MMM. YYYY}
-\newcommand{\workshopAuthor}{
-Example Workshop Author, Contributers etc\\
-}
 \newcommand{\setWorkshopTitle}[1]{\renewcommand{\workshopTitle}{#1}}
 \newcommand{\setWorkshopVenue}[1]{\renewcommand{\workshopVenue}{#1}}
 \newcommand{\setWorkshopDate}[1]{\renewcommand{\workshopDate}{#1}}
