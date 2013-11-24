@@ -7,7 +7,7 @@
   Nathan S. Watson-Haigh \mailto{nathan.watson-haigh@awri.com.au}%
 }
 
-%  Start: Module Title Page
+% Start: Module Title Page
 \chapter{\moduleTitle}
 \newpage
 % End: Module Title Page
@@ -99,7 +99,7 @@ ASCII characters are present in the FASTQ file. E.g the presence of numbers in
 the quality strings, can only mean the quality values are Phred+33 encoded.
 However, due to the overlapping nature of the Phred+33 and Phred+64 encoding
 schema it is not always possible to identify what encoding is in use. For
-example, if the only characters seen in the quality string are (@ABCDEFGHI),
+example, if the only characters seen in the quality string are (\texttt{@ABCDEFGHI}),
 then it is impossible to know if you have really good Phred+33 encoded qualities
 or really bad Phred+64 encoded qualities.
 
