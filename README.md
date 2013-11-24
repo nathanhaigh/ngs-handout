@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/nathanhaigh/ngs_workshop.png?branch=master)](https://travis-ci.org/nathanhaigh/ngs_workshop)
+[![Build Status](https://travis-ci.org/nathanhaigh/ngs_workshop.png?branch=BioInfoSummer)](https://travis-ci.org/nathanhaigh/ngs_workshop)
 
 This GitHub repo has been setup to help foster a more sustainable collaborative
 environment in which the workshop content can be developed and refined. To
