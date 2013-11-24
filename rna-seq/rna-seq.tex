@@ -1,10 +1,11 @@
 % Define the top matter
-\renewcommand{\moduleTitle}{RNA-Seq}
-\renewcommand{\moduleAuthors}{%
+\setModuleTitle{RNA-Seq}
+\setModuleAuthors{%
   Myrto Kostadima, EMBL-EBI \mailto{kostadmi@ebi.ac.uk}\\
   Remco Loos, EMBL-EBI \mailto{remco@ebi.ac.uk}
-} \renewcommand{\moduleContributions}{%
-  Nathan S. Watson-Haigh \mailto{nathan.watson-haigh@awri.com.au}%
+}
+\setModuleContributions{%
+  Nathan S. Watson-Haigh \mailto{nathan.haigh@acpfg.com.au}%
 }
 
 %  Start: Module Title Page
@@ -119,7 +120,7 @@ tophat --help
 
 \begin{information}
 The general format of the tophat command is:
-\begin{lstlisting}
+\begin{lstlisting}[style=command_syntax]
 tophat [options]* <index_base> <reads_1> <reads_2>
 \end{lstlisting}
 
@@ -130,8 +131,7 @@ reads, and the argument before is the basename of the indexed genome.
 \begin{note}
 The quality values in the FASTQ files used in this hands-on session are Phred+33
 encoded. We explicitly tell tophat of this fact by using the command line
-argument \texttt{--solexa-quals}. See the appendix for further information about
-FASTQ encoding.
+argument \texttt{--solexa-quals}.
 \end{note}
 
 \begin{information}
@@ -205,11 +205,11 @@ Open the \texttt{RNA-seq} directory on your Desktop and double-click the
 \texttt{tophat} subdirectory and then the \texttt{ZV9\_2cells} directory.
 
 \begin{enumerate}
-  \item Launch IGV by double-clicking the ``IGV 2.1'' icon on the Desktop
+  \item Launch IGV by double-clicking the ``IGV 2.3'' icon on the Desktop
   (ignore any warnings that you may get as it opens). \emph{NOTE: IGV may take
   several minutes to load for the first time, please be patient.}
   \item Choose ``Zebrafish (Zv9)'' from the drop-down box in the top left of the
-  IGV window.
+  IGV window. Else you can also load the genome fasta file.
   \item Load the \texttt{accepted\_hits.sorted.bam} file by clicking the
   ``File'' menu, selecting ``Load from File'' and navigating to the
   \texttt{Desktop/RNA-seq/tophat/ZV9\_2cells} directory.
@@ -225,6 +225,15 @@ Open the \texttt{RNA-seq} directory on your Desktop and double-click the
 \end{enumerate}
 
 \end{steps}
+
+\begin{information}
+Keep zooming to view the bam file alignments
+
+Some useful IGV manuals can be found below
+
+\url{http://www.broadinstitute.org/software/igv/interpreting_insert_size}\\
+\url{http://www.broadinstitute.org/software/igv/alignmentdata}
+\end{information}
 
 \begin{questions}
 Can you identify the splice junctions from the BAM file?
@@ -284,7 +293,7 @@ The Ensembl annotation for \textit{Danio rerio} is available in
 
 \begin{information}
 The general format of the \texttt{cufflinks} command is:
-\begin{lstlisting}
+\begin{lstlisting}[style=command_syntax]
 cufflinks [options]* <aligned_reads.(sam|bam)>
 \end{lstlisting}
 Where the input is the aligned reads (either in SAM or BAM format).
@@ -395,7 +404,7 @@ embryo and \texttt{6h} post fertilization.
 
 \begin{information}
 The general format of the cuffdiff command is:
-\begin{lstlisting}
+\begin{lstlisting}[style=command_syntax]
 cuffdiff [options]* <transcripts.gtf> <sample1_replicate1.sam[,...,sample1_replicateM]> <sample2_replicate1.sam[,...,sample2_replicateM.sam]>
 \end{lstlisting}
 
@@ -459,8 +468,8 @@ Do you see any difference in the read coverage between the \texttt{2cells} and
 \texttt{6h} conditions that might have given rise to this transcript being
 called as differentially expressed?
 \begin{warning}
-Note that the coverage on the Ensembl browser is based on raw reads and no
-normalisation has taken place contrary to the FPKM values.
+Note that the coverage on the Ensembl browser is based on raw reads and thus do
+not represent normalised values such as FPKMs.
 \end{warning}
 
 \begin{answer}
@@ -474,42 +483,14 @@ data set is much higher than in the 6h data set.
 
 \section{Appendix}
 
-\subsection{Quality Value Encoding Schema}
-
-In order to use a single character to encode Phred qualities, ASCII characters
-are used (\url{http://www.asciitable.com/}). All ASCII characters have a decimal
-number associated with them but the first 32 characters and non-printable (e.g.
-backspace, shift, return, escape). Therefore, the first printable ASCII
-character is number 33, the exclamation mark (!). In Phred+33 encoded quality
-values the exclamation mark takes the Phred quality score of zero.
-
-Early Solexa (now Illumina) sequencing needed to encode negative quality values.
-Because ASCII characters $<$ 33 and non-printable, using the Phred+33 encoding was
-not possible. Therefore, they simply moved the offset from 33 to 64 thus
-inventing the Phred+64 encoded quality values. In this encoding a Phred quality
-of zero is denoted by the ASCII number 64 (the @ character). Since Illumina 1.8,
-quality values are now encoded using Phred+33.
-
-FASTQ does not provide a way to describe what quality encoding is used for the
-quality values. Therefore, you should find this out from your sequencing
-provider. Alternatively, you may be able to figure this out by determining what
-ASCII characters are present in the FASTQ file. E.g the presence of numbers in
-the quality strings, can only mean the quality values are Phred+33 encoded.
-However, due to the overlapping nature of the Phred+33 and Phred+64 encoding
-schema it is not always possible to identify what encoding is in use. For
-example, if the only characters seen in the quality string are (@ABCDEFGHI),
-then it is impossible to know if you have really good Phred+33 encoded qualities
-or really bad Phred+64 encoded qualities.
-
-For a grapical representation of the different ASCII characters used in the two
-encoding schema see: \url{http://en.wikipedia.org/wiki/FASTQ_format#Encoding}.
-
 \subsection{Functional Annotation of Differentially Expressed Genes}
+\begin{bonus}
+\section{Functional Annotation of Differentially Expressed Genes}
 After you have performed the differential expression analysis you are interested
 in identifying if there is any functionality enrichment for your differentially
 expressed genes.
 On your Desktop click:
-\begin{lstlisting}
+\begin{lstlisting}[style=command_syntax]
 Applications >> Internet >> Firefox Web Browser
 \end{lstlisting}
 And go to the following URL: \url{http://david.abcc.ncifcrf.gov/}
@@ -531,6 +512,7 @@ Browse around DAVID website and check what other information are available.
 Cellular component, Molecular function, Biological Processes, Tissue expression, Pathways, Literature, Protein domains 
 \end{answer}
 \end{questions}
+\end{bonus}
 
 \newpage
 

@@ -29,6 +29,24 @@ The commands to enter at a terminal look something like this:
 tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_2cells genome/ZV9 data/2cells_1.fastq data/2cells_2.fastq
 \end{lstlisting}  
 
+The following styled code is not to be entered at a terminal, it is simply to
+show you the syntax of the command. You must use your own judgement to
+substitute in the correct arguments, options, filenames etc
+
+\begin{lstlisting}[style=command_syntax]
+tophat [options]* <index_base> <reads_1> <reads_2>
+\end{lstlisting}
+
+The following is an example how of R commands are styled:
+
+\begin{lstlisting}[style=R]
+R --no-save
+library(plotrix) 
+data <- read.table("run_25/stats.txt", header=TRUE) 
+weighted.hist(data$short1_cov+data$short2_cov, data$lgth, breaks=0:70)
+q()
+\end{lstlisting}
+
 The following icons are used in the margin, throughout the documentation to help
 you navigate around the document more easily:
 

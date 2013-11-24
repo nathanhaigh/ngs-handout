@@ -14,11 +14,4 @@
 	<natures>
 		<nature>net.sourceforge.texlipse.builder.TexlipseNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>.tex</name>
-			<type>1</type>
-			<location>L:/MiKTeXPortable/tex/latex/tools/.tex</location>
-		</link>
-	</linkedResources>
 </projectDescription>

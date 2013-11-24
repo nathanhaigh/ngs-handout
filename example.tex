@@ -1,0 +1,70 @@
+%
+% Example Workshop Handout with title page and a section demonstrating
+% the different environments defined in the top matter
+%
+\documentclass[a4paper,12pt,twoside]{memoir}
+\usepackage{btp}    % Use the trainermanual package option (i.e. \usepackage[trainermanual]{btp}) to generate the Trainer's version of the manual
+
+% Set some Workshop specific info
+\setWorkshopTitle{My Workshop}
+\setWorkshopVenue{Somewhere, Earth}
+\setWorkshopDate{Feb 2013}
+\setWorkshopAuthor{Me\\
+Myself\\
+and I}
+
+
+\begin{document}
+
+%
+% Workshop Title Page
+%
+\workshoptitlepage
+
+\section{Example Section Heading}
+
+\begin{information}
+Information to be provided to the trainee.
+\end{information}
+
+\begin{steps}
+Instructions for the trainee to perform.
+\end{steps}
+
+\begin{note}
+Something of note.
+\end{note}
+
+\begin{warning}
+A warning to the trainee which needs to be read carefully.
+\end{warning}
+
+\begin{questions}
+First question.
+\begin{answer}
+Answer to first question.
+\end{answer}
+
+Second question.
+\begin{answer}
+Answer to second question.
+\end{answer}
+\end{questions}
+
+\begin{bonus}
+An optional bonus section for those progressing rapidly.
+\end{bonus}
+
+\begin{advanced}
+An optional advanced section for those progressing very rapidly or to be used for future reference.
+\end{advanced}
+
+\begin{lstlisting}
+# several lines of code
+cd ~/
+ls -l
+# a long command that line wraps automatically
+tophat --solexa-quals -g 2 --library-type fr-unstranded -j annotation/Danio_rerio.Zv9.66.spliceSites -o tophat/ZV9_2cells genome/ZV9 data/2cells_1.fastq data/2cells_2.fastq
+\end{lstlisting}
+
+\end{document}

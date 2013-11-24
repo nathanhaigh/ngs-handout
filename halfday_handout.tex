@@ -1,0 +1,97 @@
+\documentclass[a4paper,12pt,twoside]{memoir}
+\usepackage{btp}    % Use the trainermanual package option (i.e. \usepackage[trainermanual]{btp}) to generate the Trainer's version of the manual
+%\usepackage[
+%  noinfo,
+%  cam,
+%  cross,                % crosses as marks
+%  a4,
+%  width=6.25in,         % the width of the galley
+%  height=9.25in,        % the height of the galley
+%  center                % actual page is centered on the galley
+%]{crop}
+% Set some Workshop specific info
+\setWorkshopTitle{Introduction to Next Generation Sequencing Hands-on Workshop}
+\setWorkshopVenue{}
+\setWorkshopDate{}
+\setWorkshopAuthor{
+Bioplatforms Australia (BPA)\\
+The Commonwealth Scientific and Industrial Research Organisation (CSIRO)\\
+}
+
+\begin{document}
+
+%
+% Workshop Title Page
+%
+\workshoptitlepage
+
+%
+% CC-BY
+%
+\input{licence.tex}
+\clearpage
+
+\tableofcontents
+
+\chapter{Workshop Information}
+\clearpage
+
+%
+% Trainers Page
+%
+\input{trainers.tex}
+
+%
+% Workshop Preamble
+%
+\input{workshop_preamble.tex}
+
+%
+% Start of modules
+% Switch chapter styling to module
+%
+\chapterstyle{module}
+
+%
+% QC Module
+%
+\input{ngs-qc/ngs-qc.tex}
+
+%
+% Alignment Module
+%
+\input{alignment/alignment.tex}
+
+%
+% End of modules
+% Switch back to normal workshop chapter styling
+%
+\chapterstyle{workshop}
+
+
+
+\chapter{Post-Workshop Information}
+\clearpage
+%
+% Access to Computational Resources
+%
+\input{post-workshop/computational_resources.tex}
+\clearpage
+
+%
+% Access to Workshop Documents
+%
+\input{post-workshop/documents_and_data.tex}
+
+\chapter{Space for Personal Notes or Feedback}
+\clearpage
+
+%
+% Some empty ruled comments pages
+%
+\myruledpage{3cm}{1cm}
+\myruledpage{3cm}{1cm}
+\myruledpage{3cm}{1cm}
+\myruledpage{3cm}{1cm}
+
+\end{document}
