@@ -119,7 +119,7 @@ directory on your desktop.
 \begin{steps}
 Open the Terminal and go to the directory where the data are stored:
 \begin{lstlisting}
-cd ~/QC/
+cd ~/BIS_2013/Thu/RNA-seq/QC/
 pwd
 \end{lstlisting}
 
@@ -279,7 +279,7 @@ following trimming can be used to remove low quality data.
 \begin{steps}
 Run the following commands to quality trim your bad data:
 \begin{lstlisting}
-cd ~/QC
+cd ~/BIS_2013/Thu/RNA-seq/QC/
 fastq_quality_trimmer -h
 fastq_quality_trimmer -Q 33 -t 20 -l 50 -i bad_example.fastq -o bad_example_quality_trimmed.fastq
 \end{lstlisting}
@@ -356,7 +356,7 @@ you can use with this tool. Type \texttt{fastx\_trimmer -h} at anytime to displa
 We will now do fixed-length trimming of the \texttt{bad\_example.fastq} file
 using the following command.
 \begin{lstlisting}
-cd ~/QC
+cd ~/BIS_2013/Thu/RNA-seq/QC/
 fastx_trimmer -h
 fastx_trimmer -Q 33 -f 1 -l 80 -i bad_example.fastq -o bad_example_trimmed01.fastq
 \end{lstlisting}
@@ -436,7 +436,7 @@ Here we are demonstrating \texttt{fastx\_clipper} to trim a given adapter
 sequence.
 
 \begin{lstlisting}
-cd ~/QC
+cd ~/BIS_2013/Thu/RNA-seq/QC/
 fastx_clipper -h
 fastx_clipper -v -Q 33 -l 20 -M 15 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG -i bad_example.fastq -o bad_example_clipped.fastq
 \end{lstlisting}
@@ -489,7 +489,7 @@ INPUT argument (not provided):
 
 
 \begin{lstlisting}[style=command_syntax]
-cd ~/QC
+cd ~/BIS_2013/Thu/RNA-seq/QC/
 java -jar /usr/share/java/picard/MarkDuplicates.jar INPUT=<alignment_file.bam> VALIDATION_STRINGENCY=LENIENT OUTPUT=alignment_file.dup METRICS_FILE=alignment_file.matric ASSUME_SORTED=true REMOVE_DUPLICATES=true
 
 \end{lstlisting}
