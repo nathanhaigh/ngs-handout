@@ -201,8 +201,8 @@ files=(
   'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/gfp.fastq'
   'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/Oct4.bam'
   'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/gfp.bam'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mouse.mm9.genome'
-  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mm9.fa'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mouse.mm10.genome'
+  'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/mm10.fa'
   'https://swift.rc.nectar.org.au:8888/v1/AUTH_809/NGSDataChIPSeq/PeakAnalyzer_1.4.tar.gz'
 )
 echo "Setting up module: $module_dir"
@@ -224,8 +224,8 @@ if [ ! -e "$top_dir/$working_dir/$module_dir" ]; then
   tar -xzf $top_dir/$data_sub_dir/PeakAnalyzer_1.4.tar.gz
   mkdir -p "$top_dir/$working_dir/$module_dir/bowtie_index"
   cd "$top_dir/$working_dir/$module_dir/bowtie_index"
-  ln -s $top_dir/$data_sub_dir/mm9.fa
-  ln -s $top_dir/$data_sub_dir/mouse.mm9.genome
+  ln -s $top_dir/$data_sub_dir/mm10.fa
+  ln -s $top_dir/$data_sub_dir/mouse.mm10.genome
   mkdir -p "$top_dir/$working_dir/$module_dir/data"
   cd "$top_dir/$working_dir/$module_dir/data"
   ln -s $top_dir/$data_sub_dir/gfp.bam
